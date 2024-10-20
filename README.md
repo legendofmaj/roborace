@@ -52,10 +52,16 @@ git commit -m "Was du verändert hast"
 ```
 
 ```javascript
-git push
+git remote add origin https://github.com/legendofmaj/ev3.git //Nur beim ersten mal
 ```
 
+```javascript
+git push --set-upstream origin main //Nur beim ersten mal
+```
 
+```javascript
+git push
+```
 
 **[Vorbereitung](https://www.ev3dev.org/docs/getting-started/)**
 
