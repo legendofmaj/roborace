@@ -37,7 +37,7 @@ git init
 git pull https://github.com/legendofmaj/ev3.git
 ```
 
-2. Änderung machen
+2. Git zum ersten mal verwenden
 
 ```javascript
 git status
@@ -57,6 +57,24 @@ git remote add origin https://github.com/legendofmaj/ev3.git //Nur beim ersten m
 
 ```javascript
 git push --set-upstream origin main //Nur beim ersten mal
+```
+
+```javascript
+git push
+```
+
+3. Änderungen machen
+
+```javascript
+git status
+```
+
+```javascript
+git add .
+```
+
+```javascript
+git commit -m "Was du verändert hast"
 ```
 
 ```javascript
