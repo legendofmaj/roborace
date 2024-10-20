@@ -12,7 +12,7 @@
 
 - Unter **select components** und **Windows explorer integration** **Open Git GUI** **nicht** aktivieren, da es meist nicht verwendet wird und das Menü unsauber macht
 - Unter **select default editor** ist besser anstelle von vim VS Code zu verwenden, da wir es später so oder so brauchen
-- Unter adjust the name of the initial branch in new repositories override the default branch auswählen und main in die Textbox eingeben
+- Unter **adjust the name of the initial branch in new repositories override the default branch** auswählen und main in die Textbox eingeben
 - Bei allem hier nicht angegebenen einfach die Standard einstellungen verwenden
 
 
@@ -52,15 +52,11 @@ git commit -m "Was du verändert hast"
 ```
 
 ```javascript
-git remote add origin https://github.com/legendofmaj/ev3.git //Nur beim ersten mal
+git remote add origin https://github.com/legendofmaj/ev3.git
 ```
 
 ```javascript
-git push --set-upstream origin main //Nur beim ersten mal
-```
-
-```javascript
-git push
+git push --set-upstream origin main
 ```
 
 3. Änderungen machen
@@ -81,7 +77,9 @@ git commit -m "Was du verändert hast"
 git push
 ```
 
-**[Vorbereitung](https://www.ev3dev.org/docs/getting-started/)**
+
+
+**[Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)**
 
 1. [Netzwerkverbindung einrichten](https://www.ev3dev.org/docs/networking) (Achtung: Dies muss später vielleicht durch Bluetooth ersetzt werden)
 
