@@ -2,16 +2,14 @@
 
 from time import sleep
 
-y = 0
-x = 0
-
-#Because the libaries are only installed on the ev3, not my PC thus intellisense doesn't pick them up. See: https://github.com/ev3dev/ev3dev-lang-python/issues/626
+#For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
 from ev3dev2.sensor import INPUT_1
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.led import Leds
 from ev3dev2.button import Button
 
+#Define modules
 btn = Button()
 m = LargeMotor(OUTPUT_A)
 
