@@ -1,4 +1,4 @@
-#Input und AOutput Liste
+#Input und Output Liste
 #Outputs
 #Output A: Ablegesystem
 #Output B: rechter Motor
