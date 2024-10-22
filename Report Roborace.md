@@ -11,3 +11,4 @@ Achtung: Für den fertigen Bericht muss die Formulierung besser gestaltet werden
 | David | Chassis gebaut  | betrieben mit 2 großen ev3 Motoren an großen Rädern (tank steering) und einem omnidirectional wheel (Stahlkugel in Kugelgelenk) Chassis enthält auch Drehsensor und Farbsensor(schräg auf Boden gerichtet) | 20.10 |
 | David | Ablegemechanismus mit Chassis verbunden, Motoren/Sensoren verkabelt |  | 21.10 |
 | Michi | Verbindung mit VS Code |  | 21.10 |
+| David | Farbsensensorausleste programm angefangen, Angefangen Firmware auf EV3 brick zu isnstallieren (will grad nicht so richtig) |  | 22.10 |
