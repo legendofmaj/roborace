@@ -8,7 +8,7 @@ from ev3dev2.sensor import ColorSensor
 
 while True:
     colorDetected = ColorSensor.color()
-    sleep(1)
+    sleep(0.2)
     if colorDetected == 5:
         print("sees red")
         seesRed  = True
