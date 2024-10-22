@@ -11,3 +11,4 @@ while True:
     sleep(1)
     if colorDetected == 5:
         print("sees red")
+        seesRed  = True
