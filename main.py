@@ -7,10 +7,8 @@ from read_color_sensor import seesRed
 import drop_packet
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
-from ev3dev2.motor import LargeMotor, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
-from ev3dev2.sensor import INPUT_1
-from ev3dev2.sensor.lego import TouchSensor
-from ev3dev2.led import Leds
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
+from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
 
 #Define modules
