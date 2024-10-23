@@ -4,6 +4,7 @@
 from time import sleep
 
 from read_color_sensor import seesRed
+import drop_packet
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
 from ev3dev2.motor import LargeMotor, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
@@ -21,3 +22,5 @@ while True:
         print("Button pressed!")
         m.on_for_rotations(SpeedPercent(75), 5)     
         sleep(1)
+    if seesRed == 5:
+        drop_packet.Drop()
