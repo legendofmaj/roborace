@@ -22,3 +22,6 @@ while True:
         sleep(1)
     if seesRed == True:
         drop_packet.Drop()
+        print("happy")
+    else:
+        print("blind")
