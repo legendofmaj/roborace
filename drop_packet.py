@@ -1,4 +1,5 @@
 # "slave"
+#!/usr/bin/env python3s
 
 import time
 
@@ -11,3 +12,5 @@ def Drop():
     motorAblegen.on_for_rotations(SpeedPercent(75), 2.25)
     time.sleep(0.5)
     motorAblegen.on_for_rotations(SpeedPercent(75), -2.25)
+    time.sleep(0.5)
+    #code to resume other programms
