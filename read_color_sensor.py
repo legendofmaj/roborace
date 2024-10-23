@@ -12,3 +12,5 @@ while True:
     if colorDetected == 5:
         print("sees red")
         seesRed  = True
+    else:
+        seesRed = False
