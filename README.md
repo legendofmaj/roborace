@@ -1,5 +1,31 @@
 **EV3 - Cheat Sheet**
 
+**Konventionen zur Namensgebung**
+
+Allgemeines Format:
+
+**Typ (optional Bereich): Beschreibung**
+
+Beispiele:
+
+Gut: "feat(movement): add tank steering"
+
+Schlecht: "Fixed some stuff"
+
+Anmerkung:
+
+Achtet darauf, den Imperativ und das Präsens zu verwenden: „change“ nicht „changed“ oder „changes“
+
+Achtet darauf, dass ihr nicht groß schreibt
+
+Siehe auch: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+
+
+
+**Code Referenz**
+
+https://sites.google.com/site/ev3devpython/introduction
+
 
 
 **[Git Installieren](https://git-scm.com/)**
