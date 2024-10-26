@@ -3,7 +3,7 @@
 
 from time import sleep
 
-#from read_color_sensor import seesRed
+from read_color_sensor import seesRed
 #import drop_packet
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
@@ -16,12 +16,13 @@ btn = Button()
 m = LargeMotor(OUTPUT_B)
 
 while True:
-    if btn.any():
-        print("Button pressed!")
-        m.on_for_rotations(SpeedPercent(-75), 5)     
-        sleep(1)
-    #if seesRed == True:
+    sleep(1)
+    #if btn.any():
+        #print("Button pressed!")
+        #m.on_for_rotations(SpeedPercent(-75), 5)     
+        #sleep(1)
+    if seesRed == True:
         #drop_packet.Drop()
-        #print("happy")
-    #else:
-        #print("blind")
+        print("happy")
+    else:
+        print("blind")
