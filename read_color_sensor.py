@@ -1,5 +1,5 @@
+#!/usr/bin/env python3
 # "slave"
-#!/usr/bin/env python3s
 
 from time import sleep
 
