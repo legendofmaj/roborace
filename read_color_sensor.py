@@ -8,6 +8,7 @@ from ev3dev2.sensor.lego import ColorSensor
 
 def readColor():
     while True:
+        sleep(0.2)
         colorDetected = ColorSensor.color
         #sleep(0.2)
         if colorDetected == 5:            
