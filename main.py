@@ -20,8 +20,8 @@ while True:
         print("Button pressed!")
         m.on_for_rotations(SpeedPercent(75), 5)     
         sleep(1)
-    if seesRed == True:
-        drop_packet.Drop()
-        print("happy")
-    else:
-        print("blind")
+    #if seesRed == True:
+        #drop_packet.Drop()
+        #print("happy")
+    #else:
+        #print("blind")
