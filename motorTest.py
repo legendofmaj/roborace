@@ -12,7 +12,7 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 def main():
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
-    while(True):
+    while True:
         moveTank();
         drop()
 
