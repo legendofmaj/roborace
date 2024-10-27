@@ -10,10 +10,11 @@ colorSensor = ColorSensor(INPUT_1)
 def main():
     while True:
         readColor()
-        sleep(1)
+        #sleep(1)
 
 def readColor():
     colorDetected = colorSensor.color
+    print(colorSensor.raw)
     if colorDetected == 5:
         seesRed = True
         seesGreen = False

@@ -20,7 +20,7 @@ def main():
     threading1 = threading.Thread(target=readInputAndAct)
     threading1.start()
     while True:      
-        time.sleep(1)
+        time.sleep(0.5)
         if consoleInput != "undefined":
             moveTank()
             drop()
