@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-from time import sleep
+import time
+import sys
+import threading
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
@@ -9,26 +11,23 @@ from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C,
 depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 
+
+
 def main():
     consoleInput = "undefined"
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
-    x = 1
-    #test = []
-    while True: 
-        consoleInput = input()   
-        if type(consoleInput) == str:
-            if consoleInput != "undefined":
-                sleep(1)
-                print("is defined")
-                moveTank(consoleInput)
-                drop(consoleInput)
-                print("input:" + consoleInput)
-                print("cycle: " + str(x))
-                x = x + 1
+    threading1 = threading.Thread(target=readInputAndAct, args=("consoleInput", consoleInput))
+    threading1.start()
+    while True:      
+        time.sleep(1)
+        threading1.join()
+        if consoleInput != "undefined":
+            moveTank(consoleInput)
+            drop(consoleInput)
         else:
-            print("skipped")
-            continue
+            print("undefined")
+            
 
 def moveTank(consoleInput):
     #Move the tank
@@ -43,8 +42,20 @@ def drop(consoleInput):
     if inputArg == "drop":
         print("dropping")
         depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
-        sleep(0.5)
+        time.sleep(0.5)
         depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-        sleep(0.5)
+        time.sleep(0.5)
+
+def readInputAndAct(filler, consoleInput):
+    while True:
+        time.sleep(1)
+        #filler = filler
+        print("seeking")
+        consoleInput = input()
+        print("input:" + consoleInput)
+        return consoleInput
+
+
+
 
 main()
