@@ -31,9 +31,9 @@ def moveTank(consoleInput):
 def drop(consoleInput):
     inputArg = consoleInput
     if inputArg == "drop":
-        depositMotor.on_for_rotations(SpeedPercent(75), 2.25)
+        depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
         sleep(0.5)
-        depositMotor.on_for_rotations(SpeedPercent(75), -2.25)
+        depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
         sleep(0.5)
 
 main()
