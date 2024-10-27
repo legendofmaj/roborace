@@ -27,7 +27,7 @@ def main():
         colorSensorTest.main()
         if colorSensorTest.seesRed == True:
             drop()
-            #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt
+            #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
             
 
 def moveTank():
