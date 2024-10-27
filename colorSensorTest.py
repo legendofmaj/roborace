@@ -17,11 +17,11 @@ def readColor():
     if colorDetected == 5:
         seesRed = True
         seesGreen = False
-        print("sees Red: " + seesRed)
+        print("sees Red: " + str(seesRed))
     elif colorDetected == 3:
         seesRed = False
         seesGreen = True
-        print("seesGreen: " + seesGreen)
+        print("seesGreen: " + str(seesGreen))
     else:
         seesRed = False
         seesGreen = False
