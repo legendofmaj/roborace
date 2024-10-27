@@ -24,9 +24,10 @@ def main():
         if consoleInput != "undefined":
             moveTank()
             drop()
-        #else:
-            #print("undefined")
         colorSensorTest.main()
+        if colorSensorTest.seesRed == True:
+            drop()
+            #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt
             
 
 def moveTank():
@@ -34,29 +35,30 @@ def moveTank():
     seconds = 3
     global consoleInput
     if consoleInput == "moveTank":
-        print("moving")
+        print("moving") #debug
         tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
         consoleInput = "undefined"
+
 
 def drop():
     global consoleInput
     if consoleInput == "drop":
         consoleInput = "undefined"
-        print("dropping")
+        print("dropping") #debug
         depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
         time.sleep(0.5)
         depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
         time.sleep(0.5)
 
+
 def readInputAndAct():
     while True:
         time.sleep(1)
-        print("seeking")
+        print("seeking") #debug
         userInput = input()
-        print("input:" + userInput)
+        print("input:" + userInput) #debug
         global consoleInput
         consoleInput = userInput 
-
 
 
 
