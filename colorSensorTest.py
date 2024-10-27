@@ -16,9 +16,14 @@ def readColor():
     colorDetected = colorSensor.color
     if colorDetected == 5:
         seesRed = True
-        print(seesRed)
+        seesGreen = False
+        print("sees Red: " + seesRed)
+    elif colorDetected == 3:
+        seesRed = False
+        seesGreen = True
+        print("seesGreen: " + seesGreen)
     else:
         seesRed = False
-        #print(seesRed)
+        seesGreen = False
 
 #main()    
