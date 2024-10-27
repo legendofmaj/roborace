@@ -13,7 +13,7 @@ def main():
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
     while True:
-        moveTank();
+        moveTank()
         drop()
 
 
@@ -31,3 +31,5 @@ def drop():
         sleep(0.5)
         depositMotor.on_for_rotations(SpeedPercent(75), -2.25)
         sleep(0.5)
+
+main()
