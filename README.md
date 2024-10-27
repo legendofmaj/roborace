@@ -6,17 +6,17 @@
 >
 >Es ist *wichtig*, den Namensgebungskonventionen zu folgen, um den Code für andere und in der Zukunft lesbar zu machen
 
-#### Allgemeines Format:
+### Allgemeines Format:
 
 **Typ (optional Bereich): Beschreibung**
 
-#### Beispiele:
+### Beispiele:
 
 - Gut: "feat(movement): add tank steering"
 
 - Schlecht: "Fixed some stuff"
 
-#### Anmerkung:
+### Anmerkung:
 > [!ACHTUNG]
 >
 >Achtet darauf, den *Imperativ* und das *Präsens* zu verwenden: „change“ nicht „changed“ oder „changes“
@@ -29,7 +29,7 @@ https://sites.google.com/site/ev3devpython/introduction
 
 ## Verwendung von Git
 
-#### [Git Installieren](https://git-scm.com/)
+### [Git Installieren](https://git-scm.com/)
 
 1. Git.exe von der verlinkten Website herunterladen 
 
@@ -44,7 +44,7 @@ https://sites.google.com/site/ev3devpython/introduction
 
 
 
-#### Git einrichten
+### Git einrichten
 
 1. In den Ordner gehen wo das Projekt letzendlich sein soll e.g.: Home/documents/Roborace und open **Git Bash here** drücken
 
@@ -106,7 +106,7 @@ git push
 
 
 
-#### [Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)
+### [Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)
 
 1. [Netzwerkverbindung einrichten](https://www.ev3dev.org/docs/networking) (Achtung: Dies muss später vielleicht durch Bluetooth ersetzt werden)
 
