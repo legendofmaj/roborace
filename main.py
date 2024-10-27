@@ -16,20 +16,19 @@ m = LargeMotor(OUTPUT_B)
 
 def readColorSensor():
     red = 5
-    while True:
-        sleep(0.2)
+    #while True: reason: a while true loop in a while true loop will get stuck
+    sleep(0.2)
+    colorDetected = ColorSensor.color
+    if colorDetected == red:            
+        seesRed  = True
+        print("sees red")
         colorDetected = ColorSensor.color
-        #sleep(0.2)
-        if colorDetected == red:            
-            seesRed  = True
-            print("sees red")
-            colorDetected = ColorSensor.color
-        else:
-            seesRed = False
-            print("no red")
-            colorDetected = ColorSensor.color
+    else:
+        seesRed = False
+        print("no red")
+        colorDetected = ColorSensor.color
 
-while True:
+'''while True:
     sleep(1)
     #if btn.any():
         #print("Button pressed!")
@@ -40,4 +39,4 @@ while True:
         #print("happy")
     #elif seesRed == False:
         #print("blind")
-    read_color_sensor.readColor()
+    read_color_sensor.readColor()'''
