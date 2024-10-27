@@ -1,34 +1,35 @@
-**EV3 - Cheat Sheet**
+# Roborace 2024
 
-**Konventionen zur Namensgebung**
+## Konventionen zur Namensgebung
 
-Allgemeines Format:
+> [!ACHTUNG]
+>
+>Es ist *wichtig*, den Namensgebungskonventionen zu folgen, um den Code für andere und in der Zukunft lesbar zu machen
+
+#### Allgemeines Format:
 
 **Typ (optional Bereich): Beschreibung**
 
-Beispiele:
+#### Beispiele:
 
-Gut: "feat(movement): add tank steering"
+- Gut: "feat(movement): add tank steering"
 
-Schlecht: "Fixed some stuff"
+- Schlecht: "Fixed some stuff"
 
-Anmerkung:
-
-Achtet darauf, den Imperativ und das Präsens zu verwenden: „change“ nicht „changed“ oder „changes“
-
-Achtet darauf, dass ihr nicht groß schreibt
-
+#### Anmerkung:
+> [!ACHTUNG]
+>
+>Achtet darauf, den *Imperativ* und das *Präsens* zu verwenden: „change“ nicht „changed“ oder „changes“
 Siehe auch: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 
 
-
-**Code Referenz**
+## Code Referenz
 
 https://sites.google.com/site/ev3devpython/introduction
 
+## Verwendung von Git
 
-
-**[Git Installieren](https://git-scm.com/)**
+#### [Git Installieren](https://git-scm.com/)
 
 1. Git.exe von der verlinkten Website herunterladen 
 
@@ -43,7 +44,7 @@ https://sites.google.com/site/ev3devpython/introduction
 
 
 
-**Git einrichten**
+#### Git einrichten
 
 1. In den Ordner gehen wo das Projekt letzendlich sein soll e.g.: Home/documents/Roborace und open **Git Bash here** drücken
 
@@ -105,7 +106,7 @@ git push
 
 
 
-**[Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)**
+#### [Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)
 
 1. [Netzwerkverbindung einrichten](https://www.ev3dev.org/docs/networking) (Achtung: Dies muss später vielleicht durch Bluetooth ersetzt werden)
 
@@ -118,7 +119,7 @@ git push
 - In PUTTY auf Windows einfach den Hostname, also **"robot"** im Feld eingeben. Bei dem SSH Passwort handelt es sich um **"maker"**.
 - Nur in Linux: Anstelle von [robot@ev3dev.local](mailto:robot@ev3dev.local), sollte man die IPv4-Adresse eingeben, welche auf dem Roboter unter **Wireless and Networks>All Network Connections>Wired>IPv4** zu finden ist. Also **ssh robot@IPv4**.
 
-3. [Programmiersprache](https://github.com/ev3dev/ev3dev-lang-python)
+3. [Programmierung](https://github.com/ev3dev/ev3dev-lang-python)
 
 - Hinweis zum Ausführen, immer über Run oder F5 gehen.
 - Um sich mit dem Roboter zu verbinden, unter "ev3 device browser" auf "device not found" gehen und dann erst robot und dann die IPv4 Adresse eingeben.
