@@ -24,9 +24,9 @@ def main():
         if consoleInput != "undefined":
             moveTank()
             drop()
-        colorSensorTest.main()
+        colorSensorTest.readColor()
         if colorSensorTest.seesRed == True:
-            drop()
+            forceDrop()
             #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
             
 
@@ -49,6 +49,14 @@ def drop():
         time.sleep(0.5)
         depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
         time.sleep(0.5)
+
+
+def forceDrop():
+    print("dropping") #debug
+    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+    time.sleep(0.5)
+    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
+    time.sleep(0.5)
 
 
 def readInputAndAct():

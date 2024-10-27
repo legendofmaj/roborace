@@ -6,12 +6,14 @@ from ev3dev2.sensor import INPUT_1
 from ev3dev2.sensor.lego import ColorSensor
 
 colorSensor = ColorSensor(INPUT_1)
+seesRed = False
 
 def main():
     while True:
         readColor()
 
 def readColor():
+    global seesRed
     colorDetected = colorSensor.color
     print(colorSensor.raw) #debug
     if colorDetected == 5:
