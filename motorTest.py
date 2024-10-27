@@ -10,22 +10,26 @@ depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 
 def main():
+    input = "undefined"
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
     while True:
-        moveTank()
-        drop()
+        input = input()
+        if input != "undefined":     
+            sleep(1)
+            moveTank()
+            drop()
 
 
-def moveTank():
+def moveTank(input):
     #Move the tank
     seconds = 3
-    input = input()
+    input = input
     if input == "moveTank":
         tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
 
-def drop():
-    input = input()
+def drop(input):
+    input = input
     if input == "drop":
         depositMotor.on_for_rotations(SpeedPercent(75), 2.25)
         sleep(0.5)
