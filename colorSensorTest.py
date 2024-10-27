@@ -19,6 +19,6 @@ def readColor():
         print(seesRed)
     else:
         seesRed = False
-        print(seesRed)
+        #print(seesRed)
 
-main()    
+#main()    

@@ -3,6 +3,7 @@
 import time
 import sys
 import threading
+import colorSensorTest
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
@@ -19,12 +20,13 @@ def main():
     threading1 = threading.Thread(target=readInputAndAct)
     threading1.start()
     while True:      
-        time.sleep(10)
+        time.sleep(1)
         if consoleInput != "undefined":
             moveTank()
             drop()
-        else:
-            print("undefined")
+        #else:
+            #print("undefined")
+        colorSensorTest.main()
             
 
 def moveTank():
