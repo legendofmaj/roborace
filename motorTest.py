@@ -10,50 +10,50 @@ from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C,
 #Define modules
 depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
-
+consoleInput = "undefined"
 
 
 def main():
-    consoleInput = "undefined"
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
-    threading1 = threading.Thread(target=readInputAndAct, args=("consoleInput", consoleInput))
+    threading1 = threading.Thread(target=readInputAndAct)
     threading1.start()
     while True:      
-        time.sleep(1)
-        threading1.join()
+        time.sleep(10)
         if consoleInput != "undefined":
-            moveTank(consoleInput)
-            drop(consoleInput)
+            moveTank()
+            drop()
         else:
             print("undefined")
             
 
-def moveTank(consoleInput):
+def moveTank():
     #Move the tank
     seconds = 3
-    inputArg = consoleInput
-    if inputArg == "moveTank":
+    global consoleInput
+    if consoleInput == "moveTank":
         print("moving")
         tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
+        consoleInput = "undefined"
 
-def drop(consoleInput):
-    inputArg = consoleInput
-    if inputArg == "drop":
+def drop():
+    global consoleInput
+    if consoleInput == "drop":
+        consoleInput = "undefined"
         print("dropping")
         depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
         time.sleep(0.5)
         depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
         time.sleep(0.5)
 
-def readInputAndAct(filler, consoleInput):
+def readInputAndAct():
     while True:
         time.sleep(1)
-        #filler = filler
         print("seeking")
-        consoleInput = input()
-        print("input:" + consoleInput)
-        return consoleInput
+        userInput = input()
+        print("input:" + userInput)
+        global consoleInput
+        consoleInput = userInput 
 
 
 
