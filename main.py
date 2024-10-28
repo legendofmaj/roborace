@@ -15,15 +15,15 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
 
 
-#Define modules
+#Define mconstants
 depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 btn = Button()
-#m = LargeMotor(OUTPUT_B)
 colorSensor = ColorSensor(INPUT_1)
 uSoundSensor = UltrasonicSensor(INPUT_3)
 gyro = GyroSensor(INPUT_2)
 
+#Dfine variables
 seesRed = False
 seesGreen = False
 consoleInput = "undefined"
@@ -37,16 +37,18 @@ def main():
     threading1.start()
     while True:
         if btn.any():
-            print("Button pressed!")
-            #m.on_for_rotations(SpeedPercent(-75), 5)  
-        if consoleInput != "undefined":
+            print("Button pressed!") 
+        if consoleInput == "moveTank":
             moveTank(3)
-            drop()
+        elif consoleInput == "drop":
+            drop() 
+        else:
+            print("invalid input")  
         readColor()
         if seesRed == True:
-            forceDrop() #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
+            drop() #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
         if seesGreen == True:
-            forceMoveTank(1)
+            moveTank(1)
             break
         readDist()
         #readCircleAngle()
@@ -60,36 +62,17 @@ def main():
 def moveTank(timeIn):
     #Move the tank
     seconds = timeIn
-    global consoleInput
-    if consoleInput == "moveTank":
-        print("moving") #debug
-        tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), seconds)
-        consoleInput = "undefined"
-
-
-def forceMoveTank(timeIn):
-    seconds = timeIn
     print("moving") #debug
     tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), seconds)
+    consoleInput = "undefined"
 
 
 def drop():
-    global consoleInput
-    if consoleInput == "drop":
-        consoleInput = "undefined"
-        print("dropping") #debug
-        depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
-        time.sleep(0.5)
-        depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-        time.sleep(0.5)
-
-
-def forceDrop():
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-    time.sleep(0.5)
+    consoleInput = "undefined"
 
 
 def readInputAndAct():
@@ -98,13 +81,10 @@ def readInputAndAct():
         print("seeking") #debug
         userInput = input()
         print("input:" + userInput) #debug
-        global consoleInput
         consoleInput = userInput
 
 
 def readColor():
-    global seesRed
-    global seesGreen
     colorDetected = colorSensor.color
     #print(colorSensor.rgb) #debug
     if colorDetected == 5:
@@ -121,7 +101,6 @@ def readColor():
 
 
 def readDist():
-    global dist
     dist = uSoundSensor.distance_centimeters
     print("distance: " + str(dist)) #debug
     #sometimes values seem larger than thy are if the sensor is angled towards a surface
@@ -134,4 +113,5 @@ def readCircleAngle():
 
 
 
-main()
+if __name__ =="__main__":
+    main()
