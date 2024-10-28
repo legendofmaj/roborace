@@ -6,7 +6,6 @@ from ev3dev2.sensor import INPUT_1
 from ev3dev2.sensor.lego import ColorSensor
 
 colorSensor = ColorSensor(INPUT_1)
-seesRed = False
 
 def main():
     while True:
@@ -14,6 +13,7 @@ def main():
         sleep(0.1)
 
 def readColor():
+    global seesRed
     #global seesRed #Why is the global keyword necessary here? The variable was defined outside of a function. Is it used somewhere else?
     colorDetected = colorSensor.color
     print(colorSensor.raw) #debug
