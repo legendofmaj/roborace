@@ -1,42 +1,137 @@
 #!/usr/bin/env python3
+# "master"
 
-from time import sleep
+import time
+import sys
+import threading
 
-#import drop_packet
 
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
+from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
 from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor.lego import GyroSensor
+
 
 #Define modules
+depositMotor = MediumMotor(OUTPUT_A)
+tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 btn = Button()
-m = LargeMotor(OUTPUT_B)
+#m = LargeMotor(OUTPUT_B)
+colorSensor = ColorSensor(INPUT_1)
+uSoundSensor = UltrasonicSensor(INPUT_3)
+gyro = GyroSensor(INPUT_2)
 
-def readColorSensor():
-    red = 5
-    #while True: reason: a while true loop in a while true loop will get stuck
-    sleep(0.2)
-    colorDetected = ColorSensor.color
-    if colorDetected == red:            
-        seesRed  = True
-        print("sees red")
-        colorDetected = ColorSensor.color
+seesRed = False
+seesGreen = False
+consoleInput = "undefined"
+dist = 0.0
+
+
+def main():
+    print("Enter moveTank to test basic tank steering")
+    print("Enter drop to test the drop motor")
+    threading1 = threading.Thread(target=readInputAndAct)
+    threading1.start()
+    while True:
+        if btn.any():
+            print("Button pressed!")
+            #m.on_for_rotations(SpeedPercent(-75), 5)  
+        if consoleInput != "undefined":
+            moveTank(3)
+            drop()
+        readColor()
+        if seesRed == True:
+            forceDrop() #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
+        if seesGreen == True:
+            forceMoveTank(1)
+            break
+        readDist()
+        #readCircleAngle()
+        circleAngle = gyro.circle_angle()
+        print("circle angle: " + str(circleAngle))
+        time.sleep(1)
+
+    print("saw green so stopped")
+        
+
+def moveTank(timeIn):
+    #Move the tank
+    seconds = timeIn
+    global consoleInput
+    if consoleInput == "moveTank":
+        print("moving") #debug
+        tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), seconds)
+        consoleInput = "undefined"
+
+
+def forceMoveTank(timeIn):
+    seconds = timeIn
+    print("moving") #debug
+    tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), seconds)
+
+
+def drop():
+    global consoleInput
+    if consoleInput == "drop":
+        consoleInput = "undefined"
+        print("dropping") #debug
+        depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+        time.sleep(0.5)
+        depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
+        time.sleep(0.5)
+
+
+def forceDrop():
+    print("dropping") #debug
+    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+    time.sleep(0.5)
+    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
+    time.sleep(0.5)
+
+
+def readInputAndAct():
+    while True:
+        time.sleep(1)
+        print("seeking") #debug
+        userInput = input()
+        print("input:" + userInput) #debug
+        global consoleInput
+        consoleInput = userInput
+
+
+def readColor():
+    global seesRed
+    global seesGreen
+    colorDetected = colorSensor.color
+    #print(colorSensor.rgb) #debug
+    if colorDetected == 5:
+        seesRed = True
+        seesGreen = False
+        print("sees Red: " + str(seesRed)) #debug
+    elif colorDetected == 3:
+        seesRed = False
+        seesGreen = True
+        print("seesGreen: " + str(seesGreen)) #debug
     else:
         seesRed = False
-        print("no red")
-        colorDetected = ColorSensor.color
+        seesGreen = False 
 
-'''while True:
-    sleep(1)
-    #if btn.any():
-        #print("Button pressed!")
-        #m.on_for_rotations(SpeedPercent(-75), 5)     
-        #sleep(1)
-    #if seesRed == True:
-        #drop_packet.Drop()
-        #print("happy")
-    #elif seesRed == False:
-        #print("blind")
-    read_color_sensor.readColor()'''
+
+def readDist():
+    global dist
+    dist = uSoundSensor.distance_centimeters
+    print("distance: " + str(dist)) #debug
+    #sometimes values seem larger than thy are if the sensor is angled towards a surface
+
+
+def readCircleAngle():
+    circleAngle = gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
+    print("circle angle: " + str(circleAngle)) # debug
+    #this acts stange here, showing the same value even tho the rotation of the robot is changed
+
+
+
+main()
