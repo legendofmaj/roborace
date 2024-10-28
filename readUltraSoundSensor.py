@@ -9,7 +9,10 @@ uSoundSensor = UltrasonicSensor(INPUT_3)
 dist = 0.0
 
 def main():
+    print("scanning")
     while True:
         dist = uSoundSensor.distance_centimeters
         print(dist)
-        time.sleep(1)
+        time.sleep(0.5)
+
+main()
