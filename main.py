@@ -23,12 +23,12 @@ colorSensor = ColorSensor(INPUT_1)
 uSoundSensor = UltrasonicSensor(INPUT_3)
 gyro = GyroSensor(INPUT_2)
 
-#Dfine variables
+#Define variables
 seesRed = False
 seesGreen = False
 consoleInput = "undefined"
 dist = 0.0
-circleAngle = 90
+
 
 
 def main():
@@ -43,8 +43,8 @@ def main():
             moveTank(3)
         elif consoleInput == "drop":
             drop() 
-        else:
-            print("invalid input")  
+        #else:
+            #print("invalid input")  
         readColor()
         if seesRed == True:
             drop() #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
@@ -52,9 +52,7 @@ def main():
             moveTank(1)
             break
         readDist()
-        #readCircleAngle()
-        circleAngle = gyro.circle_angle()
-        print("circle angle: " + str(circleAngle))
+        readCircleAngle()
         time.sleep(1)
 
     print("saw green so stopped")
@@ -80,6 +78,7 @@ def drop():
 
 def readInputAndAct():
     while True:
+        global consoleInput
         time.sleep(1)
         print("seeking") #debug
         userInput = input()
@@ -108,14 +107,14 @@ def readColor():
 def readDist():
     global dist
     dist = uSoundSensor.distance_centimeters
-    print("distance: " + str(dist)) #debug
+    #print("distance: " + str(dist)) #debug
     #sometimes values seem larger than thy are if the sensor is angled towards a surface
 
 
 def readCircleAngle():
     global circleAngle
     circleAngle = gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
-    print("circle angle: " + str(circleAngle)) # debug
+    #print("circle angle: " + str(circleAngle)) # debug
     #this acts stange here, showing the same value even tho the rotation of the robot is changed
 
 
