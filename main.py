@@ -28,6 +28,7 @@ seesRed = False
 seesGreen = False
 consoleInput = "undefined"
 dist = 0.0
+circleAngle = 90
 
 
 def main():
@@ -60,6 +61,7 @@ def main():
         
 
 def moveTank(timeIn):
+    global consoleInput
     #Move the tank
     seconds = timeIn
     print("moving") #debug
@@ -68,6 +70,7 @@ def moveTank(timeIn):
 
 
 def drop():
+    global consoleInput
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
     time.sleep(0.5)
@@ -85,6 +88,8 @@ def readInputAndAct():
 
 
 def readColor():
+    global seesRed
+    global seesGreen
     colorDetected = colorSensor.color
     #print(colorSensor.rgb) #debug
     if colorDetected == 5:
@@ -101,12 +106,14 @@ def readColor():
 
 
 def readDist():
+    global dist
     dist = uSoundSensor.distance_centimeters
     print("distance: " + str(dist)) #debug
     #sometimes values seem larger than thy are if the sensor is angled towards a surface
 
 
 def readCircleAngle():
+    global circleAngle
     circleAngle = gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
     print("circle angle: " + str(circleAngle)) # debug
     #this acts stange here, showing the same value even tho the rotation of the robot is changed
