@@ -8,7 +8,7 @@ import colorSensorTest
 #For errors see: https://github.com/ev3dev/ev3dev-lang-python/issues/626
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 
-#Define modules
+#Define global variables
 depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 consoleInput = "undefined"
@@ -21,43 +21,30 @@ def main():
     threading1.start()
     while True:      
         time.sleep(0.5)
-        if consoleInput != "undefined":
+        #Activate motor actions upon console input
+        if consoleInput == "moveTank":
             moveTank()
+        elif consoleInput == "drop":
             drop()
+        else:
+            print("Invalid argument")
+        #Activate motor action upon receving data from sensors
         colorSensorTest.readColor()
         if colorSensorTest.seesRed == True:
-            forceDrop()
-            #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
-            
+            drop()
+            #Ultimatly the robot shouldn't constantly repeat this, but only do it again, upon seeing red again after seeing something else
 
 def moveTank():
-    #Move the tank
     seconds = 3
-    global consoleInput
-    if consoleInput == "moveTank":
-        print("moving") #debug
-        tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
-        consoleInput = "undefined"
-
+    print("moving") #debug
+    tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
 
 def drop():
-    global consoleInput
-    if consoleInput == "drop":
-        consoleInput = "undefined"
-        print("dropping") #debug
-        depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
-        time.sleep(0.5)
-        depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-        time.sleep(0.5)
-
-
-def forceDrop():
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
     time.sleep(0.5)
-
 
 def readInputAndAct():
     while True:
@@ -69,5 +56,5 @@ def readInputAndAct():
         consoleInput = userInput 
 
 
-
-main()
+if __name__ == "__main__":
+    main()

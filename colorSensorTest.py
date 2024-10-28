@@ -11,9 +11,10 @@ seesRed = False
 def main():
     while True:
         readColor()
+        sleep(0.1)
 
 def readColor():
-    global seesRed
+    #global seesRed #Why is the global keyword necessary here? The variable was defined outside of a function. Is it used somewhere else?
     colorDetected = colorSensor.color
     print(colorSensor.raw) #debug
     if colorDetected == 5:

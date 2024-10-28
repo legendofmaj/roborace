@@ -16,4 +16,5 @@ def main():
         print(dist)
         time.sleep(0.5)
 
-main()
+if __name__=="__main__":
+    main()
