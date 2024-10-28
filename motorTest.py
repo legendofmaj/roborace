@@ -26,8 +26,8 @@ def main():
             moveTank()
         elif consoleInput == "drop":
             drop()
-        else:
-            print("Invalid argument")
+        #else:
+            #print("Invalid argument")
         #Activate motor action upon receving data from sensors
         colorSensorTest.readColor()
         if colorSensorTest.seesRed == True:
@@ -37,7 +37,7 @@ def main():
 def moveTank():
     seconds = 3
     print("moving") #debug
-    tankDrive.on_for_seconds(SpeedPercent(50), SpeedPercent(50), seconds)
+    tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), seconds)
 
 def drop():
     print("dropping") #debug
