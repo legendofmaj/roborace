@@ -12,11 +12,11 @@ tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
 colorSensor = ColorSensor(INPUT_1)
 
 def main():
-    while(True):
+    while True:
         buttonFun()
         if buttonPressed == True:
             break #This should work, because only when the first fun reaches break, will the second loop be reached
-    while(True):
+    while True:
         colorFun()
         tankFun()
         if colorFun() == "red":
