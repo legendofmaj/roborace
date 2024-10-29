@@ -22,13 +22,13 @@ def main():
     while True:
         #rate = Gyro.rate #nearly momentary as far as i can see
         circleAngle = Gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
-        angle = Gyro.angle # when circleangle is 90 this is zero when circleangle drecreases ( robot is turned to the right) this increases proportionally with factor 1
+        #angle = Gyro.angle # when circleangle is 90 this is zero when circleangle drecreases ( robot is turned to the right) this increases proportionally with factor 1
         #print("rate: " + str(rate))
         print("circle angle: " + str(circleAngle))
-        print("angle: " + str(angle)) 
+        #print("angle: " + str(angle)) 
         #readAngle()
         time.sleep(1)
-        tank.on_for_rotations(SpeedPercent(-50), SpeedPercent(50), 0.5)
+        '''tank.on_for_rotations(SpeedPercent(-50), SpeedPercent(50), 0.5)
         time.sleep(1)
         circleAngle = Gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
         angle = Gyro.angle # when circleangle is 90 this is zero when circleangle drecreases ( robot is turned to the right) this increases proportionally with factor 1
@@ -37,7 +37,7 @@ def main():
         print("angle: " + str(angle)) 
         time.sleep(1)
         tank.on_for_rotations(SpeedPercent(50), SpeedPercent(-50), 0.5)
-        time.sleep(1)
+        time.sleep(1)'''
 
 def readAngle():
     circleAngle = Gyro.circle_angle()
