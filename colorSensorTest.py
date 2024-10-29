@@ -8,6 +8,7 @@ from ev3dev2.sensor.lego import ColorSensor
 colorSensor = ColorSensor(INPUT_1)
 
 def main():
+    print("on")
     while True:
         readColor()
         sleep(0.1)
@@ -28,3 +29,5 @@ def readColor():
     else:
         seesRed = False
         seesGreen = False   
+
+main()

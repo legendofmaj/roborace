@@ -34,6 +34,7 @@ dist = 0.0
 def main():
     print("Enter moveTank to test basic tank steering")
     print("Enter drop to test the drop motor")
+    gyro.calibrate()
     threading1 = threading.Thread(target=readInputAndAct)
     threading1.start()
     while True:
@@ -48,6 +49,7 @@ def main():
         readColor()
         if seesRed == True:
             drop() #code muss am ende so sein dass der rober es nicht dauerhaft wiederholt also nur erneut ausführt wenn er erneut rot sieht nachdem er erst etwas anderes gesehen hat
+            readColor()
         if seesGreen == True:
             moveTank(1)
             break
@@ -90,7 +92,7 @@ def readColor():
     global seesRed
     global seesGreen
     colorDetected = colorSensor.color
-    #print(colorSensor.rgb) #debug
+    print(colorSensor.rgb) #debug
     if colorDetected == 5:
         seesRed = True
         seesGreen = False
@@ -107,14 +109,14 @@ def readColor():
 def readDist():
     global dist
     dist = uSoundSensor.distance_centimeters
-    #print("distance: " + str(dist)) #debug
+    print("distance: " + str(dist)) #debug
     #sometimes values seem larger than thy are if the sensor is angled towards a surface
 
 
 def readCircleAngle():
     global circleAngle
     circleAngle = gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
-    #print("circle angle: " + str(circleAngle)) # debug
+    print("circle angle: " + str(circleAngle)) # debug
     #this acts stange here, showing the same value even tho the rotation of the robot is changed
 
 
