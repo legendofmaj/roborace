@@ -2,7 +2,7 @@
 
 ## Konventionen zur Namensgebung
 
-> [!ACHTUNG]
+> [!WARNING]
 >
 >Es ist *wichtig*, den Namensgebungskonventionen zu folgen, um den Code für andere und in der Zukunft lesbar zu machen
 
@@ -17,7 +17,7 @@
 - Schlecht: "Fixed some stuff"
 
 ### Anmerkung:
-> [!ACHTUNG]
+> [!WARNING]
 >
 >Achtet darauf, den *Imperativ* und das *Präsens* zu verwenden: „change“ nicht „changed“ oder „changes“
 Siehe auch: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13

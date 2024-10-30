@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-# "master"
 
 import time
-import sys
 import threading
 
 
@@ -15,7 +13,7 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
 
 
-#Define mconstants
+#Define constants
 depositMotor = MediumMotor(OUTPUT_A)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 btn = Button()
@@ -23,7 +21,7 @@ colorSensor = ColorSensor(INPUT_1)
 uSoundSensor = UltrasonicSensor(INPUT_3)
 gyro = GyroSensor(INPUT_2)
 
-#Dfine variables
+#Define variables
 seesRed = False
 seesGreen = False
 consoleInput = "undefined"
