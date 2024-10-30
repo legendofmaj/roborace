@@ -6,8 +6,10 @@ import sys
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor.lego import GyroSensor
 
 btn = Button()
 tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
