@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import time
+import threading 
+import sys
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
