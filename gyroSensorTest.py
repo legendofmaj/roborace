@@ -15,6 +15,8 @@ def main():
     print("has been initialized")
     Gyro.calibrate()
     time.sleep(5)
+    Gyro.calibrate()
+    time.sleep(5)
     print("calibrated")
     #Gyro.calibrate()
     #time.sleep(5)
