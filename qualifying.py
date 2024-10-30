@@ -42,13 +42,9 @@ def buttonFun():
             break
     print("started") #debug
 
-<<<<<<< Updated upstream
-def tankFun():
-    tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), 5)
-=======
 def tankFun(speed, rotations):
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
->>>>>>> Stashed changes
+
 
 def colorFun():
     global color
