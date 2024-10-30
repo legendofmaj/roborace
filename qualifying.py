@@ -35,7 +35,7 @@ def buttonFun():
     time.sleep(0.1)
 
 def tankFun():
-    tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), 15)
+    tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), 5)
 
 def colorFun():
     global color
