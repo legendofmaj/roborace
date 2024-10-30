@@ -16,17 +16,24 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 
 def main():
+    print("start")
     buttonThread = threading.Thread(target= buttonFun)
     buttonThread.daemon = True
     buttonThread.start()
     colorThread = threading.Thread(target= colorFun)
     colorThread.start()
+    print("threads on")
     while True:
         if buttonPressed == True:
+            print("button pressed")
             break #This should work, because only when the first fun reaches break, will the second loop be reached
         time.sleep(0.05)
-    while color != "red":
-        tankFun()
+    while True:
+        if color == "red":
+            print("broke")
+            break
+        tankFun(20, 0.1)
+        print("rolled")
         
     
     #ToDo: Step 3: Rotate around until distance to next house is ca. 80cm
@@ -50,11 +57,14 @@ def colorFun():
     global color
     color = "none"
     rawColor = colorSensor.color
-    if rawColor == 5:
-        color = "red"
-    elif rawColor == 3:
-        color = "green"
-    return color
+    while True:
+        if rawColor == 5:
+            color = "red"
+        elif rawColor == 3:
+            color = "green"
+        #return color
+        print("color: " + str(rawColor))
+        time.sleep(0.1)
 
 
 if __name__=="__main__":
