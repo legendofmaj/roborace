@@ -6,14 +6,19 @@ import sys
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor.lego import GyroSensor
 
 btn = Button()
-tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
+tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 
 def main():
+    buttonThread = threading.Thread(target= buttonFun)
+    buttonThread.daemon = True
+    buttonThread.start()
     while True:
         buttonFun()
         if buttonPressed == True:
@@ -30,9 +35,12 @@ def main():
 def buttonFun():
     global buttonPressed
     buttonPressed = False
-    if btn.any() == True:
-        buttonPressed = True
-    time.sleep(0.1)
+    while True:
+        if btn.any() == True:
+            buttonPressed = True
+            time.sleep(0.1)
+            break
+    print("started") #debug
 
 def tankFun():
     tankDrive.on_for_seconds(SpeedPercent(-50), SpeedPercent(-50), 5)
