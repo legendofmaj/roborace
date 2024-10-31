@@ -12,12 +12,16 @@ tank = MoveTank(OUTPUT_B, OUTPUT_C)
 Gyro = GyroSensor(INPUT_2)
 
 def main():
-    print("has been initialized")
+    print("has been initialized") #debug
     Gyro.calibrate()
     time.sleep(5)
-    Gyro.calibrate()
-    time.sleep(5)
-    print("calibrated")
+    #Gyro.calibrate()
+    #time.sleep(5)
+    #Gyro.calibrate()
+    #time.sleep(5)
+    #Gyro.calibrate()
+    #time.sleep(5)
+    print("calibrated the fuck out of the thing") # debug
     #Gyro.calibrate()
     #time.sleep(5)
     #Gyro.rate
@@ -29,7 +33,7 @@ def main():
         print("circle angle: " + str(circleAngle))
         #print("angle: " + str(angle)) 
         #readAngle()
-        time.sleep(1)
+        time.sleep(0.5)
         '''tank.on_for_rotations(SpeedPercent(-50), SpeedPercent(50), 0.5)
         time.sleep(1)
         circleAngle = Gyro.circle_angle() # starts at 90° when turned right by 90°goes to 360°; when rotated by 180° goes to 270°; when rotated by 270° to the right goes to 180°; when rotated by 360° to the right goes back to 90°
