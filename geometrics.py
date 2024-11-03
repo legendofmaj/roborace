@@ -15,9 +15,9 @@ gyro = GyroSensor(INPUT_2)
 def main():
     ninetyDegreeTurn()
     maxValRight()
-    #Figure out how far the robot has turned
-    #Go back to the middle
-    #Turn left until the house is no longer detected by the IR Sensor
+    #Figure out how far the robot has turned ToDo: The current implementation using timePassed is very poor and should be fixed
+    returnToMiddle()
+    maxValLeft()
 
 def ninetyDegreeTurn():
     #While this function does seem to work, it is by no means pretty and should be replaced with a proper function asap
@@ -26,6 +26,8 @@ def ninetyDegreeTurn():
 def maxValRight():
     prev = float('-inf')
     threshold = 25
+    global timePassed
+    timePassed = 0
 
     while True:
         leftMotor.on(SpeedPercent(10))
@@ -34,6 +36,25 @@ def maxValRight():
         if abs(dist - prev) > threshold and abs(dist - prev) < 5000: #the 5000 is there to not register the infinity value
             print("Success") #debug
             leftMotor.on(SpeedPercent(0))
+            break
+        prev = dist
+        time.sleep(0.1)
+        timePassed = timePassed + 0.1
+
+def returnToMiddle():
+    rightMotor.on_for_seconds(SpeedPercent(10), timePassed)
+
+def maxValLeft():
+    prev = float('-inf')
+    threshold = 25
+
+    while True:
+        rightMotor.on(SpeedPercent(10))
+        dist = ultraSoundSensor.distance_centimeters
+        #print(dist - prev) #debug
+        if abs(dist - prev) > threshold and abs(dist - prev) < 5000: #the 5000 is there to not register the infinity value
+            print("Success") #debug
+            rightMotor.on(SpeedPercent(0))
             break
         prev = dist
         time.sleep(0.1)
