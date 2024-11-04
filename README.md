@@ -1,5 +1,10 @@
 # Roborace 2024
 
+## Simulation
+[3D Simulation](https://gears.aposteriori.com.sg/)
+[2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
+> Config files können im Repo unter miscellaneous gefunden werden
+
 ## Konventionen zur Namensgebung
 
 > [!WARNING]
