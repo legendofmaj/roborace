@@ -30,7 +30,7 @@ Siehe auch: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 
 ## Code Referenz
 
-https://sites.google.com/site/ev3devpython/introduction
+https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
 
 ## Verwendung von Git
 
