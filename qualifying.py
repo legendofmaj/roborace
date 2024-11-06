@@ -13,7 +13,7 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
 import driving
 import drop_packet
-import turns
+import turning
 
 
 btn = Button()
@@ -52,7 +52,7 @@ def main():
 
     #Drive until a tbd distance to the next house and turn by 90° degrees
     driving.driveTillDist(tbdDistance)
-    turns.leftTurn(90)
+    turning.leftTurn(90)
 
     #Drive until the green line is reached
     while True:
