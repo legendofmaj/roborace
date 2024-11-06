@@ -11,7 +11,9 @@ from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
-from driving import driveStraight
+import driving
+import drop_packet
+import turns
 
 
 btn = Button()
@@ -20,36 +22,55 @@ colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
+#To be changed variables for testing
+tbdDistance = 5
+
 
 dist = 0.0
 circleAngle = 90
 
 def main():
-    print("start") #debug
-    buttonThread = threading.Thread(target= readButton)
-    buttonThread.daemon = True
-    buttonThread.start()
-    colorThread = threading.Thread(target= readColor)
-    colorThread.start()
-    distThread = threading.Thread(target= readDist)
-    distThread.start()
-    angleThread = threading.Thread(target= readCircleAngle)
-    print("threads on") #debug
+    startThreads()
+
+    #Start driving when any button on the ev3 is pressed
     while True:
         if buttonPressed == True:
-            print("button pressed") #debug
-            break #This should work, because only when the first fun reaches break, will the second loop be reached
+            break
         time.sleep(0.05)
+
+    #Drive until the red line is reached
     while True:
         if color == "red":
-            print("broke") #debug
             break
-        driveStraight(20, 0.1)
-        print("rolled") #debug
-        
+        driving.driveStraight(20, 0.1)
+
+    #Drop the package
+    drop_packet.main()    
+
+    #determine geometrics
+    #get angle of approach
+
+    #Drive until a tbd distance to the next house and turn by 90° degrees
+    driving.driveTillDist(tbdDistance)
+    turns.leftTurn(90)
+
+    #Drive until the green line is reached
+    while True:
+        if color == "green":
+            break
+        driving.driveStraight(20, 0.1)
     
-    #ToDo: Step 3: Rotate around until distance to next house is ca. 80cm
     
+def startThreads():
+    buttonThread = threading.Thread(target = readButton)
+    buttonThread.daemon = True
+    buttonThread.start()
+    colorThread = threading.Thread(target = readColor)
+    colorThread.start()
+    distThread = threading.Thread(target = readDist)
+    distThread.start()
+    angleThread = threading.Thread(target = readCircleAngle)
+    angleThread.start()
 
 def readButton():
     global buttonPressed
@@ -60,8 +81,6 @@ def readButton():
             time.sleep(0.05)
             break
     print("started") #debug
-
-
 
 def readColor():
     global color
@@ -77,7 +96,6 @@ def readColor():
         print("color: " + str(rawColor)) #debug
         time.sleep(0.1)
 
-
 def readDist():
     global dist
     while True:
@@ -89,10 +107,6 @@ def readCircleAngle():
     while True:
         circleAngle = gyroSensor.circleAngle()
         time.sleep(0.05)
-
-
-
-
 
 if __name__=="__main__":
     main()
