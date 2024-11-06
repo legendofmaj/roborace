@@ -75,8 +75,8 @@ def startThreads():
     #buttonThread = threading.Thread(target = readButton)
     #buttonThread.daemon = True
     #buttonThread.start()
-    #colorThread = threading.Thread(target = readColor)
-    #colorThread.start()
+    colorThread = threading.Thread(target = readColor)
+    colorThread.start()
     distThread = threading.Thread(target = readDist)
     distThread.start()
     angleThread = threading.Thread(target = readCircleAngle)
