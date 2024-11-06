@@ -32,19 +32,23 @@ circleAngle = 90
 
 def main():
     startThreads()
+    print("u may press")
 
     #Start driving when any button on the ev3 is pressed
-    while True:
-        if buttonPressed == True:
-            break
-        time.sleep(0.05)
+    #while True:
+        #if buttonPressed == True:
+    print("pressed")
+            #break
+        #time.sleep(0.05)
 
     #Drive until the red line is reached
     while True:
         if color == "red":
+            print("saw red")
             break
-        driving.driveStraight(20, 0.1)
-
+        print("driving")
+        driving.smoothDriveStraight(20)
+    driving.smoothDriveStraight(0)
     #determine geometrics
     determine_angles_distances_next_house.main()
 
@@ -56,14 +60,15 @@ def main():
     #turn toward house
 
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    driving.driveTillDist(tbdDistance)
-    turning.leftTurn(90)
+    #driving.driveTillDist(tbdDistance)
+    #turning.leftTurn(90)
 
     #Drive until the green line is reached
-    while True:
-        if color == "green":
-            break
-        driving.driveStraight(20, 0.1)
+    #while True:
+        #if color == "green":
+            #break
+        #driving.driveStraight(20, 0.1)
+    print("done")
     
     
 def startThreads():
@@ -98,7 +103,7 @@ def readColor():
         elif rawColor == 3:
             color = "green"
         #return color
-        print("color: " + str(rawColor)) #debug
+        #print("color: " + str(rawColor)) #debug
         time.sleep(0.1)
 
 def readDist():
@@ -110,7 +115,7 @@ def readDist():
 def readCircleAngle():
     global circleAngle
     while True:
-        circleAngle = gyroSensor.circleAngle()
+        circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
 
 if __name__=="__main__":

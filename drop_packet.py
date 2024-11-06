@@ -9,14 +9,14 @@ import turning
 
 #Please test these values!
 #Outputs and Inputs of the robot (please change for actual robot, I couldn't figure out how to change this in the simulation)
-leftMotorOutput = OUTPUT_A
+leftMotorOutput = OUTPUT_C
 rightMotorOutput = OUTPUT_B
-depositMotorOutput = OUTPUT_C
+depositMotorOutput = OUTPUT_A
 rotationTowardHouse = 50
 turnSpeed = 15
 
 
-depositMotor = MediumMotor(OUTPUT_A)
+depositMotor = MediumMotor(depositMotorOutput)
 leftMotor = LargeMotor(leftMotorOutput)
 rightMotor = LargeMotor(rightMotorOutput)
 tankDrive = MoveTank(leftMotorOutput, rightMotorOutput)
@@ -25,7 +25,7 @@ gyro = GyroSensor(INPUT_2)
 
 def main():
     #Rotate toward the current house
-    turning.rightTurn(rotationTowardHouse)
+    turning.turnRightToX(rotationTowardHouse, turnSpeed)
     time.sleep(0.5)
     #drop the packet
     drop()

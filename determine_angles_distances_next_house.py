@@ -11,7 +11,7 @@ from turning import leftTurn
 leftMotor = LargeMotor(OUTPUT_C)
 rightMotor = LargeMotor(OUTPUT_B)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
-gyro = GyroSensor(INPUT_2)
+gyroSensor = GyroSensor(INPUT_2)
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 
 
@@ -21,7 +21,7 @@ def main():
 
 
 def detectDistJumpAngle(threshold):
-    gyro.reset() #testing
+    gyroSensor.reset() #testing
     print("seeking")
     while True:
         distOld = ultraSoundSensor.distance_centimeters
@@ -32,13 +32,13 @@ def detectDistJumpAngle(threshold):
             if abs(distOld-distNew) >= threshold:
                 print(distOld)#debug
                 print(distNew)#debug
-                rightCornerAngle = gyro.circle_angle()
+                rightCornerAngle = gyroSensor.circle_angle() 
                 rightCornerDist = distNew
                 print(rightCornerAngle)#debug
                 print(rightCornerDist)#debug
                 break
     print("found one")#debug
-    time.sleep(1)
+    time.sleep(10)#make 1 later
     leftTurn(1, 10)
     while True:
         distOld = ultraSoundSensor.distance_centimeters
@@ -48,7 +48,7 @@ def detectDistJumpAngle(threshold):
         if abs(distOld-distNew) >= threshold:
             print(distOld)#debug
             print(distNew)#debug
-            leftCornerAngle = gyro.circle_angle()
+            leftCornerAngle = gyroSensor.circle_angle()
             leftCornerDist = distOld
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
