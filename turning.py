@@ -37,7 +37,7 @@ def ninetyDegreeTurnRightSmart():
         angle = gyro.circle_angle()
         print(angle)
 
-def turnXDegreesLeft(degrees, speed):
+def leftTurn(degrees, speed):
     #print(gyro.circle_angle())
     angle = gyro.circle_angle()
     startAngle = angle
@@ -47,7 +47,7 @@ def turnXDegreesLeft(degrees, speed):
         #print(angle)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
-def turnXDegreesRight(degrees, speed):
+def rightTurn(degrees, speed):
     #print(gyro.circle_angle())
     angle = gyro.circle_angle()
     startAngle = angle
