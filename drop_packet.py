@@ -26,19 +26,13 @@ gyro = GyroSensor(INPUT_2)
 def main():
     #Rotate toward the current house
     turning.rightTurn(rotationTowardHouse)
+    time.sleep(0.5)
     #drop the packet
     drop()
     #Rotate back to position of origin
-
+    time.sleep(0.5)
     turning.leftTurn(rotationTowardHouse)
 
-def leftTurn(degrees):
-    angle = gyro.circle_angle()
-    startAngle = angle
-    while abs(angle) > (startAngle + degrees):
-        tankDrive.on(SpeedPercent(-turnSpeed), SpeedPercent(turnSpeed))
-        angle = gyro.circle_angle()
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 
 if __name__=="__main__":
