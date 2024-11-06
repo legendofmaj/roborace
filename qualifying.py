@@ -11,6 +11,7 @@ from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
+from driving import driveStraight
 
 
 btn = Button()
@@ -21,7 +22,7 @@ ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
 
 dist = 0.0
-
+circleAngle = 90
 
 def main():
     print("start") #debug
@@ -32,6 +33,7 @@ def main():
     colorThread.start()
     distThread = threading.Thread(target= readDist)
     distThread.start()
+    angleThread = threading.Thread(target= readCircleAngle)
     print("threads on") #debug
     while True:
         if buttonPressed == True:
@@ -60,9 +62,6 @@ def readButton():
     print("started") #debug
 
 
-def driveStraight(speed, rotations):
-    tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
-
 
 def readColor():
     global color
@@ -85,14 +84,14 @@ def readDist():
         dist = ultraSoundSensor.distance_centimeters #distance in centimeters
         time.sleep(0.1)
 
-
-def driveTillDist(distance): #this might also be replaced by calculating the distance per wheel rotation and rotationg the wheel based on that
+def readCircleAngle():
+    global circleAngle
     while True:
-        if dist <= distance:
-            print("broke") #debug
-            break
-        driveStraight(20, 0.1)
-        print("rolled") #debug
+        circleAngle = gyroSensor.circleAngle()
+        time.sleep(0.05)
+
+
+
 
 
 if __name__=="__main__":
