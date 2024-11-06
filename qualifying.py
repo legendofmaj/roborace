@@ -14,6 +14,7 @@ from ev3dev2.sensor.lego import GyroSensor
 import driving
 import drop_packet
 import turning
+import determine_angles_distances_next_house
 
 
 btn = Button()
@@ -44,11 +45,15 @@ def main():
             break
         driving.driveStraight(20, 0.1)
 
+    #determine geometrics
+    determine_angles_distances_next_house.main()
+
     #Drop the package
     drop_packet.main()    
 
-    #determine geometrics
+
     #get angle of approach
+    #turn toward house
 
     #Drive until a tbd distance to the next house and turn by 90° degrees
     driving.driveTillDist(tbdDistance)

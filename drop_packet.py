@@ -31,7 +31,7 @@ def main():
     drop()
     #Rotate back to position of origin
     time.sleep(0.5)
-    turning.leftTurn(rotationTowardHouse)
+    #turning.leftTurn(rotationTowardHouse)
 
 def drop():
     print("dropping") #debug
