@@ -17,7 +17,7 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 
 def main():
     print("beginning")
-    detectDistJumpAngle(20)
+    detectDistJumpAngle(15)
 
 
 def detectDistJumpAngle(threshold):

@@ -47,7 +47,7 @@ def main():
             print("saw red")
             break
         print("driving")
-        driving.smoothDriveStraight(20)
+        driving.smoothDriveStraight(10)
     driving.smoothDriveStraight(0)
     #determine geometrics
     determine_angles_distances_next_house.main()
@@ -72,11 +72,11 @@ def main():
     
     
 def startThreads():
-    buttonThread = threading.Thread(target = readButton)
-    buttonThread.daemon = True
-    buttonThread.start()
-    colorThread = threading.Thread(target = readColor)
-    colorThread.start()
+    #buttonThread = threading.Thread(target = readButton)
+    #buttonThread.daemon = True
+    #buttonThread.start()
+    #colorThread = threading.Thread(target = readColor)
+    #colorThread.start()
     distThread = threading.Thread(target = readDist)
     distThread.start()
     angleThread = threading.Thread(target = readCircleAngle)
