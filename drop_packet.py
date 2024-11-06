@@ -33,6 +33,13 @@ def main():
     time.sleep(0.5)
     turning.leftTurn(rotationTowardHouse)
 
+def drop():
+    print("dropping") #debug
+    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+    time.sleep(0.5)
+    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
+    
+
 
 
 if __name__=="__main__":
