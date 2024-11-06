@@ -9,6 +9,9 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 def driveStraight(speed, rotations):
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
 
+def smoothDriveStraight(speed):
+    tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
+
 def driveTillDist(distance): #this might also be replaced by calculating the distance per wheel rotation and rotationg the wheel based on that
     while True:
         if dist <= distance:
@@ -16,3 +19,10 @@ def driveTillDist(distance): #this might also be replaced by calculating the dis
             break
         driveStraight(20, 0.1)
         print("rolled") #debug
+
+def smoothDriveTillDist(distance):
+    while True:
+        if dist <= distance:
+            break
+        smoothDriveStraight(20)
+    smoothDriveStraight(0)
