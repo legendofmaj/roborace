@@ -6,7 +6,7 @@ from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
-from turning import turnXDegreesLeft
+from turning import leftTurn
 
 leftMotor = LargeMotor(OUTPUT_C)
 rightMotor = LargeMotor(OUTPUT_B)
@@ -39,11 +39,11 @@ def detectDistJumpAngle(threshold):
                 break
     print("found one")#debug
     time.sleep(1)
-    turnXDegreesLeft(1)
+    leftTurn(1)
     while True:
         distOld = ultraSoundSensor.distance_centimeters
         #print(distOld)
-        turnXDegreesLeft(1)
+        leftTurn(1)
         distNew = ultraSoundSensor.distance_centimeters
         if abs(distOld-distNew) >= threshold:
             print(distOld)#debug
