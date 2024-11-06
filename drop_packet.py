@@ -9,9 +9,9 @@ from turning import turnXDegreesLeft, turnXDegreesRight
 
 #Please test these values!
 #Outputs and Inputs of the robot (please change for actual robot, I couldn't figure out how to change this in the simulation)
-leftMotorOutput = OUTPUT_A
+leftMotorOutput = OUTPUT_C
 rightMotorOutput = OUTPUT_B
-depositMotorOutput = OUTPUT_C
+depositMotorOutput = OUTPUT_A
 rotationTowardHouse = 50
 turnSpeed = 15
 
