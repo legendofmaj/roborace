@@ -26,7 +26,7 @@ def detectDistJumpAngle(threshold):
     while True:
         distOld = ultraSoundSensor.distance_centimeters
         #print(distOld)
-        turnXDegreesLeft(1)
+        leftTurn(1)
         distNew = ultraSoundSensor.distance_centimeters
         if distNew < 100:
             if abs(distOld-distNew) >= threshold:
