@@ -36,7 +36,7 @@ def main():
 def leftTurn(degrees):
     angle = gyro.circle_angle()
     startAngle = angle
-    while abs(angle) < (startAngle + degrees):
+    while abs(angle) > (startAngle + degrees):
         tankDrive.on(SpeedPercent(-turnSpeed), SpeedPercent(turnSpeed))
         angle = gyro.circle_angle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
