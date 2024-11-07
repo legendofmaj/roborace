@@ -65,18 +65,19 @@ def main():
     beta = determine_angles_distances_next_house.importantValues.leftCornerAngle
 
     anOfAprch = get_angle_of_approach.getAngleOfApproach(a, b, alpha, beta)
+    print(anOfAprch)
 
     #turn toward house
     turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
     driving.driveTillDist(tbdDistance)
-    turning.leftTurn(90)
+    turning.leftTurn(90, 15)
 
     #Drive until the green line is reached
-    #while True:
-        #if color == "green":
-            #break
-        #driving.driveStraight(20, 0.1)
+    while True:
+        if color == "green":
+            break
+        driving.driveStraight(20, 0.1)
     print("done")
     
     
