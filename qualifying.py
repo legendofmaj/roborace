@@ -25,7 +25,7 @@ gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
 #To be changed variables for testing
-tbdDistance = 15
+tbdDistance = 17
 
 
 circleAngle = 90
@@ -77,6 +77,7 @@ def main():
         if color == "green":
             break
         driving.smoothDriveStraight(20)
+    time.sleep(3)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
     print("done")
     
