@@ -69,14 +69,15 @@ def main():
     #turn toward house
     turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    driving.driveTillDist(tbdDistance)
+    driving.smoothDriveTillDist(tbdDistance)
     turning.leftTurn(90, 15)
 
     #Drive until the green line is reached
     while True:
         if color == "green":
             break
-        driving.driveStraight(20, 0.1)
+        driving.smoothDriveStraight(20)
+    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
     print("done")
     
 
@@ -89,8 +90,8 @@ def startThreads():
     #buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
-    distThread = threading.Thread(target = readDist)
-    distThread.start()
+    #distThread = threading.Thread(target = readDist)
+    #distThread.start()
     #angleThread = threading.Thread(target = readCircleAngle)
     #angleThread.start()
 
@@ -119,7 +120,6 @@ def readColor():
         time.sleep(0.1)
 
 def readDist():
-    global dist
     while True:
         distance.dist = ultraSoundSensor.distance_centimeters #distance in centimeters
         time.sleep(0.1)
