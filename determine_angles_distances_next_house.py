@@ -25,8 +25,7 @@ class importantValues:
     rightCornerAngle = 0
     leftCornerAngle = 0
 
-def detectDistJumpAngle(threshold):
-    gyroSensor.reset() #testing
+def detectDistJumpAngle(threshold): #testing
     print("seeking")
     while True:
         distOld = ultraSoundSensor.distance_centimeters

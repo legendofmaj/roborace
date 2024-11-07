@@ -2,7 +2,7 @@
 
 
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
-from qualifying import dist
+from qualifying import distance
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 
@@ -12,17 +12,17 @@ def driveStraight(speed, rotations):
 def smoothDriveStraight(speed):
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
-def driveTillDist(distance): #this might also be replaced by calculating the distance per wheel rotation and rotationg the wheel based on that
+def driveTillDist(distIn): #this might also be replaced by calculating the distance per wheel rotation and rotationg the wheel based on that
     while True:
-        if dist <= distance:
+        if distance.dist <= distIn:
             print("broke") #debug
             break
         driveStraight(20, 0.1)
         print("rolled") #debug
 
-def smoothDriveTillDist(distance):
+def smoothDriveTillDist(distIn):
     while True:
-        if dist <= distance:
+        if distance.dist <= distIn:
             break
         smoothDriveStraight(20)
     smoothDriveStraight(0)

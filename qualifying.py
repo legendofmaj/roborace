@@ -28,9 +28,8 @@ ultraSoundSensor = UltrasonicSensor(INPUT_3)
 tbdDistance = 15
 
 
-dist = 0.0
 circleAngle = 90
-
+gyroSensor.reset()
 def main():
     startThreads()
     print("u may press")
@@ -47,7 +46,7 @@ def main():
         if color == "red":
             print("saw red")
             break
-        print("driving")
+        #print("driving")
         driving.smoothDriveStraight(10)
     driving.smoothDriveStraight(0)
     #determine geometrics
@@ -80,7 +79,10 @@ def main():
         driving.driveStraight(20, 0.1)
     print("done")
     
-    
+
+class distance:
+    dist = 0.0
+
 def startThreads():
     #buttonThread = threading.Thread(target = readButton)
     #buttonThread.daemon = True
@@ -89,8 +91,8 @@ def startThreads():
     colorThread.start()
     distThread = threading.Thread(target = readDist)
     distThread.start()
-    angleThread = threading.Thread(target = readCircleAngle)
-    angleThread.start()
+    #angleThread = threading.Thread(target = readCircleAngle)
+    #angleThread.start()
 
 def readButton():
     global buttonPressed
@@ -119,7 +121,7 @@ def readColor():
 def readDist():
     global dist
     while True:
-        dist = ultraSoundSensor.distance_centimeters #distance in centimeters
+        distance.dist = ultraSoundSensor.distance_centimeters #distance in centimeters
         time.sleep(0.1)
 
 def readCircleAngle():
