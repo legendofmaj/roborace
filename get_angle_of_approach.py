@@ -10,7 +10,7 @@ def getAngleOfApproach(a, b, alpha, beta):
 
 #Example usage
 def main():
-    res = getAngleOfApproach(1, 1, 1)
+    res = getAngleOfApproach(1, 1, 1, 1)
     print(res)
 
 if __name__ == "__main__":

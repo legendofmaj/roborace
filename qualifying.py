@@ -58,7 +58,13 @@ def main():
 
 
     #get angle of approach (not yet finished)
-    anOfAprch = get_angle_of_approach.getAngleOfApproach()
+    #Debugging Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
+    a = determine_angles_distances_next_house.importantValues.rightCornerDist
+    b = determine_angles_distances_next_house.importantValues.leftCornerDist
+    alpha = determine_angles_distances_next_house.importantValues.rightCornerAngle
+    beta = determine_angles_distances_next_house.importantValues.leftCornerAngle
+
+    anOfAprch = get_angle_of_approach.getAngleOfApproach(a, b, alpha, beta)
 
     #turn toward house
 

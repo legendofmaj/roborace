@@ -19,6 +19,11 @@ def main():
     print("beginning")
     detectDistJumpAngle(15)
 
+class importantValues:
+    rightCornerDist = 0.0
+    leftCornerDist = 0.0
+    rightCornerAngle = 0
+    leftCornerAngle = 0
 
 def detectDistJumpAngle(threshold):
     gyroSensor.reset() #testing
@@ -32,10 +37,10 @@ def detectDistJumpAngle(threshold):
             if abs(distOld-distNew) >= threshold:
                 print(distOld)#debug
                 print(distNew)#debug
-                rightCornerAngle = gyroSensor.circle_angle() 
-                rightCornerDist = distNew
-                print(rightCornerAngle)#debug
-                print(rightCornerDist)#debug
+                importantValues.rightCornerAngle = gyroSensor.circle_angle() 
+                importantValues.rightCornerDist = distNew
+                print(importantValues.rightCornerAngle)#debug
+                print(importantValues.rightCornerDist)#debug
                 break
     print("found one")#debug
     time.sleep(10)#make 1 later
@@ -48,13 +53,13 @@ def detectDistJumpAngle(threshold):
         if abs(distOld-distNew) >= threshold:
             print(distOld)#debug
             print(distNew)#debug
-            leftCornerAngle = gyroSensor.circle_angle()
-            leftCornerDist = distOld
-            print(leftCornerAngle)#debug
-            print(leftCornerDist)#debug
+            importantValues.leftCornerAngle = gyroSensor.circle_angle()
+            importantValues.leftCornerDist = distOld
+            print(importantValues.leftCornerAngle)#debug
+            print(importantValues.leftCornerDist)#debug
             break
-    print("right Corner Angle: " + str(rightCornerAngle)+ ", right Corner distance: " + str(rightCornerDist)) #debug
-    print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
+    print("right Corner Angle: " + str(importantValues.rightCornerAngle)+ ", right Corner distance: " + str(importantValues.rightCornerDist)) #debug
+    print("left Corner Angle: " + str(importantValues.leftCornerAngle)+ ", left Corner distance: " + str(importantValues.leftCornerDist)) #debug
 
 if __name__=="__main__":
     main()
