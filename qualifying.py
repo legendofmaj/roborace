@@ -11,6 +11,7 @@ from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
+from ev3dev2.sound import Sound
 import driving
 import drop_packet
 import turning
@@ -23,7 +24,8 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
-
+speaker = Sound()
+volume = 100
 #To be changed variables for testing
 tbdDistance = 17
 
@@ -33,13 +35,14 @@ gyroSensor.reset()
 def main():
     startThreads()
     print("u may press")
+    speaker.play_tone(440, 2, 2, volume, play_type=0)
 
     #Start driving when any button on the ev3 is pressed
-    #while True:
-        #if buttonPressed == True:
-    print("pressed")
-            #break
-        #time.sleep(0.05)
+    while True:
+        if buttonPressed == True:
+            print("pressed")
+            break
+        time.sleep(0.05)
 
     #Drive until the red line is reached
     while True:
@@ -80,15 +83,16 @@ def main():
     time.sleep(3)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
     print("done")
+    speaker.play_tone(440, 2, 2, volume, play_type=0)
     
 
 class distance:
     dist = 0.0
 
 def startThreads():
-    #buttonThread = threading.Thread(target = readButton)
-    #buttonThread.daemon = True
-    #buttonThread.start()
+    buttonThread = threading.Thread(target = readButton)
+    buttonThread.daemon = True
+    buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
     #distThread = threading.Thread(target = readDist)
