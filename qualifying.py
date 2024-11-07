@@ -15,6 +15,7 @@ import driving
 import drop_packet
 import turning
 import determine_angles_distances_next_house
+import get_angle_of_approach
 
 
 btn = Button()
@@ -56,7 +57,9 @@ def main():
     drop_packet.main()    
 
 
-    #get angle of approach
+    #get angle of approach (not yet finished)
+    anOfAprch = get_angle_of_approach.getAngleOfApproach()
+
     #turn toward house
 
     #Drive until a tbd distance to the next house and turn by 90° degrees

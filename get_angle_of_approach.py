@@ -2,10 +2,11 @@
 
 import math
 
-def getAngleOfApproach(a, b, c):
-    anOfAprch = a - b * math.sin(90-(c-b)) / math.sqrt(a** + b** - 2*a*b * math.cos(c-b))
+def getAngleOfApproach(a, b, beta, gamma):
+    anOfAprch = a - b * math.sin(90-(gamma-beta)) / math.sqrt(a** + b** - 2*a*b * math.cos(gamma-beta))
     return anOfAprch
 
+#Example usage
 def main():
     res = getAngleOfApproach(1, 1, 1)
     print(res)
