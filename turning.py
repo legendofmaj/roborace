@@ -63,3 +63,10 @@ def turnRightToX(degrees, speed):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = gyro.circle_angle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+
+def turnLeftToX(degrees, speed):
+    angle = gyro.circle_angle()
+    while angle < degrees:
+        tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+        angle = gyro.circle_angle()
+    tankDrive.on(SpeedPercent(0), SpeedPercent(0))

@@ -25,7 +25,7 @@ gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
 #To be changed variables for testing
-tbdDistance = 5
+tbdDistance = 15
 
 
 dist = 0.0
@@ -67,10 +67,10 @@ def main():
     anOfAprch = get_angle_of_approach.getAngleOfApproach(a, b, alpha, beta)
 
     #turn toward house
-
+    turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    #driving.driveTillDist(tbdDistance)
-    #turning.leftTurn(90)
+    driving.driveTillDist(tbdDistance)
+    turning.leftTurn(90)
 
     #Drive until the green line is reached
     #while True:
