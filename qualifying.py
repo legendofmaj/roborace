@@ -83,7 +83,9 @@ def main():
     time.sleep(3)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
     print("done")
-    speaker.play_tone(440, 2, 2, volume, play_type=0)
+    speaker.play_tone(220, 1, 0.1, volume, play_type=0)
+    speaker.play_tone(180, 1, 0.1, volume, play_type=0)
+    speaker.play_tone(140, 3, 2, volume, play_type=0)
     
 
 class distance:
