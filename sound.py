@@ -6,10 +6,10 @@ speaker = Sound()
 volume = 100
 
 def firstSound():
-    speaker.play_file('miscellaneous/soundFiles/Audio1.wav', volume, play_type=200)
+    speaker.play_file('miscellaneous/soundFiles/Audio1.wav', volume, play_type=392)
 
 def secondSound():
-    speaker.play_file('miscellaneous/soundFiles/Audio2.wav', volume, play_type=500)
+    speaker.play_file('miscellaneous/soundFiles/Audio2.wav', volume, play_type=700)
 
 def main():
     firstSound()
