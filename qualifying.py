@@ -25,12 +25,12 @@ colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 speaker = Sound()
+
+col_raw = [0, 0, 0]
 volume = 100
-#To be changed variables for testing
 tbdDistance = 17
-
-
 circleAngle = 90
+
 gyroSensor.reset()
 def main():
     startThreads()
@@ -77,7 +77,7 @@ def main():
 
     #Drive until the green line is reached
     while True:
-        if color == "green":
+        if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
         driving.smoothDriveStraight(20)
     time.sleep(3)
@@ -112,9 +112,12 @@ def readButton():
 
 def readColor():
     global color
+    global col_raw
     color = "none"
+    col_raw = colorSensor.raw
     rawColor = colorSensor.color
     while True:
+        col_raw = colorSensor.raw
         rawColor = colorSensor.color
         if rawColor == 5:
             color = "red"
