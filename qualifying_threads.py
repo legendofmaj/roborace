@@ -11,6 +11,7 @@ from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, 
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
+from ev3dev2.sound import Sound
 
 btn = Button()
 depositMotor = MediumMotor(OUTPUT_A)
@@ -18,8 +19,10 @@ tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
+speaker = Sound()
 
 #To be changed variables for testing
+col_raw = [0, 0, 0]
 tbdDistance = 15
 dist = 0.0
 circleAngle = 90
@@ -28,6 +31,7 @@ leftCornerDist = 0.0
 rightCornerAngle = 0
 leftCornerAngle = 0
 anOfAprch = 0.0
+volume = 100
 
 gyroSensor.reset()
 
@@ -74,11 +78,15 @@ def main():
 
     #Drive until the green line is reached
     while True:
-        if color == "green":
-            driveStraight(20, 1)
+        if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
-        driveStraight(20, 0.1)
-    print("done")
+        smoothDriveStraight(20)
+        time.sleep(3)
+        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        print("done")
+        speaker.play_tone(220, 1, 0.1, volume, play_type=0)
+        speaker.play_tone(180, 1, 0.1, volume, play_type=0)
+        speaker.play_tone(140, 3, 2, volume, play_type=0)
     
     
 def startThreads():
@@ -106,10 +114,13 @@ def readButton():
 #sensors
 def readColor():
     global color
+    global col_raw
     color = "none"
     rawColor = colorSensor.color
+    col_raw = colorSensor.raw
     while True:
         rawColor = colorSensor.color
+        col_raw = colorSensor.raw
         if rawColor == 5:
             color = "red"
         elif rawColor == 3:
@@ -245,7 +256,8 @@ def detectDistJumpAngle(threshold):
 
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
-    anOfAprch = a - b * math.sin(90-(alpha-beta)) / math.sqrt(a** + b** - 2*a*b * math.cos(alpha-beta))
+    anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
+    
 
 if __name__=="__main__":
     main()
