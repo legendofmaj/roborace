@@ -3,14 +3,14 @@
 import math
 
 def getAngleOfApproach(a, b, alpha, beta):
-    anOfAprch = a - b * math.sin(90-(alpha-beta)) / math.sqrt(a** + b** - 2*a*b * math.cos(alpha-beta))
+    anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
     return anOfAprch
 
 #Debugging Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
 
 #Example usage
 def main():
-    res = getAngleOfApproach(1, 1, 1, 1)
+    res = getAngleOfApproach(84.10000000000001, 83.30000000000001, 104, 185)
     print(res)
 
 if __name__ == "__main__":
