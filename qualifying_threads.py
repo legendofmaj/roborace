@@ -23,7 +23,7 @@ speaker = Sound()
 
 #To be changed variables for testing
 col_raw = [0, 0, 0]
-tbdDistance = 15
+tbdDistance = 10
 dist = 0.0
 circleAngle = 90
 rightCornerDist = 0.0
@@ -39,14 +39,12 @@ def main():
     startThreads()
     print("u may press")
 
-    #Start driving when any button on the ev3 is pressed
-    #while True:
-        #if buttonPressed == True:
-    print("pressed")
-            #break
-        #time.sleep(0.05)
+    while True:
+        if buttonPressed == True:
+            print("pressed")
+            break
+        time.sleep(0.05)
 
-    #Drive until the red line is reached
     while True:
         if color == "red":
             print("saw red")
@@ -54,15 +52,11 @@ def main():
         print("driving")
         smoothDriveStraight(10)
     smoothDriveStraight(0)
-    #determine geometrics
-    detectDistJumpAngle(15)
 
-    #Drop the package
+    detectHouseEdges(15)
+
     drop()   
 
-
-    #get angle of approach (not yet finished)
-    #Debugging Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
     a = rightCornerDist
     b = leftCornerDist
     alpha = rightCornerAngle
@@ -70,13 +64,11 @@ def main():
 
     anOfAprch = getAngleOfApproach(a, b, alpha, beta)
 
-    #turn toward house
     turnLeftToX(anOfAprch, 10)
-    #Drive until a tbd distance to the next house and turn by 90° degrees
+
     driveTillDist(tbdDistance)
     leftTurn(90)
 
-    #Drive until the green line is reached
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
@@ -90,9 +82,9 @@ def main():
     
     
 def startThreads():
-    #buttonThread = threading.Thread(target = readButton)
-    #buttonThread.daemon = True
-    #buttonThread.start()
+    buttonThread = threading.Thread(target = readButton)
+    buttonThread.daemon = True
+    buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
     distThread = threading.Thread(target = readDist)
@@ -125,8 +117,6 @@ def readColor():
             color = "red"
         elif rawColor == 3:
             color = "green"
-        #return color
-        #print("color: " + str(rawColor)) #debug
         time.sleep(0.1)
 
 def readDist():
@@ -149,7 +139,7 @@ def driveStraight(speed, rotations):
 def smoothDriveStraight(speed):
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
-def driveTillDist(distance): #this might also be replaced by calculating the distance per wheel rotation and rotationg the wheel based on that
+def driveTillDist(distance):
     while True:
         if dist <= distance:
             print("broke") #debug
@@ -167,23 +157,19 @@ def smoothDriveTillDist(distance):
 
 #turning
 def leftTurn(degrees, speed):
-    #print(gyro.circle_angle())
     angle = circleAngle
     startAngle = angle
     while angle < (startAngle + degrees):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
         angle = circleAngle
-        #print(angle)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def rightTurn(degrees, speed):
-    #print(gyro.circle_angle())
     angle = circleAngle
     startAngle = angle
     while angle < (startAngle + degrees):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = circleAngle
-        #print(angle)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnRightToX(degrees, speed):
@@ -213,13 +199,11 @@ def drop():
 
 
 #determine how to get to next house
-def detectDistJumpAngle(threshold):
+def detectHouseEdges(threshold):
     print("seeking")
     tankDrive.on(SpeedPercent(-10), SpeedPercent(10))
     while True:
         distOld = dist
-        #print(distOld)
-        #leftTurn(1, 10)
         time.sleep(0.005)
         distNew = dist
         if distNew < 100:
@@ -233,13 +217,11 @@ def detectDistJumpAngle(threshold):
                 break
     print("found one")#debug
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-    time.sleep(10)#make 1 later
+    time.sleep(1)
     leftTurn(3, 10)
     tankDrive.on(SpeedPercent(-10), SpeedPercent(10))
     while True:
         distOld = dist
-        #print(distOld)
-        #leftTurn(1, 10)
         time.sleep(0.005)
         distNew = dist
         if abs(distOld-distNew) >= threshold:
@@ -257,7 +239,7 @@ def detectDistJumpAngle(threshold):
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
     anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
-    
+
 
 if __name__=="__main__":
     main()
