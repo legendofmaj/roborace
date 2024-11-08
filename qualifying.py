@@ -28,7 +28,7 @@ speaker = Sound()
 
 col_raw = [0, 0, 0]
 volume = 100
-tbdDistance = 17
+tbdDistance = 12
 circleAngle = 90
 
 gyroSensor.reset()
