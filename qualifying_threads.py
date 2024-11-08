@@ -66,13 +66,8 @@ def main():
 
     turnLeftToX(anOfAprch, 10)
 
-<<<<<<< Updated upstream
-    driveTillDist(tbdDistance)
-    leftTurn(90)
-=======
     smoothDriveTillDist(tbdDistance)
     leftTurn(90, 15)
->>>>>>> Stashed changes
 
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
