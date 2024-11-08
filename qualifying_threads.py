@@ -66,8 +66,13 @@ def main():
 
     turnLeftToX(anOfAprch, 10)
 
+<<<<<<< Updated upstream
     driveTillDist(tbdDistance)
     leftTurn(90)
+=======
+    smoothDriveTillDist(tbdDistance)
+    leftTurn(90, 15)
+>>>>>>> Stashed changes
 
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
@@ -201,7 +206,11 @@ def drop():
 #determine how to get to next house
 def detectHouseEdges(threshold):
     print("seeking")
+<<<<<<< Updated upstream
     tankDrive.on(SpeedPercent(-10), SpeedPercent(10))
+=======
+    tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+>>>>>>> Stashed changes
     while True:
         distOld = dist
         time.sleep(0.005)
@@ -219,7 +228,11 @@ def detectHouseEdges(threshold):
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
     time.sleep(1)
     leftTurn(3, 10)
+<<<<<<< Updated upstream
     tankDrive.on(SpeedPercent(-10), SpeedPercent(10))
+=======
+    tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+>>>>>>> Stashed changes
     while True:
         distOld = dist
         time.sleep(0.005)
@@ -232,7 +245,11 @@ def detectHouseEdges(threshold):
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
             break
+<<<<<<< Updated upstream
     tankDrive.on(SpeedPercent(-10), SpeedPercent(10))
+=======
+    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+>>>>>>> Stashed changes
     print("right Corner Angle: " + str(rightCornerAngle)+ ", right Corner distance: " + str(rightCornerDist)) #debug
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
