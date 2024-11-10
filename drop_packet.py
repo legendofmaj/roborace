@@ -7,8 +7,7 @@ from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import GyroSensor
 import turning
 
-#Please test these values!
-#Outputs and Inputs of the robot (please change for actual robot, I couldn't figure out how to change this in the simulation)
+#Outputs and Inputs of the robot
 leftMotorOutput = OUTPUT_C
 rightMotorOutput = OUTPUT_B
 depositMotorOutput = OUTPUT_A
@@ -29,9 +28,7 @@ def main():
     time.sleep(0.5)
     #drop the packet
     drop()
-    #Rotate back to position of origin
     time.sleep(0.5)
-    #turning.leftTurn(rotationTowardHouse)
 
 def drop():
     print("dropping") #debug
@@ -39,8 +36,6 @@ def drop():
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
     
-
-
 
 if __name__=="__main__":
     main()

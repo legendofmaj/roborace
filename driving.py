@@ -19,12 +19,12 @@ def driveTillDist(distIn): #this might also be replaced by calculating the dista
     distInt = ultraSoundSensor.distance_centimeters
     while True:
         if distInt <= distIn:
-            print("broke") #debug
+            #print("broke") #debug
             print(distInt)
             break
         driveStraight(20, 0.1)
         distInt = ultraSoundSensor.distance_centimeters
-        print("rolled") #debug
+        #print("rolled") #debug
 
 def smoothDriveTillDist(distIn):
     while True:

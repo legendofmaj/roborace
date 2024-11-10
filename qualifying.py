@@ -59,8 +59,8 @@ def main():
     drop_packet.main()    
 
 
-    #get angle of approach (not yet finished)
-    #Debugging Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
+    #get angle of approach 
+    #Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
     a = determine_angles_distances_next_house.importantValues.rightCornerDist
     b = determine_angles_distances_next_house.importantValues.leftCornerDist
     alpha = determine_angles_distances_next_house.importantValues.rightCornerAngle
@@ -97,10 +97,6 @@ def startThreads():
     buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
-    #distThread = threading.Thread(target = readDist)
-    #distThread.start()
-    #angleThread = threading.Thread(target = readCircleAngle)
-    #angleThread.start()
 
 def readButton():
     global buttonPressed
@@ -110,7 +106,7 @@ def readButton():
             buttonPressed = True
             time.sleep(0.05)
             break
-    print("started") #debug
+    #print("started") #debug
 
 def readColor():
     global color

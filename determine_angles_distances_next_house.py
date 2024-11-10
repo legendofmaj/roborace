@@ -60,5 +60,6 @@ def detectDistJumpAngle(threshold): #testing
     print("right Corner Angle: " + str(importantValues.rightCornerAngle)+ ", right Corner distance: " + str(importantValues.rightCornerDist)) #debug
     print("left Corner Angle: " + str(importantValues.leftCornerAngle)+ ", left Corner distance: " + str(importantValues.leftCornerDist)) #debug
 
+
 if __name__=="__main__":
     main()
