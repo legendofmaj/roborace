@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
 import time
-import threading 
-import sys
-import math
+import threading
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
+from ev3dev2.motor import OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
@@ -17,30 +15,27 @@ import drop_packet
 import turning
 import determine_angles_distances_next_house
 import get_angle_of_approach
+import sound
 
 
 btn = Button()
-tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
-colorSensor = ColorSensor(INPUT_1)
-gyroSensor = GyroSensor(INPUT_2)
-ultraSoundSensor = UltrasonicSensor(INPUT_3)
+tank_drive = MoveTank(OUTPUT_B, OUTPUT_C)
+color_sensor = ColorSensor(INPUT_1)
+gyro_sensor = GyroSensor(INPUT_2)
+ultrasound_sensor = UltrasonicSensor(INPUT_3)
 speaker = Sound()
 
 col_raw = [0, 0, 0]
-volume = 100
-tbdDistance = 12
-circleAngle = 90
+min_dist_to_house = 12
 
-gyroSensor.reset()
+gyro_sensor.reset()
 def main():
-    startThreads()
-    print("u may press")
-    speaker.play_tone(440, 2, 2, volume, play_type=0)
+    start_threads()
+    sound.firstSoundFile()
 
     #Start driving when any button on the ev3 is pressed
     while True:
         if buttonPressed == True:
-            print("pressed")
             break
         time.sleep(0.05)
 
@@ -49,7 +44,6 @@ def main():
         if color == "red":
             print("saw red")
             break
-        #print("driving")
         driving.smoothDriveStraight(10)
     driving.smoothDriveStraight(0)
     #determine geometrics
@@ -72,7 +66,7 @@ def main():
     #turn toward house
     turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    driving.smoothDriveTillDist(tbdDistance)
+    driving.smoothDriveTillDist(min_dist_to_house)
     turning.leftTurn(90, 15)
 
     #Drive until the green line is reached
@@ -81,24 +75,21 @@ def main():
             break
         driving.smoothDriveStraight(20)
     time.sleep(3)
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-    print("done")
-    speaker.play_tone(220, 1, 0.1, volume, play_type=0)
-    speaker.play_tone(180, 1, 0.1, volume, play_type=0)
-    speaker.play_tone(140, 3, 2, volume, play_type=0)
+    tank_drive.on(SpeedPercent(0), SpeedPercent(0))
+    sound.secondSoundFile()
     
 
 class distance:
     dist = 0.0
 
-def startThreads():
-    buttonThread = threading.Thread(target = readButton)
+def start_threads():
+    buttonThread = threading.Thread(target = read_button)
     buttonThread.daemon = True
     buttonThread.start()
-    colorThread = threading.Thread(target = readColor)
+    colorThread = threading.Thread(target = read_color)
     colorThread.start()
 
-def readButton():
+def read_button():
     global buttonPressed
     buttonPressed = False
     while True:
@@ -106,34 +97,31 @@ def readButton():
             buttonPressed = True
             time.sleep(0.05)
             break
-    #print("started") #debug
 
-def readColor():
+def read_color():
     global color
     global col_raw
     color = "none"
-    col_raw = colorSensor.raw
-    rawColor = colorSensor.color
+    col_raw = color_sensor.raw
+    rawColor = color_sensor.color
     while True:
-        col_raw = colorSensor.raw
-        rawColor = colorSensor.color
+        col_raw = color_sensor.raw
+        rawColor = color_sensor.color
         if rawColor == 5:
             color = "red"
         elif rawColor == 3:
             color = "green"
-        #return color
-        #print("color: " + str(rawColor)) #debug
         time.sleep(0.1)
 
-def readDist():
+def read_dist():
     while True:
-        distance.dist = ultraSoundSensor.distance_centimeters #distance in centimeters
+        distance.dist = ultrasound_sensor.distance_centimeters
         time.sleep(0.1)
 
-def readCircleAngle():
-    global circleAngle
+def readcircle_angle():
+    global circle_angle
     while True:
-        circleAngle = gyroSensor.circle_angle()
+        circle_angle = gyro_sensor.circle_angle()
         time.sleep(0.05)
 
 if __name__=="__main__":
