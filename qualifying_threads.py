@@ -203,14 +203,16 @@ def detectHouseEdges(threshold):
     print("seeking")
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
+        angleOld = circleAngle
         distOld = dist
         time.sleep(0.005)
+        angleNew = circleAngle
         distNew = dist
         if distNew < 100:
             if abs(distOld-distNew) >= threshold:
                 print(distOld)#debug
                 print(distNew)#debug
-                rightCornerAngle = circleAngle
+                rightCornerAngle = angleNew
                 rightCornerDist = distNew
                 print(rightCornerAngle)#debug
                 print(rightCornerDist)#debug
@@ -221,13 +223,15 @@ def detectHouseEdges(threshold):
     leftTurn(3, 10)
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
+        angleOld = circleAngle
         distOld = dist
         time.sleep(0.005)
+        angleNew  =circleAngle
         distNew = dist
         if abs(distOld-distNew) >= threshold:
             print(distOld)#debug
             print(distNew)#debug
-            leftCornerAngle = circleAngle
+            leftCornerAngle = angleOld
             leftCornerDist = distOld
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
