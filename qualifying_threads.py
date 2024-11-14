@@ -201,6 +201,10 @@ def drop():
 #determine how to get to next house
 def detectHouseEdges(threshold):
     print("seeking")
+    global rightCornerAngle
+    global leftCornerAngle
+    global rightCornerDist
+    global leftCornerDist
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         angleOld = circleAngle
@@ -210,6 +214,7 @@ def detectHouseEdges(threshold):
         distNew = dist
         if distNew < 100:
             if abs(distOld-distNew) >= threshold:
+                tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 print(distOld)#debug
                 print(distNew)#debug
                 rightCornerAngle = angleNew
@@ -243,7 +248,7 @@ def detectHouseEdges(threshold):
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
     anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
-
+    return anOfAprch
 
 if __name__=="__main__":
     main()
