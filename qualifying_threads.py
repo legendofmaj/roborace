@@ -139,7 +139,7 @@ def driveStraight(speed, rotations):
 def smoothDriveStraight(speed):
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
-def driveTillDist(distance):
+def driveTillDist(distance): #this doesnt work anymore
     while True:
         if dist <= distance:
             print("broke") #debug
@@ -147,7 +147,7 @@ def driveTillDist(distance):
         driveStraight(20, 0.1)
         print("rolled") #debug
 
-def smoothDriveTillDist(distance):
+def smoothDriveTillDist(distance): #this doesnt work anymore
     while True:
         if dist <= distance:
             break
