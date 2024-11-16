@@ -247,7 +247,7 @@ def detectHouseEdges(threshold):
 
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
-    anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
+    anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
     return anOfAprch
 
 if __name__=="__main__":
