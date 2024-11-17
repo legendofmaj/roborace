@@ -11,6 +11,7 @@ from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
+tankDrive.gyro = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 gyroSensor = GyroSensor(INPUT_2)
 
@@ -29,6 +30,8 @@ def detectJumpInDist(threshold, dist):
                     rotations += 0.01
                     dist_crossed = rotations* 22.3 #in cm
                     if dist_crossed >= dist:
+                        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+                        circleAngle = gyroSensor.circle_angle()
                         break
-                
+                tankDrive.turn_degrees(SpeedPercent(5), circleAngle - 90) 
                 # turns 90° sees motor docs for that turning with pid
