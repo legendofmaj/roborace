@@ -15,7 +15,7 @@ ultraSoundSensor = UltrasonicSensor(INPUT_3)
 gyroSensor = GyroSensor(INPUT_2)
 
 
-def detectJumpInDist(threshold, dist)
+def detectJumpInDist(threshold, dist):
     while True:
         distOld = ultraSoundSensor.distance_centimeters
         time.sleep(0.005)
@@ -23,4 +23,12 @@ def detectJumpInDist(threshold, dist)
         if distOld < 50:
             if abs(distOld-distNew) >= threshold:
                 print("sees edge")
-                #now it drives forward a little bit and then turns 90° sees motor docs for that turning with pid
+                rotations = 0.00
+                while True:
+                    tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.01)
+                    rotations += 0.01
+                    dist_crossed = rotations* 22.3 #in cm
+                    if dist_crossed >= dist:
+                        break
+                
+                # turns 90° sees motor docs for that turning with pid
