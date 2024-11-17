@@ -31,7 +31,7 @@ def detectJumpInDist(threshold, dist):
                     dist_crossed = rotations* 22.3 #in cm
                     if dist_crossed >= dist:
                         tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-                        circleAngle = gyroSensor.circle_angle()
+                        #circleAngle = gyroSensor.circle_angle()
                         break
-                tankDrive.turn_degrees(SpeedPercent(5), circleAngle - 90) 
+                tankDrive.turn_degrees(SpeedPercent(5), -90) 
                 # turns 90° sees motor docs for that turning with pid
