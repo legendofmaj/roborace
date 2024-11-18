@@ -2,30 +2,34 @@
 
 from ev3dev2.sensor import INPUT_2, INPUT_3
 from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, LargeMotor
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, LargeMotor, OUTPUT_C
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
+
+import time
 
 #Input and Output list
 ultrasound_sensor_port = INPUT_3
 gyro_sensor_port = INPUT_2
-rightMotor = OUTPUT_A
-leftMotor = OUTPUT_B
+rightMotor = OUTPUT_B
+leftMotor = OUTPUT_C
 
 tank_drive = MoveTank(leftMotor, rightMotor)
 ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
 gyro = GyroSensor(gyro_sensor_port)
+tank_drive.gyro = GyroSensor(INPUT_2)
 
 #Key variable
 desired_dist = 15
 
 def main():
-    while True:
-        if read_button() == True:
-            break
+    #while True:
+    #    if read_button() == True:
+    #        break
     while True:
         print(read_dist()) #debug only
         drive(5)
+        time.sleep(0.2)
         adjust_dist(check_dist(read_dist(), desired_dist), 50)
 
 def read_button():
@@ -38,10 +42,10 @@ def read_button():
 def read_dist():
     while True:
         dist = ultrasound_sensor.distance_centimeters
-        return round(dist) #this might make it too inaccurate
+        return dist #this might make it too inaccurate
     
 def drive(speed):
-    tank_drive.on(SpeedPercent(speed), SpeedPercent(speed)) #Replace with -speed on real robot
+    tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) #Replace with -speed on real robot
 
 def check_dist(current_dist, desired_dist):
     #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
@@ -57,12 +61,12 @@ def check_dist(current_dist, desired_dist):
 def adjust_dist(correct, speed):
     tank_drive.off
     if correct == 1:
-        LargeMotor(rightMotor).on(speed)
+       tank_drive.turn_degrees(SpeedPercent(5), -1)   
     if correct == -1:
-        LargeMotor(leftMotor).on(speed)
+        tank_drive.turn_degrees(SpeedPercent(5), 1) 
     if correct == 0:
         #adjust angle
-        leftTurn
+        #leftTurn
         tank_drive.off
 
 def leftTurn(degrees, speed):
