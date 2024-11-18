@@ -28,9 +28,9 @@ def main():
     #        break
     while True:
         print(read_dist()) #debug only
-        drive(5)
+        drive(20)
         time.sleep(0.2)
-        adjust_dist(check_dist(read_dist(), desired_dist), 50)
+        adjust_dist(check_dist(read_dist(), desired_dist), 20)
 
 def read_button():
     buttonPressed = False
@@ -61,9 +61,9 @@ def check_dist(current_dist, desired_dist):
 def adjust_dist(correct, speed):
     tank_drive.off
     if correct == 1:
-       tank_drive.turn_degrees(SpeedPercent(5), -1)   
+       tank_drive.turn_degrees(SpeedPercent(speed), -4)   
     if correct == -1:
-        tank_drive.turn_degrees(SpeedPercent(5), 1) 
+        tank_drive.turn_degrees(SpeedPercent(-speed), -4) 
     if correct == 0:
         #adjust angle
         #leftTurn
