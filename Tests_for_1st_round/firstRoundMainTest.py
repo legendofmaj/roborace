@@ -8,7 +8,9 @@ import math
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
+from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor
+from ev3dev2.button import Button
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 tankDrive.gyro = GyroSensor(INPUT_2)
@@ -17,7 +19,22 @@ gyroSensor = GyroSensor(INPUT_2)
 
 
 
+def __init__():
+    distThread = threading.Thread(target= read_dist)
+    distThread.start()
 
+def read_button():
+    buttonPressed = False
+    while True:
+        if Button().any() == True:
+            buttonPressed = True
+            return buttonPressed
+        
+def read_dist():
+    while True:
+        global dist 
+        dist = ultraSoundSensor.distance_centimeters
+        time.sleep(0.01)
 
 
 
