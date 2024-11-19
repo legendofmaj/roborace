@@ -29,12 +29,14 @@ dist = 0
 def main():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
+    time.sleep(1)
     #while True:
     #    if read_button() == True:
     #        break
     while True:
+        global dist
         print(dist) #debug only
-        drive(20)
+        #drive(20)
         #time.sleep(0.2)
         adjust_dist(check_dist(desired_dist, 4), 20)
 
@@ -49,7 +51,8 @@ def read_dist():
     while True:
         global dist 
         dist = ultrasound_sensor.distance_centimeters
-        return dist #this might make it too inaccurate
+        time.sleep(0.01)
+        #return dist #this might make it too inaccurate
     
 def drive(speed):
     tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) #Replace with -speed on real robot
@@ -73,7 +76,7 @@ def adjust_dist(correct, speed):
         tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) 
         time.sleep(0.2) 
     if correct == -1:
-        tank_drive.turn_degrees(SpeedPercent(-speed), -4) 
+        tank_drive.turn_degrees(SpeedPercent(-speed), 4) 
         tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
         time.sleep(0.2)
     if correct == 0:
