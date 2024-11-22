@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+#Warning: dependencies of this file are determine_angles_distances_next_house.py, driving.py, drop_packet.py, get_angle_of_approach.py, sound.py and turning.py
+#This file will not work without the mentioned dependencies
+
 import time
 import threading
 
