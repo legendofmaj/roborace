@@ -35,7 +35,7 @@ def main():
     while True:
         global dist
         print(dist) #debug only
-        detectJumpInDist(35)
+        detectJumpInDist(35, 22.3)
         adjust_dist(desired_dist, 4, 20)
 
 
@@ -91,13 +91,14 @@ def adjust_dist(desired_dist, tolerance, speed):
         tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
         #time.sleep(0.1)
 
-def detectJumpInDist(threshold):
+def detectJumpInDist(threshold, drive_further):
     #distThread = threading.Thread(target= readDist)
     #distThread.start()
     #while True:
-    distOld = dist
+    #distOld = dist
     time.sleep(0.005)
     distNew = dist
+    print("arrived in detect edge")
     if distOld < 50:
         if abs(distOld-distNew) >= threshold:
             print("sees edge")
@@ -106,15 +107,17 @@ def detectJumpInDist(threshold):
                 tank_drive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.01)
                 rotations += 0.01
                 dist_crossed = rotations* 22.3 #in cm
-                if dist_crossed >= dist:
+                if dist_crossed >= drive_further:
                     tank_drive.off
                         #circleAngle = gyroSensor.circle_angle()
                     break
             tank_drive.turn_degrees(SpeedPercent(5), -90) 
                 # turns 90° sees motor docs for that turning with pid
+    distOld = dist
 def readDist():
     while True:
         global dist
         dist = ultrasound_sensor.distance_centimeters
 
-detectJumpInDist(35)
+if __name__ == "__main__":
+    main()
