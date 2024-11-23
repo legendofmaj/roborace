@@ -13,6 +13,7 @@ from ev3dev2.sound import Sound
 import modules.sound
 import modules.determine_angles_distances_next_house
 import modules.drop_packet
+import modules.parallelWallDrive
 
 #input and output list
 ultrasound_sensor_port = INPUT_3
@@ -34,7 +35,8 @@ def main():
         if button.any() == True:
             break
     modules.sound.firstSoundFile()
-    #ToDo: drive parallel to wall (import file)
+    #drive parallel to wall
+    modules.parallelWallDrive.main()
     
     #Check for color red
     while True:
