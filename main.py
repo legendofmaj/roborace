@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import time
-
 #necessary libraries
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
@@ -13,6 +11,8 @@ from ev3dev2.sound import Sound
 
 #other files
 import modules.sound
+import modules.determine_angles_distances_next_house
+import modules.drop_packet
 
 #input and output list
 ultrasound_sensor_port = INPUT_3
@@ -22,16 +22,35 @@ rightMotor = OUTPUT_B
 leftMotor = OUTPUT_C
 
 #variables to library functions
-# button = Button()
-# tank_drive = MoveTank(leftMotor, rightMotor)
-# ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
-# color_sensor = ColorSensor(color_sensor_port)
-# gyro = GyroSensor(gyro_sensor_port)
+button = Button()
+tank_drive = MoveTank(leftMotor, rightMotor)
+ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
+color_sensor = ColorSensor(color_sensor_port)
+gyro = GyroSensor(gyro_sensor_port)
 
 def main():
+    #Check for button input
+    while True:
+        if button.any() == True:
+            break
     modules.sound.firstSoundFile()
-    time.sleep(1)
-    modules.sound.secondSoundFile()
+    #ToDo: drive parallel to wall (import file)
+    
+    #Check for color red
+    while True:
+        color = color_sensor.color
+        if color == 5:
+            #find next house
+            modules.determine_angles_distances_next_house.main()
+            #drop
+            modules.drop_packet.drop()
+            #go to next house
+            #turn 90°
+            #drive parallel to wall
+
 
 if __name__ == "__main__":
     main()
+
+
+                
