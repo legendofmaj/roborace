@@ -21,7 +21,7 @@ rightMotor = LargeMotor(rightMotorOutput)
 tankDrive = MoveTank(leftMotorOutput, rightMotorOutput)
 gyro = GyroSensor(INPUT_2)
 
-
+#example usage
 def main():
     #Rotate toward the current house
     turning.turnRightToX(rotationTowardHouse, turnSpeed)
