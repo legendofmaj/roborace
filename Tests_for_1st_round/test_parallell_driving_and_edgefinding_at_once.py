@@ -30,12 +30,14 @@ distNew = 0
 def main():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
+    edgeThread = threading.Thread(target = detectEdge)
+    edgeThread.start()
     time.sleep(1)
     global distOld
     global distNew
     while True:
 
-        detectJumpInDist(35, 22.3)
+        #detectJumpInDist(35, 22.3)
         
         adjust_dist(desired_dist, 4, 10)
         drive(10)
@@ -96,24 +98,28 @@ def adjust_dist(desired_dist, tolerance, speed):
         distOld = dist
         time.sleep(0.3)
 
-def detectJumpInDist(threshold, drive_further):
+def detectEdge():
+    threshold, drive_further = 35, 22.3
     global distOld
     global distNew
-    distNew = dist
-    #print("arrived in detect edge")
-    if distOld < 50:
-        if abs(distOld-distNew) >= threshold:
-            print("sees edge")
-            rotations = 0.00
-            while True:
-                tank_drive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
-                rotations += 1
-                dist_crossed = rotations* 22.3 #in cm
-                if dist_crossed >= drive_further:
-                    tank_drive.off
-                    break
-            tank_drive.turn_degrees(SpeedPercent(-10), 90) 
-                # turns 90° sees motor docs for that turning with pid
+    while True:
+        distOld = dist
+        time.sleep(0.5)
+        distNew = dist
+        #print("arrived in detect edge")
+        if distOld < 50:
+            if abs(distOld-distNew) >= threshold:
+                print("sees edge")
+                rotations = 0.00
+                while True:
+                    tank_drive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+                    rotations += 1
+                    dist_crossed = rotations* 22.3 #in cm
+                    if dist_crossed >= drive_further:
+                        tank_drive.off
+                        break
+                tank_drive.turn_degrees(SpeedPercent(-10), 90) 
+                    # turns 90° sees motor docs for that turning with pid
     
 def readDist():
     while True:
