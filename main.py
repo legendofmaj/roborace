@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import time
+
 #necessary libraries
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.button import Button
@@ -10,7 +12,7 @@ from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sound import Sound
 
 #other files
-import sound
+import modules
 
 #input and output list
 ultrasound_sensor_port = INPUT_3
@@ -31,18 +33,20 @@ def main():
     while True:
         if button.any() == True:
             break
-    sound.firstSoundFile()
+    modules.sound.firstSoundFile()
+
+    time.sleep(3)
     #ToDo: drive parallel to wall (import file)
     
     #Check for color red
-    while True:
-        color = color_sensor.color
-        if color == 5:
-            #find next house
-            #drop
-            #go to next house
-            #turn 90°
-            #drive parallel to wall
+    # while True:
+    #     color = color_sensor.color
+    #     if color == 5:
+    #         #find next house
+    #         #drop
+    #         #go to next house
+    #         #turn 90°
+    #         #drive parallel to wall
 
 
 if __name__ == "__main__":

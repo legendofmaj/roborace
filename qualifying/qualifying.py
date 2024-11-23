@@ -13,13 +13,8 @@ from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sound import Sound
-import driving
-import drop_packet
-import turning
-import determine_angles_distances_next_house
-import get_angle_of_approach
-import sound
 
+import modules
 
 btn = Button()
 tank_drive = MoveTank(OUTPUT_B, OUTPUT_C)
@@ -34,7 +29,7 @@ min_dist_to_house = 12
 gyro_sensor.reset()
 def main():
     start_threads()
-    sound.firstSoundFile()
+    modules.sound.firstSoundFile()
 
     #Start driving when any button on the ev3 is pressed
     while True:
@@ -47,39 +42,39 @@ def main():
         if color == "red":
             print("saw red")
             break
-        driving.smoothDriveStraight(10)
-    driving.smoothDriveStraight(0)
+        modules.driving.smoothDriveStraight(10)
+    modules.driving.smoothDriveStraight(0)
     #determine geometrics
-    determine_angles_distances_next_house.main()
+    modules.determine_angles_distances_next_house.main()
 
     #Drop the package
-    drop_packet.main()    
+    modules.drop_packet.main()    
 
 
     #get angle of approach 
     #Notes: a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
-    a = determine_angles_distances_next_house.importantValues.rightCornerDist
-    b = determine_angles_distances_next_house.importantValues.leftCornerDist
-    alpha = determine_angles_distances_next_house.importantValues.rightCornerAngle
-    beta = determine_angles_distances_next_house.importantValues.leftCornerAngle
+    a = modules.determine_angles_distances_next_house.importantValues.rightCornerDist
+    b = modules.determine_angles_distances_next_house.importantValues.leftCornerDist
+    alpha = modules.determine_angles_distances_next_house.importantValues.rightCornerAngle
+    beta = modules.determine_angles_distances_next_house.importantValues.leftCornerAngle
 
-    anOfAprch = get_angle_of_approach.getAngleOfApproach(a, b, alpha, beta)
+    anOfAprch = modules.get_angle_of_approach.getAngleOfApproach(a, b, alpha, beta)
     print(anOfAprch)
 
     #turn toward house
-    turning.turnLeftToX(anOfAprch, 10)
+    modules.turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    driving.smoothDriveTillDist(min_dist_to_house)
-    turning.leftTurn(90, 15)
+    modules.driving.smoothDriveTillDist(min_dist_to_house)
+    modules.turning.leftTurn(90, 15)
 
     #Drive until the green line is reached
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
-        driving.smoothDriveStraight(20)
+        modules.driving.smoothDriveStraight(20)
     time.sleep(3)
     tank_drive.on(SpeedPercent(0), SpeedPercent(0))
-    sound.secondSoundFile()
+    modules.sound.secondSoundFile()
     
 
 class distance:
