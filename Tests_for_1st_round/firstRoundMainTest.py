@@ -17,6 +17,8 @@ STUD_MM = 8
 speed = 15
 studs_that_wheels_are_apart = 16
 mm_that_wheels_are_apart = 128
+mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, studs_that_wheels_are_apart * STUD_MM)
+#Alternative: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, mm_that_wheels_are_apart)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 tankDrive.gyro = GyroSensor(INPUT_2)
@@ -118,10 +120,12 @@ def main():
             break
         time.sleep(0.05)
 
-
+    #figure out how to detect an adge and drive parallel to a wall and see red
  
     if color == "red":
-        tankDrive.off    
+        tankDrive.off   
+        detectHouseEdges(35) 
+
         a = rightCornerDist
         b = leftCornerDist
         alpha = rightCornerAngle
@@ -196,6 +200,10 @@ def driveTillDistWheel(dist):
 
 
 #turning
+def betterTurnDegrees(degrees):
+    mdiff.odometry_start()
+    mdiff.turn_to_angle(SpeedRPM(speed), degrees)
+    mdiff.odometry_stop()
 def leftTurn(degrees, speed):
     angle = circleAngle
     startAngle = angle
@@ -250,7 +258,7 @@ def detectHouseEdges(threshold):
     while True:
         angleOld = circleAngle
         distOld = dist
-        time.sleep(0.005)
+        time.sleep(0.05)
         angleNew = circleAngle
         distNew = dist
         if distNew < 100:
@@ -264,9 +272,9 @@ def detectHouseEdges(threshold):
                 print(rightCornerDist)#debug
                 break
     print("found one")#debug
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+    tankDrive.off
     time.sleep(1)
-    leftTurn(3, 10)
+    betterTurnDegrees(5):
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         angleOld = circleAngle
@@ -282,7 +290,7 @@ def detectHouseEdges(threshold):
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
             break
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+    tankDrive.off
     print("right Corner Angle: " + str(rightCornerAngle)+ ", right Corner distance: " + str(rightCornerDist)) #debug
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 

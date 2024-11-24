@@ -9,7 +9,7 @@ speed = 15
 studs_that_wheels_are_apart = 16
 mm_that_wheels_are_apart = 128
 
-# Question: How far are the wheels apart?
+# Question: How far are the wheels apart? # found in mathy stuff in the folder for tests for qualifying
 mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, studs_that_wheels_are_apart * STUD_MM)
 #Alternative: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, mm_that_wheels_are_apart)
 

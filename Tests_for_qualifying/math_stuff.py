@@ -2,10 +2,10 @@ import math
 
 #trying to figure out how to alternativly determine driven distance or angle
 
-wheel_rotations = 0.085763
-wheel_radius = 22.3 #cm
-U_wheel = math.pi*wheel_radius*2
-dist_calc = wheel_rotations*U_wheel
+wheel_rotations = 1
+wheel_cumference = 22.3 #cm
+#U_wheel = math.pi*wheel_radius*2
+dist_calc = wheel_rotations*wheel_cumference
 
 
 
@@ -18,9 +18,9 @@ max_dist_to_middle = 9.4 #cm
 
 #defining turn radius as middle of min and max distance to middle
 
-turn_radius = (min_dist_to_middle + max_dist_to_middle)/2
-turn_circumference = 2* math.pi * turn_radius
-print(turn_radius)
+avdistbetweenwheels = (min_dist_to_middle + max_dist_to_middle)/2
+turn_circumference = 2* math.pi * avdistbetweenwheels
+print(avdistbetweenwheels)
 print(turn_circumference)
 
 #measured angle will be in ratio of distance the wheel crossed and total turn circumferance
