@@ -29,6 +29,7 @@ motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
+tankDrive.gyro = gyroSensor
 
 col_raw = [0, 0, 0]
 tbdDistance = 10
@@ -110,7 +111,7 @@ def readCircleAngle():
     while True:
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
-        print(circleAngle)
+        #print(circleAngle)
 ####
 
 
@@ -132,6 +133,7 @@ def main():
             break
         time.sleep(0.05)
 
+    time.sleep(2)
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
         if seesRed == True:
@@ -195,6 +197,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     #print("jeah no")
     #global distOld
     #threshold, drive_further = 35, 22.3
+    correct = 0
     if dist > desired_dist  + tolerance:
         print("dist too big")
         correct = 1
@@ -207,25 +210,25 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     tankDrive.off
     if correct == 1:
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
+        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
         tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off
-        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
+        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
         tankDrive.off 
         distNew = dist
     if correct == -1:
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), -4) 
+        tankDrive.turn_degrees(SpeedPercent(-speed), 4) 
         tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off
         #print("gets herd")
-        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
+        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
         tankDrive.off
         distNew = dist
         #print("hello is past second turn")
@@ -247,6 +250,8 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     tankDrive.off
                     break
             tankDrive.turn_degrees(SpeedPercent(-10), 90) 
+            time.sleep(2)
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.2)
             gyroSensor.reset()
 
 
