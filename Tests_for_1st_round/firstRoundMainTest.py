@@ -11,13 +11,13 @@ from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
 from ev3dev2.button import Button
-from ev3dev2.wheel import EV3Tire
+from ev3dev2.wheel import EV3Tire, EV3EducationSetTire# i think the latter tire is the one we are using
 
 STUD_MM = 8
 speed = 15
 studs_that_wheels_are_apart = 16
 mm_that_wheels_are_apart = 128
-mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, studs_that_wheels_are_apart * STUD_MM)
+mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * STUD_MM)# make sure mm numbers are correct
 #Alternative: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, mm_that_wheels_are_apart)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
@@ -39,6 +39,8 @@ leftCornerDist = 0.0
 rightCornerAngle = 0
 leftCornerAngle = 0
 anOfAprch = 0.0
+seesGreen = False
+seesRed = False
 
 
 
@@ -77,6 +79,8 @@ def readButton():
 def readColor():
     global color
     global col_raw
+    global seesGreen
+    global seesRed
     color = "none"
     rawColor = colorSensor.color
     col_raw = colorSensor.raw
@@ -85,8 +89,12 @@ def readColor():
         col_raw = colorSensor.raw
         if rawColor == 5:
             color = "red"
-        elif rawColor == 3:
+            seesRed = True
+        #elif rawColor == 3:
+        #    color = "green"
+        elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             color = "green"
+            seesGreen = True
         time.sleep(0.1)
 
 def readAngle():
@@ -122,8 +130,9 @@ def main():
 
     #figure out how to detect an adge and drive parallel to a wall and see red
  
-    if color == "red":
+    if seesRed == True:
         tankDrive.off   
+        seesRed = False
         detectHouseEdges(35) 
 
         a = rightCornerDist
@@ -135,21 +144,23 @@ def main():
 
         turnLeftToX(anOfAprch, 10)
         #drop abd then drive to thew next house and then turn
-
     
-
-    while True:
-        if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
-            break
+    if seesGreen == True: 
+        tankDrive.off
+        seesGreen = False
         smoothDriveStraight(20)
         time.sleep(3)
-        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        tankDrive.off
+    
+    adjustDist_findEdge(15, 4, 10, 35, 22.3)
+    
+    
     
 
 
 
 
-def detectJumpInDist(threshold, dist):
+'''def detectJumpInDist(threshold, dist):
     while True:
         distOld = ultraSoundSensor.distance_centimeters
         time.sleep(0.005)
@@ -166,8 +177,65 @@ def detectJumpInDist(threshold, dist):
                         tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                         #circleAngle = gyroSensor.circle_angle()
                         break
-                tankDrive.turn_degrees(SpeedPercent(5), -90)
-#sensors
+                tankDrive.turn_degrees(SpeedPercent(5), -90)'''
+
+def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further):
+    #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
+    #print("jeah no")
+    #global distOld
+    #threshold, drive_further = 35, 22.3
+    if dist > desired_dist  + tolerance:
+        print("dist too big")
+        correct = 1
+    elif dist < desired_dist - tolerance:
+        print("dist too small")
+        correct = -1
+    elif dist > desired_dist - tolerance and dist < desired_dist + tolerance:
+        correct = 0
+        print("hmm sees to be right")
+    tankDrive.off
+    if correct == 1:
+        distOld = dist
+        tankDrive.turn_degrees(SpeedPercent(-speed), 3)
+        tankDrive.off
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
+        #distOld = dist
+        #time.sleep(0.5)
+        tankDrive.off
+        tankDrive.turn_degrees(SpeedPercent(-speed), -3)
+        tankDrive.off 
+        distNew = dist
+    if correct == -1:
+        distOld = dist
+        tankDrive.turn_degrees(SpeedPercent(-speed), -3) 
+        tankDrive.off
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
+        #distOld = dist
+        #time.sleep(0.5)
+        tankDrive.off
+        #print("gets herd")
+        tankDrive.turn_degrees(SpeedPercent(-speed), 3)
+        tankDrive.off
+        distNew = dist
+        #print("hello is past second turn")
+    if correct == 0:
+        distOld = dist
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
+        distNew = dist
+        #time.sleep(0.3)
+    if distOld < 50:
+        if abs(distOld-distNew) >= threshold:
+            print("sees edge")
+            rotations = 0.00
+            while True:
+                rotation = 1
+                tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), rotation)
+                rotations += rotation
+                dist_crossed = rotations* 22.3 #in cm
+                if dist_crossed >= drive_further:
+                    tankDrive.off
+                    break
+            tankDrive.turn_degrees(SpeedPercent(-10), 90) 
 
 
 
@@ -274,7 +342,7 @@ def detectHouseEdges(threshold):
     print("found one")#debug
     tankDrive.off
     time.sleep(1)
-    betterTurnDegrees(5):
+    betterTurnDegrees(5)
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         angleOld = circleAngle
