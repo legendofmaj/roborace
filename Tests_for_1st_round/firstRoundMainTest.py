@@ -157,7 +157,7 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, 22.3)
+        adjustDist_findEdge(15, 4, 10, 35, 11.15)
     
     
     
@@ -233,7 +233,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             print("sees edge")
             rotations = 0.00
             while True:
-                rotation = 1
+                rotation = 0.5
                 tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), rotation)
                 rotations += rotation
                 dist_crossed = rotations* 22.3 #in cm
