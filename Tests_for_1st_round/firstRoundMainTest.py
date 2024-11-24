@@ -43,11 +43,11 @@ seesGreen = False
 seesRed = False
 
 gyroSensor.reset()
-
+time.sleep(1)
 
 
 def __init__threads__():
-    gyroSensor.reset()
+    #gyroSensor.reset()
     distThread = threading.Thread(target= read_dist)
     distThread.start()
     buttonThread = threading.Thread(target = readButton)
@@ -55,8 +55,8 @@ def __init__threads__():
     buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
-    angleThread = threading.Thread(target = readAngle)
-    angleThread.start()
+    #angleThread = threading.Thread(target = readAngle)
+    #angleThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)
     circleAngleThread.start()
 
@@ -110,6 +110,7 @@ def readCircleAngle():
     while True:
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
+        print(circleAngle)
 ####
 
 
@@ -156,6 +157,7 @@ def main():
         if seesGreen == True: 
             tankDrive.off
             seesGreen = False
+            print("green")
             smoothDriveStraight(20)
             time.sleep(3)
             tankDrive.off
@@ -205,25 +207,25 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     tankDrive.off
     if correct == 1:
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), 3)
+        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
         tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off
-        tankDrive.turn_degrees(SpeedPercent(-speed), -3)
+        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
         tankDrive.off 
         distNew = dist
     if correct == -1:
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), -3) 
+        tankDrive.turn_degrees(SpeedPercent(-speed), -4) 
         tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off
         #print("gets herd")
-        tankDrive.turn_degrees(SpeedPercent(-speed), 3)
+        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
         tankDrive.off
         distNew = dist
         #print("hello is past second turn")
