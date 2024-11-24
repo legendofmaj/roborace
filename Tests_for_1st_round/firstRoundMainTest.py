@@ -116,8 +116,8 @@ def readCircleAngle():
 
 
 def main():
-    if __name__ == __init__threads__:
-        __init__threads__()
+    #if __name__ == "__init__threads__":
+    __init__threads__()
 
     print("u may press")
     #play tone
@@ -323,6 +323,7 @@ def drop():
 #determine how to get to next house
 def detectHouseEdges(threshold):
     gyroSensor.reset()
+    turnRightToX(7, 7)
     print("seeking")
     global rightCornerAngle
     global leftCornerAngle
@@ -348,7 +349,8 @@ def detectHouseEdges(threshold):
     print("found one")#debug
     tankDrive.off
     time.sleep(1)
-    betterTurnDegrees(5)
+    #betterTurnDegrees(5)
+    tankDrive.turn_degrees(SpeedPercent(-10), 5)
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         angleOld = circleAngle
