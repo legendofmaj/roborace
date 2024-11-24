@@ -52,8 +52,8 @@ def main():
 
         #drive parallel to wall
         modules.parallelWallDrive.main() #not final
-        modules.driving.smoothDriveStraight(15)
-    modules.driving.smoothDriveStraight(0)
+        modules.driving.driveStraight(15)
+    modules.driving.driveStraight(0)
    
    
     #find next house
@@ -77,12 +77,12 @@ def main():
     #turn toward house
     modules.turning.turnLeftToX(anOfAprch, 10) #not final
     #drive until a dist to the house
-    modules.driving.smoothDriveTillDist(min_dist_to_house)
+    modules.driving.driveTillDist(min_dist_to_house)
     #turn 90°
     modules.turning.turnLeftToX(90, 15) #not final
     #drive parallel to wall
     modules.parallelWallDrive.main() #not final
-    modules.driving.smoothDriveStraight(15) #not final
+    modules.driving.driveStraight(15) #not final
 
     #Check for corner
     #turn around corner
@@ -94,7 +94,7 @@ def main():
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
         #drive for 3 seconds
-        modules.driving.smoothDriveStraight(20)
+        modules.driving.driveStraight(20)
     time.sleep(3)
     tank_drive.off()
     #play sound

@@ -42,8 +42,8 @@ def main():
         if color == "red":
             print("saw red")
             break
-        modules.driving.smoothDriveStraight(10)
-    modules.driving.smoothDriveStraight(0)
+        modules.driving.driveStraight(10)
+    modules.driving.driveStraight(0)
     #determine geometrics
     modules.determine_angles_distances_next_house.main()
 
@@ -64,14 +64,14 @@ def main():
     #turn toward house
     modules.turning.turnLeftToX(anOfAprch, 10)
     #Drive until a tbd distance to the next house and turn by 90° degrees
-    modules.driving.smoothDriveTillDist(min_dist_to_house)
+    modules.driving.driveTillDist(min_dist_to_house)
     modules.turning.leftTurn(90, 15)
 
     #Drive until the green line is reached
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             break
-        modules.driving.smoothDriveStraight(20)
+        modules.driving.driveStraight(20)
     time.sleep(3)
     tank_drive.on(SpeedPercent(0), SpeedPercent(0))
     modules.sound.secondSoundFile()

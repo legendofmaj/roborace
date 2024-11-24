@@ -8,13 +8,13 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
-def smoothDriveStraight(speed):
+def driveStraight(speed):
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
-def smoothDriveTillDist(distIn):
+def driveTillDist(distIn):
     while True:
         distInt = ultraSoundSensor.distance_centimeters
         if distInt <= distIn:
             break
-        smoothDriveStraight(20)
-    smoothDriveStraight(0)
+        driveStraight(20)
+    driveStraight(0)
