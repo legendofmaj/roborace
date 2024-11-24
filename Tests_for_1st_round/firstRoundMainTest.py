@@ -131,6 +131,7 @@ def main():
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
         if seesRed == True:
+            print("red")
             tankDrive.off   
             seesRed = False
             detectHouseEdges(35) 
@@ -323,7 +324,7 @@ def drop():
 #determine how to get to next house
 def detectHouseEdges(threshold):
     gyroSensor.reset()
-    turnRightToX(7, 7)
+    #turnRightToX(7, 7)
     print("seeking")
     global rightCornerAngle
     global leftCornerAngle
