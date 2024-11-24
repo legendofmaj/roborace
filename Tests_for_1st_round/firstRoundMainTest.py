@@ -129,30 +129,35 @@ def main():
         time.sleep(0.05)
 
     #figure out how to detect an adge and drive parallel to a wall and see red
- 
-    if seesRed == True:
-        tankDrive.off   
-        seesRed = False
-        detectHouseEdges(35) 
+    while True:
+        if seesRed == True:
+            tankDrive.off   
+            seesRed = False
+            detectHouseEdges(35) 
 
-        a = rightCornerDist
-        b = leftCornerDist
-        alpha = rightCornerAngle
-        beta = leftCornerAngle
+            a = rightCornerDist
+            b = leftCornerDist
+            alpha = rightCornerAngle
+            beta = leftCornerAngle
 
-        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+            anOfAprch = getAngleOfApproach(a, b, alpha, beta)
 
-        turnLeftToX(anOfAprch, 10)
-        #drop abd then drive to thew next house and then turn
-    
-    if seesGreen == True: 
-        tankDrive.off
-        seesGreen = False
-        smoothDriveStraight(20)
-        time.sleep(3)
-        tankDrive.off
-    
-    adjustDist_findEdge(15, 4, 10, 35, 22.3)
+            #drop abd 
+
+            turnLeftToX(anOfAprch, 10)
+
+            #then drive to thew next house and then turn
+            
+        
+        if seesGreen == True: 
+            tankDrive.off
+            seesGreen = False
+            smoothDriveStraight(20)
+            time.sleep(3)
+            tankDrive.off
+            break
+        
+        adjustDist_findEdge(15, 4, 10, 35, 22.3)
     
     
     
@@ -236,6 +241,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     tankDrive.off
                     break
             tankDrive.turn_degrees(SpeedPercent(-10), 90) 
+            gyroSensor.reset()
 
 
 
