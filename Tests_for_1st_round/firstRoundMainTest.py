@@ -9,8 +9,14 @@ from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor.lego import ColorSensor
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
 from ev3dev2.button import Button
+from ev3dev2.wheel import EV3Tire
+
+STUD_MM = 8
+speed = 15
+studs_that_wheels_are_apart = 16
+mm_that_wheels_are_apart = 128
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 tankDrive.gyro = GyroSensor(INPUT_2)
@@ -112,23 +118,21 @@ def main():
             break
         time.sleep(0.05)
 
-    while True:
-        print("ok")
-        break
 
-    drop()   
+ 
+    if color == "red":
+        tankDrive.off    
+        a = rightCornerDist
+        b = leftCornerDist
+        alpha = rightCornerAngle
+        beta = leftCornerAngle
 
-    a = rightCornerDist
-    b = leftCornerDist
-    alpha = rightCornerAngle
-    beta = leftCornerAngle
+        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
 
-    anOfAprch = getAngleOfApproach(a, b, alpha, beta)
-
-    turnLeftToX(anOfAprch, 10)
+        turnLeftToX(anOfAprch, 10)
+        #drop abd then drive to thew next house and then turn
 
     
-    leftTurn(90, 15)
 
     while True:
         if (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
@@ -236,6 +240,7 @@ def drop():
 
 #determine how to get to next house
 def detectHouseEdges(threshold):
+    gyroSensor.reset()
     print("seeking")
     global rightCornerAngle
     global leftCornerAngle
