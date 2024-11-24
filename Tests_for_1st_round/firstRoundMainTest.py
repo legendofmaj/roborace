@@ -42,6 +42,8 @@ anOfAprch = 0.0
 seesGreen = False
 seesRed = False
 
+gyroSensor.reset()
+
 
 
 def __init__threads__():
@@ -98,7 +100,7 @@ def readColor():
         time.sleep(0.1)
 
 def readAngle():
-    global circleAngle
+    global angle
     while True:
         angle = gyroSensor.angle
         time.sleep(0.05)
@@ -118,9 +120,10 @@ def readCircleAngle():
 def main():
     #if __name__ == "__init__threads__":
     __init__threads__()
-
     print("u may press")
     #play tone
+    global seesRed
+    global seesGreen
 
     while True:
         if buttonPressed == True:
