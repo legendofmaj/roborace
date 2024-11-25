@@ -21,7 +21,7 @@ mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_whe
 #Alternative: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, mm_that_wheels_are_apart)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
-tankDrive.gyro = GyroSensor(INPUT_2)
+#tankDrive.gyro = GyroSensor(INPUT_2)
 btn = Button()
 depositMotor = MediumMotor(OUTPUT_A)
 motorRight = Motor(OUTPUT_B)
@@ -29,7 +29,7 @@ motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
-tankDrive.gyro = gyroSensor
+#tankDrive.gyro = gyroSensor
 
 stop_event = threading.Event()
 
@@ -47,8 +47,8 @@ seesRed = False
 
 anglesAndDists = {1000000 : 1000000}
 
-gyroSensor.reset()
-tankDrive.gyro.reset()
+#gyroSensor.reset()
+#tankDrive.gyro.reset()
 time.sleep(1)
 
 
@@ -63,7 +63,7 @@ def __init__threads__():
     colorThread.start()
     #angleThread = threading.Thread(target = readAngle)
     #angleThread.start()
-    circleAngleThread = threading.Thread(target = readCircleAngle, args=(stop_event))
+    circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 
 ####        
@@ -106,9 +106,9 @@ def readColor():
         time.sleep(0.1)
 
 def readAngle():
-    global angle
+    #global angle
     while True:
-        angle = gyroSensor.angle
+     #   angle = gyroSensor.angle
         time.sleep(0.05)
 
 def readCircleAngle():
@@ -128,11 +128,24 @@ def readCircleAngle():
 
 def main():
     #if __name__ == "__init__threads__":
-    __init__threads__()
+    #__init__threads__()
     print("u may press")
     #play tone
     global seesRed
     global seesGreen
+
+    #gyroSensor.reset()
+    distThread = threading.Thread(target= read_dist)
+    distThread.start()
+    buttonThread = threading.Thread(target = readButton)
+    buttonThread.daemon = True
+    buttonThread.start()
+    colorThread = threading.Thread(target = readColor)
+    colorThread.start()
+    #angleThread = threading.Thread(target = readAngle)
+    #angleThread.start()
+    circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
+    circleAngleThread.start()
 
     while True:
         if buttonPressed == True:
@@ -140,6 +153,7 @@ def main():
             break
         time.sleep(0.05)
 
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(2)
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
@@ -147,14 +161,14 @@ def main():
             print("red")
             tankDrive.off   
             seesRed = False
-            stop_event.set()
-            circleAngleThread.join()
+            #stop_event.set()
+            #circleAngleThread.join()
             gyroSensor.reset()
-            tankDrive.gyro.reset()
-            time.sleep(1)
-            stop_event.clear()
-            circleAngleThread = threading.Thread(target = readCircleAngle)
-            circleAngleThread.start()
+            #tankDrive.gyro.reset()
+            #time.sleep(1)
+            #stop_event.clear()
+            #circleAngleThread = threading.Thread(target = readCircleAngle)
+            #circleAngleThread.start()
 
             getMultipleHouses()
 
@@ -177,7 +191,7 @@ def main():
 
             driveTillDistWheel(toDriveDist)
             
-            tankDrive.turn_degrees(SpeedPercent(-10), -90)
+            leftTurn(90, 10)
 
             #then drive to thew next house and then turn
             
@@ -191,7 +205,7 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, 11.15)
+        adjustDist_findEdge(15, 4, 10, 35, 22.3)
     
     
 def drop():
@@ -238,27 +252,27 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         correct = 0
         print("hmm sees to be right")
     tankDrive.off
-    if correct == 1:
+    if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
-        tankDrive.off
+        rightTurn(4, 10)
+        #tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
         #distOld = dist
         #time.sleep(0.5)
-        tankDrive.off
-        tankDrive.turn_degrees(SpeedPercent(-speed), 4)
-        tankDrive.off 
+        #tankDrive.off
+        #leftTurn(3, 10)
+        #tankDrive.off 
         distNew = dist
     if correct == -1:
         distOld = dist
-        tankDrive.turn_degrees(SpeedPercent(-speed), 4) 
+        leftTurn(4, 10)
         tankDrive.off
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off
         #print("gets herd")
-        tankDrive.turn_degrees(SpeedPercent(-speed), -4)
+        rightTurn(3, 10)
         tankDrive.off
         distNew = dist
         #print("hello is past second turn")
@@ -272,24 +286,24 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             print("sees edge")
             rotations = 0.00
             while True:
-                rotation = 0.5
+                rotation = 1
                 tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), rotation)
                 rotations += rotation
                 dist_crossed = rotations* 22.3 #in cm
                 if dist_crossed >= drive_further:
                     tankDrive.off
                     break
-            tankDrive.turn_degrees(SpeedPercent(-10), 90) 
+            rightTurn(90, 10)
             time.sleep(2)
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.2)
-            stop_event.set()
-            circleAngleThread.join()
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+            #stop_event.set()
+            #circleAngleThread.join()
             gyroSensor.reset()
-            tankDrive.gyro.reset()
+            #tankDrive.gyro.reset()
             time.sleep(1)
-            stop_event.clear()
-            circleAngleThread = threading.Thread(target = readCircleAngle)
-            circleAngleThread.start()
+            #stop_event.clear()
+            #circleAngleThread = threading.Thread(target = readCircleAngle)
+            #circleAngleThread.start()
 
 
 
@@ -337,9 +351,11 @@ def leftTurn(degrees, speed):
 def rightTurn(degrees, speed):
     angle = circleAngle
     startAngle = angle
-    while angle < (startAngle + degrees):
+    while angle > (startAngle - degrees):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = circleAngle
+        if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
+            break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnRightToX(degrees, speed):
@@ -358,14 +374,14 @@ def turnLeftToX(degrees, speed):
 
 
 #dropping
-def drop():
+'''def drop():
     turnRightToX(50, 15)
     time.sleep(0.5)
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-    time.sleep(0.5)
+    time.sleep(0.5)'''
 
 
 #determine how to get to next house
@@ -398,7 +414,7 @@ def detectHouseEdges(threshold):
     tankDrive.off
     time.sleep(1)
     #betterTurnDegrees(5)
-    tankDrive.turn_degrees(SpeedPercent(-10), 5)
+    leftTurn(5, 10)
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         angleOld = circleAngle
