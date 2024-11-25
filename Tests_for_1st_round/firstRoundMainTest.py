@@ -31,6 +31,8 @@ gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 tankDrive.gyro = gyroSensor
 
+#stop_event = threading.Event()
+
 col_raw = [0, 0, 0]
 tbdDistance = 10
 dist = 0.0
@@ -44,6 +46,7 @@ seesGreen = False
 seesRed = False
 
 gyroSensor.reset()
+tankDrive.gyro.reset()
 time.sleep(1)
 
 
@@ -108,10 +111,12 @@ def readAngle():
 
 def readCircleAngle():
     global circleAngle
+    #while not stop_event.is_set():
     while True:
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
         #print(circleAngle)
+    print("is set")
 ####
 
 
@@ -140,8 +145,13 @@ def main():
             print("red")
             tankDrive.off   
             seesRed = False
+            #stop_event.set()
+            circleAngleThread.join()
             gyroSensor.reset()
             tankDrive.gyro.reset()
+            time.sleep(1)
+            circleAngleThread = threading.Thread(target = readCircleAngle)
+            circleAngleThread.start()
 
             #see if first house
             detectHouseEdges(35)
@@ -311,8 +321,13 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             tankDrive.turn_degrees(SpeedPercent(-10), 90) 
             time.sleep(2)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.2)
+            #stop_event.set()
+            circleAngleThread.join()
             gyroSensor.reset()
             tankDrive.gyro.reset()
+            time.sleep(1)
+            circleAngleThread = threading.Thread(target = readCircleAngle)
+            circleAngleThread.start()
 
 
 
