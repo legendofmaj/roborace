@@ -156,7 +156,7 @@ def main():
             circleAngleThread = threading.Thread(target = readCircleAngle)
             circleAngleThread.start()
 
-           
+            getMultipleHouses()
 
             #add the dists to a list and sort it
             distsToNextHouse = anglesAndDists.keys()
