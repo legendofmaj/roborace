@@ -31,7 +31,7 @@ gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 tankDrive.gyro = gyroSensor
 
-#stop_event = threading.Event()
+stop_event = threading.Event()
 
 col_raw = [0, 0, 0]
 tbdDistance = 10
@@ -44,6 +44,8 @@ leftCornerAngle = 0
 anOfAprch = 0.0
 seesGreen = False
 seesRed = False
+
+anglesAndDists = {1000000 : 1000000}
 
 gyroSensor.reset()
 tankDrive.gyro.reset()
@@ -61,7 +63,7 @@ def __init__threads__():
     colorThread.start()
     #angleThread = threading.Thread(target = readAngle)
     #angleThread.start()
-    circleAngleThread = threading.Thread(target = readCircleAngle)
+    circleAngleThread = threading.Thread(target = readCircleAngle, args=(stop_event))
     circleAngleThread.start()
 
 ####        
@@ -111,8 +113,8 @@ def readAngle():
 
 def readCircleAngle():
     global circleAngle
-    #while not stop_event.is_set():
-    while True:
+    while not stop_event.is_set():
+    #while True:
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
         #print(circleAngle)
@@ -145,65 +147,24 @@ def main():
             print("red")
             tankDrive.off   
             seesRed = False
-            #stop_event.set()
+            stop_event.set()
             circleAngleThread.join()
             gyroSensor.reset()
             tankDrive.gyro.reset()
             time.sleep(1)
+            stop_event.clear()
             circleAngleThread = threading.Thread(target = readCircleAngle)
             circleAngleThread.start()
 
-            #see if first house
-            detectHouseEdges(35)
-        
-            a = rightCornerDist
-            b = leftCornerDist
-            alpha = rightCornerAngle
-            beta = leftCornerAngle
-
-            anOfAprch = getAngleOfApproach(a, b, alpha, beta)
-
-            distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
-
-            anglesAndDists = {int(distToNextHouse) : int(anOfAprch)}
-
-            tankDrive.turn_degrees(SpeedPercent(-10), -5)
-
-            #check for second one
-            detectHouseEdges(35)
-        
-            a2 = rightCornerDist
-            b2 = leftCornerDist
-            alpha2 = rightCornerAngle
-            beta2 = leftCornerAngle
-
-            anOfAprch2 = getAngleOfApproach(a2, b2, alpha2, beta2)
-
-            distToNextHouse2 = getDistToNextHouse(a2, alpha2, anOfAprch2)
-
-            anglesAndDists[int(distToNextHouse2)] = int(anOfAprch2)
-
-            #check for third one
-            detectHouseEdges(35)
-        
-            a3 = rightCornerDist
-            b3 = leftCornerDist
-            alpha3 = rightCornerAngle
-            beta3 = leftCornerAngle
-
-            anOfAprch3 = getAngleOfApproach(a3, b3, alpha3, beta3)
-
-            distToNextHouse3 = getDistToNextHouse(a3, alpha3, anOfAprch3)
-            #add angle and dist to dict
-            anglesAndDists[int(distToNextHouse3)] = int(anOfAprch3)
+           
 
             #add the dists to a list and sort it
             distsToNextHouse = anglesAndDists.keys()
-            #distsToNextHouse = [int(x) for x in distsToNextHouse]
+            distsToNextHouse = [float(x) for x in distsToNextHouse]
             distsToNextHouse = sorted(distsToNextHouse)
             #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
-            shortestDist = distsToNextHouse[0]
-            wantedAnOfAprch = anglesAndDists[shortestDist]
+            shortestDist = float(distsToNextHouse[0])
+            wantedAnOfAprch = int(anglesAndDists[shortestDist])
 
             #drop abd 
             turnRightToX(50, 10)
@@ -321,11 +282,12 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             tankDrive.turn_degrees(SpeedPercent(-10), 90) 
             time.sleep(2)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.2)
-            #stop_event.set()
+            stop_event.set()
             circleAngleThread.join()
             gyroSensor.reset()
             tankDrive.gyro.reset()
             time.sleep(1)
+            stop_event.clear()
             circleAngleThread = threading.Thread(target = readCircleAngle)
             circleAngleThread.start()
 
@@ -455,6 +417,28 @@ def detectHouseEdges(threshold):
     tankDrive.off
     print("right Corner Angle: " + str(rightCornerAngle)+ ", right Corner distance: " + str(rightCornerDist)) #debug
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
+
+def getMultipleHouses():
+    turnLeftToX(180, 10) #turn so that the sensor points outwards
+    while circleAngle < 350:
+        global anglesAndDists
+        #see if house
+        detectHouseEdges(35)
+        
+        a = rightCornerDist
+        b = leftCornerDist
+        alpha = rightCornerAngle
+        beta = leftCornerAngle
+
+        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+
+        distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
+
+        anglesAndDists = {int(distToNextHouse) : int(anOfAprch)}
+
+        time.sleep(1)
+        #tankDrive.turn_degrees(SpeedPercent(-10), -5)
+
 
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
