@@ -140,8 +140,12 @@ def main():
             print("red")
             tankDrive.off   
             seesRed = False
-            detectHouseEdges(35) 
+            gyroSensor.reset()
+            tankDrive.gyro.reset()
 
+            #see if first house
+            detectHouseEdges(35)
+        
             a = rightCornerDist
             b = leftCornerDist
             alpha = rightCornerAngle
@@ -149,9 +153,60 @@ def main():
 
             anOfAprch = getAngleOfApproach(a, b, alpha, beta)
 
-            #drop abd 
+            distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
 
-            turnLeftToX(anOfAprch, 10)
+            anglesAndDists = {int(distToNextHouse) : int(anOfAprch)}
+
+            tankDrive.turn_degrees(SpeedPercent(-10), -5)
+
+            #check for second one
+            detectHouseEdges(35)
+        
+            a2 = rightCornerDist
+            b2 = leftCornerDist
+            alpha2 = rightCornerAngle
+            beta2 = leftCornerAngle
+
+            anOfAprch2 = getAngleOfApproach(a2, b2, alpha2, beta2)
+
+            distToNextHouse2 = getDistToNextHouse(a2, alpha2, anOfAprch2)
+
+            anglesAndDists[int(distToNextHouse2)] = int(anOfAprch2)
+
+            #check for third one
+            detectHouseEdges(35)
+        
+            a3 = rightCornerDist
+            b3 = leftCornerDist
+            alpha3 = rightCornerAngle
+            beta3 = leftCornerAngle
+
+            anOfAprch3 = getAngleOfApproach(a3, b3, alpha3, beta3)
+
+            distToNextHouse3 = getDistToNextHouse(a3, alpha3, anOfAprch3)
+            #add angle and dist to dict
+            anglesAndDists[int(distToNextHouse3)] = int(anOfAprch3)
+
+            #add the dists to a list and sort it
+            distsToNextHouse = anglesAndDists.keys()
+            #distsToNextHouse = [int(x) for x in distsToNextHouse]
+            distsToNextHouse = sorted(distsToNextHouse)
+            #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
+            shortestDist = distsToNextHouse[0]
+            wantedAnOfAprch = anglesAndDists[shortestDist]
+
+            #drop abd 
+            turnRightToX(50, 10)
+            drop()
+            time.sleep(0.5)
+
+            turnLeftToX(wantedAnOfAprch, 10)
+
+            toDriveDist = shortestDist - 15
+
+            driveTillDistWheel(toDriveDist)
+            
+            tankDrive.turn_degrees(SpeedPercent(-10), -90)
 
             #then drive to thew next house and then turn
             
@@ -168,7 +223,11 @@ def main():
         adjustDist_findEdge(15, 4, 10, 35, 11.15)
     
     
-    
+def drop():
+    print("dropping") #debug
+    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+    time.sleep(0.5)
+    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
 
 
 
@@ -253,6 +312,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             time.sleep(2)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.2)
             gyroSensor.reset()
+            tankDrive.gyro.reset()
 
 
 
@@ -333,7 +393,7 @@ def drop():
 
 #determine how to get to next house
 def detectHouseEdges(threshold):
-    gyroSensor.reset()
+    #gyroSensor.reset()
     #turnRightToX(7, 7)
     print("seeking")
     global rightCornerAngle
@@ -347,7 +407,7 @@ def detectHouseEdges(threshold):
         time.sleep(0.05)
         angleNew = circleAngle
         distNew = dist
-        if distNew < 100:
+        if distNew > 60:
             if abs(distOld-distNew) >= threshold:
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 print(distOld)#debug
@@ -385,6 +445,10 @@ def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
     anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
     return anOfAprch
+
+def getDistToNextHouse(a, alpha, anOfAprch):
+    distToNextHouse = math.cos(anOfAprch - alpha) * a
+    return distToNextHouse
 
 if __name__=="__main__":
     main()
