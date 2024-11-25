@@ -43,6 +43,10 @@ def main():
     circleAngleThread.start()
 
     print(circleAngle)
+
+    gyroSensor.reset()
+    tankDrive.gyro.reset()
+
     tankDrive.turn_degrees(SpeedPercent(-10), 90)
 
     time.sleep(1)
@@ -60,7 +64,7 @@ def main():
     time.sleep(1)
 
     tankDrive.turn_degrees(SpeedPercent(-10), -90)
-    
+
     stop_event.clear()
     circleAngleThread = threading.Thread(target = readCircleAngle)
     circleAngleThread.start()
