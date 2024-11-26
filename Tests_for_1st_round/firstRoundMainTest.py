@@ -23,6 +23,7 @@ min_dist_to_middle = 59 #mm
 max_dist_to_middle = 94 #mm
 
 mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
+#or: MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 #tankDrive.gyro = GyroSensor(INPUT_2)
