@@ -343,7 +343,7 @@ def betterTurnDegrees(degrees):
 def leftTurn(degrees, speed):
     angle = circleAngle
     startAngle = angle
-    while angle < (startAngle + degrees):
+    while angle <= (startAngle + degrees):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
         angle = circleAngle
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
@@ -351,7 +351,7 @@ def leftTurn(degrees, speed):
 def rightTurn(degrees, speed):
     angle = circleAngle
     startAngle = angle
-    while angle > max((startAngle - degrees), 0):
+    while angle >= max((startAngle - degrees), 0):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = circleAngle
         if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
