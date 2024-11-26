@@ -16,9 +16,13 @@ from ev3dev2.wheel import EV3Tire, EV3EducationSetTire# i think the latter tire 
 STUD_MM = 8
 speed = 15
 studs_that_wheels_are_apart = 16
-mm_that_wheels_are_apart = 128
-mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * STUD_MM)# make sure mm numbers are correct
-#Alternative: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3Tire, mm_that_wheels_are_apart)
+mm_that_wheels_are_apart = 0 #mm
+min_dist_between_wheels = 118 #mm
+max_dist_between_wheels = 188 #mm
+min_dist_to_middle = 59 #mm
+max_dist_to_middle = 94 #mm
+
+mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 #tankDrive.gyro = GyroSensor(INPUT_2)
@@ -336,9 +340,9 @@ def driveTillDistWheel(dist):
 
 
 #turning
-def betterTurnDegrees(degrees):
+def betterTurnDegrees(degrees, speed):
     mdiff.odometry_start()
-    mdiff.turn_to_angle(SpeedRPM(speed), degrees)
+    mdiff.turn_to_angle(SpeedPercent(speed), degrees)
     mdiff.odometry_stop()
 def leftTurn(degrees, speed):
     angle = circleAngle
@@ -413,7 +417,7 @@ def detectHouseEdges(threshold):
     print("found one")#debug
     tankDrive.off
     time.sleep(1)
-    #betterTurnDegrees(5)
+    #betterTurnDegrees(5, 15)
     leftTurn(5, 10)
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
