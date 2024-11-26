@@ -210,7 +210,7 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, 22.3)
+        adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
     
     
 def drop():
@@ -265,7 +265,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #distOld = dist
         #time.sleep(0.5)
         #tankDrive.off
-        #leftTurn(3, 10)
+        leftTurn(3, 10)
         #tankDrive.off 
         distNew = dist
     if correct == -1:
@@ -291,18 +291,20 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             print("sees edge")
             rotations = 0.00
             while True:
-                rotation = 1
+                rotation = 0.9
                 tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), rotation)
                 rotations += rotation
                 dist_crossed = rotations* 22.3 #in cm
                 if dist_crossed >= drive_further:
                     tankDrive.off
                     break
-            rightTurn(90, 10)
-            time.sleep(2)
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+            rightTurn(85, 10) #should be ninety overturns tho
+            tankDrive.off
+            time.sleep(1)
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5)
             #stop_event.set()
             #circleAngleThread.join()
+            time.sleep(1)
             gyroSensor.reset()
             #tankDrive.gyro.reset()
             time.sleep(1)
@@ -436,7 +438,7 @@ def detectHouseEdges(threshold):
             print(leftCornerDist)#debug
             break
     tankDrive.off
-    print("right Corner Angle: " + str(rightCornerAngle)+ ", right Corner distance: " + str(rightCornerDist)) #debug
+    print("right Corner Angle: " + str(rightCornerAngle)  + ", right Corner distance: " + str(rightCornerDist)) #debug
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
