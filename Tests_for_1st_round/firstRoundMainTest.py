@@ -456,6 +456,16 @@ def getMultipleHouses():
         time.sleep(1)
         #tankDrive.turn_degrees(SpeedPercent(-10), -5)
 
+    turnRightToX(180, 10)
+    for x in anglesAndDists:
+        print(x, anglesAndDists[x])
+        turnLeftToX(anglesAndDists[x])
+        seenDist = dist
+        if seenDist > x + 5 or seenDist < x - 5:
+            print("doesnt think its right")
+            anglesAndDists.pop(x)
+        
+
 
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
