@@ -460,7 +460,7 @@ def getMultipleHouses():
     turnRightToX(180, 10)
     for x in anglesAndDists:
         print(x, anglesAndDists[x])
-        turnLeftToX(anglesAndDists[x])
+        turnLeftToX(anglesAndDists[x], 10)
         seenDist = dist
         if seenDist > x + 5 or seenDist < x - 5:
             print("doesnt think its right")
