@@ -56,81 +56,6 @@ anglesAndDists = {1000000 : 1000000}
 #tankDrive.gyro.reset()
 time.sleep(1)
 
-
-def __init__threads__():
-    #gyroSensor.reset()
-    distThread = threading.Thread(target= read_dist)
-    distThread.start()
-    buttonThread = threading.Thread(target = readButton)
-    buttonThread.daemon = True
-    buttonThread.start()
-    colorThread = threading.Thread(target = readColor)
-    colorThread.start()
-    #angleThread = threading.Thread(target = readAngle)
-    #angleThread.start()
-    circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
-    circleAngleThread.start()
-
-####        
-def read_dist():
-    while True:
-        global dist 
-        dist = ultraSoundSensor.distance_centimeters
-        time.sleep(0.05)
-
-
-def readButton():
-    global buttonPressed
-    buttonPressed = False
-    while True:
-        if btn.any() == True:
-            buttonPressed = True
-            time.sleep(0.05)
-            break
-    print("started") #debug
-
-def readColor():
-    global color
-    global col_raw
-    global seesGreen
-    global seesRed
-    color = "none"
-    rawColor = colorSensor.color
-    col_raw = colorSensor.raw
-    while True:
-        rawColor = colorSensor.color
-        col_raw = colorSensor.raw
-        if rawColor == 5:
-            color = "red"
-            seesRed = True
-        #elif rawColor == 3:
-        #    color = "green"
-        elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
-            color = "green"
-            seesGreen = True
-        time.sleep(0.1)
-
-def readAngle():
-    #global angle
-    while True:
-     #   angle = gyroSensor.angle
-        time.sleep(0.05)
-
-def readCircleAngle():
-    global circleAngle
-    while not stop_event.is_set():
-    #while True:
-        circleAngle = gyroSensor.circle_angle()
-        time.sleep(0.05)
-        #print(circleAngle)
-    print("is set")
-####
-
-
- 
-
-
-
 def main():
     #if __name__ == "__init__threads__":
     #__init__threads__()
@@ -198,8 +123,7 @@ def main():
             
             leftTurn(90, 10)
 
-            #then drive to thew next house and then turn
-            
+            #then drive to thew next house and then turn  
         
         if seesGreen == True: 
             tankDrive.off
@@ -210,17 +134,79 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
-    
+        adjustDist_findEdge(15, 4, 10, 35, 22.3)
+
+def __init__threads__():
+    #gyroSensor.reset()
+    distThread = threading.Thread(target= read_dist)
+    distThread.start()
+    buttonThread = threading.Thread(target = readButton)
+    buttonThread.daemon = True
+    buttonThread.start()
+    colorThread = threading.Thread(target = readColor)
+    colorThread.start()
+    #angleThread = threading.Thread(target = readAngle)
+    #angleThread.start()
+    circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
+    circleAngleThread.start()
+
+def read_dist():
+    while True:
+        global dist 
+        dist = ultraSoundSensor.distance_centimeters
+        time.sleep(0.05)
+
+def readButton():
+    global buttonPressed
+    buttonPressed = False
+    while True:
+        if btn.any() == True:
+            buttonPressed = True
+            time.sleep(0.05)
+            break
+    print("started") #debug
+
+def readColor():
+    global color
+    global col_raw
+    global seesGreen
+    global seesRed
+    color = "none"
+    rawColor = colorSensor.color
+    col_raw = colorSensor.raw
+    while True:
+        rawColor = colorSensor.color
+        col_raw = colorSensor.raw
+        if rawColor == 5:
+            color = "red"
+            seesRed = True
+        #elif rawColor == 3:
+        #    color = "green"
+        elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
+            color = "green"
+            seesGreen = True
+        time.sleep(0.1)
+
+def readAngle():
+    #global angle
+    while True:
+     #   angle = gyroSensor.angle
+        time.sleep(0.05)
+
+def readCircleAngle():
+    global circleAngle
+    while not stop_event.is_set():
+    #while True:
+        circleAngle = gyroSensor.circle_angle()
+        time.sleep(0.05)
+        #print(circleAngle)
+    print("is set")
     
 def drop():
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-
-
-
 
 '''def detectJumpInDist(threshold, dist):
     while True:
@@ -312,9 +298,6 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             #circleAngleThread = threading.Thread(target = readCircleAngle)
             #circleAngleThread.start()
 
-
-
-
 #driving
 def driveStraight(speed, rotations):
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
@@ -339,8 +322,6 @@ def driveTillDistWheel(dist):
         dist_crossed = rotations* 22.3 #in cm
         if dist_crossed >= dist:
             break
-
-
 
 #turning
 def betterTurnDegrees(degrees, speed):
@@ -379,7 +360,6 @@ def turnLeftToX(degrees, speed):
         angle = circleAngle
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
-
 #dropping
 '''def drop():
     turnRightToX(50, 15)
@@ -389,7 +369,6 @@ def turnLeftToX(degrees, speed):
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
     time.sleep(0.5)'''
-
 
 #determine how to get to next house
 def detectHouseEdges(threshold):
@@ -473,8 +452,6 @@ def getMultipleHouses():
             print("doesnt think its right")
             anglesAndDists.pop(x)
         
-
-
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
     anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
