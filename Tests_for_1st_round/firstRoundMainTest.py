@@ -178,10 +178,10 @@ def main():
             distsToNextHouse = sorted(distsToNextHouse)
             #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
             shortestDist = float(distsToNextHouse[0])
-            wantedAnOfAprch = int(anglesAndDists[shortestDist])
+            wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
 
             #drop abd 
-            turnRightToX(50, 10)
+            turnRightToX(20, 10)
             drop()
             time.sleep(0.5)
 
@@ -351,7 +351,7 @@ def leftTurn(degrees, speed):
 def rightTurn(degrees, speed):
     angle = circleAngle
     startAngle = angle
-    while angle > (startAngle - degrees):
+    while angle > max((startAngle - degrees), 0):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = circleAngle
         if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
@@ -435,6 +435,7 @@ def detectHouseEdges(threshold):
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
+    #drive forward about 1x the length of the robot from the sensor to the turning radius
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     while circleAngle < 350:
         global anglesAndDists
