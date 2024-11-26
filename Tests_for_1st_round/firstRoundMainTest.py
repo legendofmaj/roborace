@@ -435,7 +435,8 @@ def detectHouseEdges(threshold):
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
-    #drive forward about 1x the length of the robot from the sensor to the turning radius
+    #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     while circleAngle < 350:
         global anglesAndDists
