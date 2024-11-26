@@ -134,7 +134,7 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, 22.3)
+        adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
 
 def __init__threads__():
     #gyroSensor.reset()
