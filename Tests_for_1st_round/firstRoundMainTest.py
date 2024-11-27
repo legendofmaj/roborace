@@ -444,6 +444,8 @@ def getMultipleHouses():
         time.sleep(1)
         leftTurn(5, 10)
 
+    print("checked for houses")
+
     turnRightToX(180, 10)
     for x in anglesAndDists:
         print(x, anglesAndDists[x])
@@ -452,6 +454,8 @@ def getMultipleHouses():
         if seenDist > x + 5 or seenDist < x - 5:
             print("doesnt think its right")
             anglesAndDists.pop(x)
+
+    print("checked angles and dist")
         
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
