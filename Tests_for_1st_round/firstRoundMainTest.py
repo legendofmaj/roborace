@@ -12,6 +12,11 @@ from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
 from ev3dev2.button import Button
 from ev3dev2.wheel import EV3Tire, EV3EducationSetTire# i think the latter tire is the one we are using
+from ev3dev2.sound import Sound
+
+
+speaker = Sound()
+volume = 100
 
 STUD_MM = 8
 speed = 15
