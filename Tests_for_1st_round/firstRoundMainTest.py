@@ -413,9 +413,11 @@ def detectHouseEdges(threshold):
             break
         angleOld = getAngle()
         distOld = dist
+        print(distOld)
         time.sleep(0.05)
         angleNew = getAngle()
         distNew = dist
+        print(distNew)
         if distNew > 60:
             if abs(distOld-distNew) >= threshold:
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
@@ -442,12 +444,14 @@ def detectHouseEdges(threshold):
         #this here so it doesnt get stuck indefinitly executing
         angleOld = getAngle()
         distOld = dist
+        print(distOld)
         time.sleep(0.005)
         angleNew = getAngle()
         distNew = dist
+        print(distNew)
         if abs(distOld-distNew) >= threshold:
-            print(distOld)#debug
-            print(distNew)#debug
+            #print(distOld)#debug
+            #print(distNew)#debug
             leftCornerAngle = angleOld
             leftCornerDist = distOld
             print(leftCornerAngle)#debug
@@ -531,6 +535,8 @@ def getAngleOfApproach(a, b, alpha, beta):
     except ZeroDivisionError:
         anOfAprch = 90
         print("fuck fuck fuck fuck FUUUUCK")
+    except:
+        print("wtf is wrong now?")
     return anOfAprch
 
 def getDistToNextHouse(a, alpha, anOfAprch):
