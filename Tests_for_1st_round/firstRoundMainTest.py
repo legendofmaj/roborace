@@ -195,8 +195,7 @@ def readAngle():
 
 def readCircleAngle():
     global circleAngle
-    while not stop_event.is_set():
-    #while True:
+    while True:
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
         #print(circleAngle)
