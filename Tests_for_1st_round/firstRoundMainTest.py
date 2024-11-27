@@ -91,14 +91,8 @@ def main():
             print("red")
             tankDrive.off   
             seesRed = False
-            #stop_event.set()
-            #circleAngleThread.join()
-            gyroSensor.reset()
-            #tankDrive.gyro.reset()
-            #time.sleep(1)
-            #stop_event.clear()
-            #circleAngleThread = threading.Thread(target = readCircleAngle)
-            #circleAngleThread.start()
+            #gyroSensor.reset()
+            
 
             getMultipleHouses()
 
