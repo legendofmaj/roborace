@@ -442,7 +442,7 @@ def getMultipleHouses():
         anglesAndDists = {int(distToNextHouse) : int(anOfAprch)}
 
         time.sleep(1)
-        #tankDrive.turn_degrees(SpeedPercent(-10), -5)
+        leftTurn(5, 10)
 
     turnRightToX(180, 10)
     for x in anglesAndDists:
