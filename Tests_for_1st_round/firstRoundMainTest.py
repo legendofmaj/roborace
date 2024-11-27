@@ -273,7 +273,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         distNew = dist
         #time.sleep(0.3)
     if distOld < 50:
-        if abs(distOld-distNew) >= threshold:
+        if abs(distOld-distNew) >= threshold: # this works best when it dosnt need to turn first otherwise might seen an edge where ther isnt one
             print("sees edge")
             rotations = 0.00
             while True:
@@ -290,16 +290,10 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             time.sleep(1)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5)
-            #stop_event.set()
-            #circleAngleThread.join()
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
             time.sleep(2)
             gyroSensor.reset()
-            #tankDrive.gyro.reset()
             time.sleep(1)
-            #stop_event.clear()
-            #circleAngleThread = threading.Thread(target = readCircleAngle)
-            #circleAngleThread.start()
 
 #driving
 def driveStraight(speed, rotations):
@@ -429,6 +423,8 @@ def getMultipleHouses():
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     time.sleep(1)
     while circleAngle < 345:
+        if circleAngle > 350 or circleAngle < 15:
+            break
         global anglesAndDists
         #see if house
         detectHouseEdges(35)
