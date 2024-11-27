@@ -84,7 +84,7 @@ def main():
     #angleThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
-    startingFanfare()
+    #startingFanfare()
     #while True:
     #    if buttonPressed == True:
     #        print("pressed")
@@ -138,7 +138,7 @@ def main():
         
         adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
 
-    finishFanfare()
+    #finishFanfare()
 
 def __init__threads__():
     #gyroSensor.reset()
