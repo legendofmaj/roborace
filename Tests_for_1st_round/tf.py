@@ -133,7 +133,7 @@ def main():
     print("u may press")
     #play tone
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
-    while True:
+    '''while True:
         print("asdfgnmsdfghjm,")
         #circleAngleThread = threading.Thread(target = readCircleAngle)#d, args=(stop_event, ))
         #circleAngleThread.start()
@@ -172,7 +172,13 @@ def main():
         tankDrive.turn_degrees(SpeedPercent(-10), -90)
         if buttonPressed == True:
             print("pressed")
-            break
+            break'''
+    while True:
+        print(circleAngle)
+        tankDrive.off
+        time.sleep(1.5)
+        gyroSensor.reset()
+        time.sleep(0.5)
     
     
 def drop():

@@ -83,7 +83,7 @@ def main():
     #        break
     #    time.sleep(0.05)
 
-    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+    #tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(2)
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
@@ -375,8 +375,9 @@ def detectHouseEdges(threshold):
     global leftCornerDist
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
-        if circleAngle > 350 or circleAngle < 15:
+        if circleAngle > 350 or circleAngle < 50:
             tankDrive.off
+            print("nope")
             break
         angleOld = circleAngle
         distOld = dist
@@ -399,9 +400,12 @@ def detectHouseEdges(threshold):
     #betterTurnDegrees(5, 15)
     if circleAngle < 350 and circleAngle > 150:
         leftTurn(5, 10)
+        print("lil turn")
         tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+        
     while True:
-        if circleAngle > 350 or circleAngle < 15:
+        if circleAngle > 350 or circleAngle < 50:
+            print("broke")
             break
         #this here so it doesnt get stuck indefinitly executing
         angleOld = circleAngle
@@ -422,6 +426,9 @@ def detectHouseEdges(threshold):
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
+    
+    #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off
     print(circleAngle)
     tankDrive.off
@@ -429,14 +436,14 @@ def getMultipleHouses():
     gyroSensor.reset()
     time.sleep(0.5)
     print(circleAngle)
-    #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
-    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    time.sleep(6)
     print("driven")
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(1)
-    while circleAngle < 345:
-        if circleAngle > 350 or circleAngle < 15:
+    while circleAngle < 350 and circleAngle > 100:
+        if circleAngle > 350 or circleAngle < 50:
+            print("broke")
             break
         global anglesAndDists
         #see if house
@@ -459,6 +466,10 @@ def getMultipleHouses():
         leftTurn(5, 10)
 
     print("checked for houses")
+
+    tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
+    time.sleep(1)
+    tankDrive.off
 
     turnRightToX(180, 10)
     print("turned back")
