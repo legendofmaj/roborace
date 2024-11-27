@@ -106,8 +106,10 @@ def main():
 
             #add the dists to a list and sort it
             distsToNextHouse = anglesAndDists.keys()
+            print(distsToNextHouse, anglesAndDists.keys())
             distsToNextHouse = [float(x) for x in distsToNextHouse]
             distsToNextHouse = sorted(distsToNextHouse)
+            print(distsToNextHouse)
             #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
             shortestDist = float(distsToNextHouse[0])
             wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
@@ -136,7 +138,7 @@ def main():
             tankDrive.off
             break
         
-        adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
+        adjustDist_findEdge(11, 4, 10, 35, (0.9*22.3))
 
     #finishFanfare()
 
@@ -468,7 +470,7 @@ def getMultipleHouses():
     posO = circleAngle
     time.sleep(0.5)
     print(getAngle())
-    time.sleep(6)
+    time.sleep(0.5)
     print("driven")
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     print("turned outwards")
@@ -524,7 +526,11 @@ def getMultipleHouses():
         
 def getAngleOfApproach(a, b, alpha, beta):
     global anOfAprch
-    anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
+    try:
+        anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
+    except ZeroDivisionError:
+        anOfAprch = 90
+        print("fuck fuck fuck fuck FUUUUCK")
     return anOfAprch
 
 def getDistToNextHouse(a, alpha, anOfAprch):
