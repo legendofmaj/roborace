@@ -41,7 +41,7 @@ def main():
         if button.any() == True:
             break
     #play sound
-    modules.sound.firstSoundFile()
+    modules.sound.startingFanfare()
     
 
     #drive until red line
@@ -98,7 +98,7 @@ def main():
     time.sleep(3)
     tank_drive.off()
     #play sound
-    modules.sound.secondSoundFile()
+    modules.sound.finishFanfare()
 
 if __name__ == "__main__":
     main()            
