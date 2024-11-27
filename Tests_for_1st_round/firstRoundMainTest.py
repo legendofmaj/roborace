@@ -420,6 +420,7 @@ def detectHouseEdges(threshold):
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
+    tankDrive.off
     print(circleAngle)
     gyroSensor.reset()
     time.sleep(0.5)
