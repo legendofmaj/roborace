@@ -291,7 +291,9 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
             time.sleep(2)
+            print(circleAngle)
             gyroSensor.reset()
+            print(circleAngle)
             time.sleep(1)
 
 #driving
@@ -417,6 +419,9 @@ def detectHouseEdges(threshold):
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
 def getMultipleHouses():
+    print(circleAngle)
+    gyroSensor.reset()
+    print(circleAngle)
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     turnLeftToX(180, 10) #turn so that the sensor points outwards
