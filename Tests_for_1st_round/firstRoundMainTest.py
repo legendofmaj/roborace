@@ -115,15 +115,15 @@ def main():
             wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
 
             #drop abd 
-            turnRightToX(20, 10)
+            turnRightToX(50, 10)
             drop()
             time.sleep(0.5)
 
             turnLeftToX(wantedAnOfAprch, 10)
 
-            toDriveDist = shortestDist - 15
-
-            driveTillDistWheel(toDriveDist)
+            toDriveDist = shortestDist - 20
+            if toDriveDist > 5:
+                driveTillDistWheel(toDriveDist)
             
             leftTurn(90, 10)
 
@@ -343,9 +343,9 @@ def driveTillDistWheel(dist):
     #tankDrive.on(SpeedPercent(-5), SpeedPercent(-5))
     rotations = 0.00
     while True:
-        tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.01)
-        rotations += 0.01
-        dist_crossed = rotations* 22.3 #in cm
+        tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.03)
+        rotations += 0.03
+        dist_crossed = rotations * 22.3 #in cm
         if dist_crossed >= dist:
             break
 
@@ -414,17 +414,17 @@ def detectHouseEdges(threshold):
         angleOld = getAngle()
         distOld = dist
         print(distOld)
-        time.sleep(0.05)
+        time.sleep(0.07)
         angleNew = getAngle()
         distNew = dist
         print(distNew)
-        if distNew > 60:
+        if distNew > 0:
             if abs(distOld-distNew) >= threshold:
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 #print(distOld)#debug
                 #print(distNew)#debug
                 rightCornerAngle = angleNew
-                rightCornerDist = distNew
+                rightCornerDist = distNew + 10
                 print(rightCornerAngle)#debug
                 print(rightCornerDist)#debug
                 break
@@ -435,7 +435,7 @@ def detectHouseEdges(threshold):
     if getAngle() < 350 and getAngle() > 150:
         leftTurn(5, 10)
         print("lil turn")
-        tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+        tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
         
     while True:
         if getAngle() > 350 or getAngle() < 50:
@@ -445,7 +445,7 @@ def detectHouseEdges(threshold):
         angleOld = getAngle()
         distOld = dist
         print(distOld)
-        time.sleep(0.005)
+        time.sleep(0.07)
         angleNew = getAngle()
         distNew = dist
         print(distNew)
@@ -453,7 +453,7 @@ def detectHouseEdges(threshold):
             #print(distOld)#debug
             #print(distNew)#debug
             leftCornerAngle = angleOld
-            leftCornerDist = distOld
+            leftCornerDist = distOld + 10
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
             break
@@ -486,11 +486,11 @@ def getMultipleHouses():
         global anglesAndDists
         #see if house
         print("seing houses")
-        detectHouseEdges(35)
+        detectHouseEdges(17)
         print("saw houses")
         
-        a = rightCornerDist
-        b = leftCornerDist
+        a = rightCornerDist 
+        b = leftCornerDist 
         alpha = rightCornerAngle
         beta = leftCornerAngle
 
@@ -518,8 +518,9 @@ def getMultipleHouses():
         print(x, anglesAndDists[x])
         turnLeftToX((anglesAndDists[x] + 90), 10)
         print("turning to angle")
+        time.sleep(1)
         seenDist = dist
-        if seenDist > x + 10 or seenDist < x - 10:
+        if seenDist > (x-10) + 10 or seenDist < (x-10) - 10:
             print("doesnt think its right")
             toRemove.append(x)
     for x in toRemove:
@@ -540,7 +541,7 @@ def getAngleOfApproach(a, b, alpha, beta):
     return anOfAprch
 
 def getDistToNextHouse(a, alpha, anOfAprch):
-    distToNextHouse = math.cos(anOfAprch - alpha) * a
+    distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
     return distToNextHouse
 
 if __name__=="__main__":
