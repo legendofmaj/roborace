@@ -52,6 +52,9 @@ seesRed = False
 
 anglesAndDists = {1000000 : 1000000}
 
+posO = 90
+Angle = 90
+
 #gyroSensor.reset()
 #tankDrive.gyro.reset()
 time.sleep(1)
@@ -193,7 +196,18 @@ def readCircleAngle():
         circleAngle = gyroSensor.circle_angle()
         time.sleep(0.05)
         #print(circleAngle)
-    print("is set")
+
+def getAngle():
+    global posO
+    #global Angle
+    temp = (circleAngle - posO) + 90
+    if temp < 0:
+        return temp + 360
+    elif temp > 360:
+        return temp - 360
+    else:
+        return temp
+
     
 def drop():
     print("dropping") #debug
@@ -285,11 +299,13 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
             time.sleep(2)
-            print(circleAngle)
+            print(getAngle())
             tankDrive.off
             time.sleep(1.5)
-            gyroSensor.reset()
-            print(circleAngle)
+            #gyroSensor.reset()
+            global posO
+            posO = circleAngle
+            print(getAngle())
             time.sleep(1)
 
 #driving
@@ -323,35 +339,35 @@ def betterTurnDegrees(degrees, speed):
     mdiff.turn_to_angle(SpeedPercent(speed), degrees)
     mdiff.odometry_stop()
 def leftTurn(degrees, speed):
-    angle = circleAngle
+    angle = getAngle()
     startAngle = angle
     while angle <= (startAngle + degrees):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
-        angle = circleAngle
+        angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def rightTurn(degrees, speed):
-    angle = circleAngle
+    angle = getAngle()
     startAngle = angle
     while angle >= max((startAngle - degrees), 0):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
-        angle = circleAngle
+        angle = getAngle()
         if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
             break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnRightToX(degrees, speed):
-    angle = circleAngle
+    angle = getAngle()
     while angle > degrees:
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
-        angle = circleAngle
+        angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
-    angle = circleAngle
+    angle = getAngle()
     while angle < degrees:
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
-        angle = circleAngle
+        angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 #dropping
@@ -375,14 +391,14 @@ def detectHouseEdges(threshold):
     global leftCornerDist
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
-        if circleAngle > 350 or circleAngle < 50:
+        if getAngle() > 350 or getAngle() < 50:
             tankDrive.off
             print("nope")
             break
-        angleOld = circleAngle
+        angleOld = getAngle()
         distOld = dist
         time.sleep(0.05)
-        angleNew = circleAngle
+        angleNew = getAngle()
         distNew = dist
         if distNew > 60:
             if abs(distOld-distNew) >= threshold:
@@ -398,20 +414,20 @@ def detectHouseEdges(threshold):
     tankDrive.off
     time.sleep(1)
     #betterTurnDegrees(5, 15)
-    if circleAngle < 350 and circleAngle > 150:
+    if getAngle() < 350 and getAngle() > 150:
         leftTurn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
         
     while True:
-        if circleAngle > 350 or circleAngle < 50:
+        if getAngle() > 350 or getAngle() < 50:
             print("broke")
             break
         #this here so it doesnt get stuck indefinitly executing
-        angleOld = circleAngle
+        angleOld = getAngle()
         distOld = dist
         time.sleep(0.005)
-        angleNew = circleAngle
+        angleNew = getAngle()
         distNew = dist
         if abs(distOld-distNew) >= threshold:
             print(distOld)#debug
@@ -430,19 +446,21 @@ def getMultipleHouses():
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off
-    print(circleAngle)
+    print(getAngle())
     tankDrive.off
     time.sleep(1.5)
-    gyroSensor.reset()
+    #gyroSensor.reset()
+    global posO
+    posO = circleAngle
     time.sleep(0.5)
-    print(circleAngle)
+    print(getAngle())
     time.sleep(6)
     print("driven")
     turnLeftToX(180, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(1)
-    while circleAngle < 350 and circleAngle > 100:
-        if circleAngle > 350 or circleAngle < 50:
+    while getAngle() < 350 and getAngle() > 100:
+        if getAngle() > 350 or getAngle() < 50:
             print("broke")
             break
         global anglesAndDists
