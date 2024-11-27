@@ -286,6 +286,8 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
             time.sleep(2)
             print(circleAngle)
+            tankDrive.off
+            time.sleep(1.5)
             gyroSensor.reset()
             print(circleAngle)
             time.sleep(1)
@@ -422,6 +424,8 @@ def detectHouseEdges(threshold):
 def getMultipleHouses():
     tankDrive.off
     print(circleAngle)
+    tankDrive.off
+    time.sleep(1.5)
     gyroSensor.reset()
     time.sleep(0.5)
     print(circleAngle)
@@ -462,7 +466,7 @@ def getMultipleHouses():
     for x in anglesAndDists:
         print("checking dists")
         print(x, anglesAndDists[x])
-        turnLeftToX(anglesAndDists[x], 10)
+        turnLeftToX((anglesAndDists[x] + 90), 10)
         print("turning to angle")
         seenDist = dist
         if seenDist > x + 10 or seenDist < x - 10:
