@@ -77,11 +77,11 @@ def main():
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 
-    while True:
-        if buttonPressed == True:
-            print("pressed")
-            break
-        time.sleep(0.05)
+    #while True:
+    #    if buttonPressed == True:
+    #        print("pressed")
+    #        break
+    #    time.sleep(0.05)
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(2)
@@ -251,7 +251,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #distOld = dist
         #time.sleep(0.5)
         #tankDrive.off
-        leftTurn(3, 10)
+        leftTurn(4, 10)
         #tankDrive.off 
         distNew = dist
     if correct == -1:
@@ -284,13 +284,16 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                 if dist_crossed >= drive_further:
                     tankDrive.off
                     break
+
             rightTurn(85, 10) #should be ninety overturns tho
             tankDrive.off
             time.sleep(1)
+            tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+            time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5)
             #stop_event.set()
             #circleAngleThread.join()
-            time.sleep(1)
+            time.sleep(2)
             gyroSensor.reset()
             #tankDrive.gyro.reset()
             time.sleep(1)
