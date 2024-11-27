@@ -84,7 +84,7 @@ def main():
     #angleThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
-
+    startingFanfare()
     #while True:
     #    if buttonPressed == True:
     #        print("pressed")
@@ -137,6 +137,8 @@ def main():
             break
         
         adjustDist_findEdge(15, 4, 10, 35, (0.9*22.3))
+
+    finishFanfare()
 
 def __init__threads__():
     #gyroSensor.reset()
@@ -504,6 +506,7 @@ def getMultipleHouses():
     turnRightToX(180, 10)
     print("turned back")
     time.sleep(1)
+    toRemove = []
     for x in anglesAndDists:
         print("checking dists")
         print(x, anglesAndDists[x])
@@ -512,7 +515,10 @@ def getMultipleHouses():
         seenDist = dist
         if seenDist > x + 10 or seenDist < x - 10:
             print("doesnt think its right")
-            anglesAndDists.pop(x)
+            toRemove.append(x)
+    for x in toRemove:
+        anglesAndDists.pop(x)
+    toRemove.clear()
 
     print("checked angles and dist")
         
