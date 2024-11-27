@@ -373,6 +373,9 @@ def detectHouseEdges(threshold):
     global leftCornerDist
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
+        if circleAngle > 350 or circleAngle < 15:
+            tankDrive.off
+            break
         angleOld = circleAngle
         distOld = dist
         time.sleep(0.05)
@@ -381,8 +384,8 @@ def detectHouseEdges(threshold):
         if distNew > 60:
             if abs(distOld-distNew) >= threshold:
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-                print(distOld)#debug
-                print(distNew)#debug
+                #print(distOld)#debug
+                #print(distNew)#debug
                 rightCornerAngle = angleNew
                 rightCornerDist = distNew
                 print(rightCornerAngle)#debug
@@ -392,9 +395,13 @@ def detectHouseEdges(threshold):
     tankDrive.off
     time.sleep(1)
     #betterTurnDegrees(5, 15)
-    leftTurn(5, 10)
-    tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+    if circleAngle < 350 and circleAngle > 150:
+        leftTurn(5, 10)
+        tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
+        if circleAngle > 350 or circleAngle < 15:
+            break
+        #this here so it doesnt get stuck indefinitly executing
         angleOld = circleAngle
         distOld = dist
         time.sleep(0.005)
@@ -415,17 +422,22 @@ def detectHouseEdges(threshold):
 def getMultipleHouses():
     print(circleAngle)
     gyroSensor.reset()
+    time.sleep(0.5)
     print(circleAngle)
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    print("driven")
     turnLeftToX(180, 10) #turn so that the sensor points outwards
+    print("turned outwards")
     time.sleep(1)
     while circleAngle < 345:
         if circleAngle > 350 or circleAngle < 15:
             break
         global anglesAndDists
         #see if house
+        print("seing houses")
         detectHouseEdges(35)
+        print("saw houses")
         
         a = rightCornerDist
         b = leftCornerDist
@@ -444,11 +456,15 @@ def getMultipleHouses():
     print("checked for houses")
 
     turnRightToX(180, 10)
+    print("turned back")
+    time.sleep(1)
     for x in anglesAndDists:
+        print("checking dists")
         print(x, anglesAndDists[x])
         turnLeftToX(anglesAndDists[x], 10)
+        print("turning to angle")
         seenDist = dist
-        if seenDist > x + 5 or seenDist < x - 5:
+        if seenDist > x + 10 or seenDist < x - 10:
             print("doesnt think its right")
             anglesAndDists.pop(x)
 
