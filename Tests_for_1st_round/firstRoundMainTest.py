@@ -15,8 +15,7 @@ from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 
-speaker = Sound()
-volume = 100
+
 
 studmm = 8
 studs_that_wheels_are_apart = 15
@@ -34,6 +33,7 @@ motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
+speaker = Sound()
 #tankDrive.gyro = gyroSensor
 
 stop_event = threading.Event()
@@ -73,7 +73,6 @@ def main():
     
     #while True:
     #    if buttonPressed == True:
-    #        print("pressed")
     #        break
     #    time.sleep(0.05)
 
@@ -87,7 +86,6 @@ def main():
             seesRed = False
             #gyroSensor.reset()
             
-
             getMultipleHouses()
 
             #add the dists to a list and sort it
@@ -370,16 +368,6 @@ def turnLeftToX(degrees, speed):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-
-#dropping
-'''def drop():
-    turnRightToX(50, 15)
-    time.sleep(0.5)
-    print("dropping") #debug
-    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
-    time.sleep(0.5)
-    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
-    time.sleep(0.5)'''
 
 #determine how to get to next house
 def detectHouseEdges(threshold):
