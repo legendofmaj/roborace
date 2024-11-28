@@ -97,7 +97,7 @@ def main():
     while True:
         if seesRed == True:
             print("red")
-            tankDrive.off   
+            tankDrive.off()   
             seesRed = False
             #gyroSensor.reset()
             
@@ -130,12 +130,12 @@ def main():
             #then drive to thew next house and then turn  
         
         if seesGreen == True: 
-            tankDrive.off
+            tankDrive.off()
             seesGreen = False
             print("green")
             smoothDriveStraight(20)
             time.sleep(3)
-            tankDrive.off
+            tankDrive.off()
             break
         
         adjustDist_findEdge(11, 4, 10, 35, (0.9*22.3))
@@ -265,29 +265,29 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     elif dist > desired_dist - tolerance and dist < desired_dist + tolerance:
         correct = 0
         print("hmm sees to be right")
-    tankDrive.off
+    tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
         rightTurn(4, 10)
-        #tankDrive.off
+        #tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
         #distOld = dist
         #time.sleep(0.5)
-        #tankDrive.off
+        #tankDrive.off()
         leftTurn(4, 10)
-        #tankDrive.off 
+        #tankDrive.off() 
         distNew = dist
     if correct == -1:
         distOld = dist
         leftTurn(4, 10)
-        tankDrive.off
+        tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
         #distOld = dist
         #time.sleep(0.5)
-        tankDrive.off
+        tankDrive.off()
         #print("gets herd")
         rightTurn(3, 10)
-        tankDrive.off
+        tankDrive.off()
         distNew = dist
         #print("hello is past second turn")
     if correct == 0:
@@ -305,18 +305,18 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                 rotations += rotation
                 dist_crossed = rotations* 22.3 #in cm
                 if dist_crossed >= drive_further:
-                    tankDrive.off
+                    tankDrive.off()
                     break
 
             rightTurn(85, 10) #should be ninety overturns tho
-            tankDrive.off
+            tankDrive.off()
             time.sleep(1)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
             time.sleep(2)
             print(getAngle())
-            tankDrive.off
+            tankDrive.off()
             time.sleep(1.5)
             #gyroSensor.reset()
             global posO
@@ -408,7 +408,7 @@ def detectHouseEdges(threshold):
     tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
     while True:
         if getAngle() > 350 or getAngle() < 50:
-            tankDrive.off
+            tankDrive.off()
             print("nope")
             break
         angleOld = getAngle()
@@ -429,7 +429,7 @@ def detectHouseEdges(threshold):
                 print(rightCornerDist)#debug
                 break
     print("found one")#debug
-    tankDrive.off
+    tankDrive.off()
     time.sleep(1)
     #betterTurnDegrees(5, 15)
     if getAngle() < 350 and getAngle() > 150:
@@ -457,7 +457,7 @@ def detectHouseEdges(threshold):
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
             break
-    tankDrive.off
+    tankDrive.off()
     print("right Corner Angle: " + str(rightCornerAngle)  + ", right Corner distance: " + str(rightCornerDist)) #debug
     print("left Corner Angle: " + str(leftCornerAngle)+ ", left Corner distance: " + str(leftCornerDist)) #debug
 
@@ -465,9 +465,9 @@ def getMultipleHouses():
     
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
-    tankDrive.off
+    tankDrive.off()
     print(getAngle())
-    tankDrive.off
+    tankDrive.off()
     time.sleep(1.5)
     #gyroSensor.reset()
     global posO
@@ -507,7 +507,7 @@ def getMultipleHouses():
 
     tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
     time.sleep(1)
-    tankDrive.off
+    tankDrive.off()
 
     turnRightToX(180, 10)
     print("turned back")
