@@ -11,24 +11,19 @@ from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor.lego import ColorSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
 from ev3dev2.button import Button
-from ev3dev2.wheel import EV3Tire, EV3EducationSetTire# i think the latter tire is the one we are using
+from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 
 speaker = Sound()
 volume = 100
 
-STUD_MM = 8
-speed = 15
-studs_that_wheels_are_apart = 16
-mm_that_wheels_are_apart = 0 #mm
+studmm = 8
+studs_that_wheels_are_apart = 15
 min_dist_between_wheels = 118 #mm
-max_dist_between_wheels = 188 #mm
-min_dist_to_middle = 59 #mm
-max_dist_to_middle = 94 #mm
+mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
+#or: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
 
-mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
-#or: MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 #tankDrive.gyro = GyroSensor(INPUT_2)
