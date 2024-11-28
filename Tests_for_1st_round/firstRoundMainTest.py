@@ -76,7 +76,7 @@ def main():
     #        break
     #    time.sleep(0.05)
 
-    #tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(2)
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
@@ -95,11 +95,15 @@ def main():
             distsToNextHouse = sorted(distsToNextHouse)
             print(distsToNextHouse)
             #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
-            shortestDist = float(distsToNextHouse[0])
-            wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
+            try:
+                shortestDist = float(distsToNextHouse[0])
+                wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
+            except IndexError:
+                print("wtf is it now ")
 
             #drop abd 
-            turnRightToX(50, 10)
+            #turnLeftToX(180, 10)
+            turnRightToX(75, 10)
             drop()
             time.sleep(0.5)
 
@@ -122,7 +126,7 @@ def main():
             tankDrive.off()
             break
         
-        adjustDist_findEdge(11, 4, 10, 35, (0.9*22.3))
+        adjustDist_findEdge(17, 4, 10, 35, (0.9*22.3))
 
     #finishFanfare()
 
@@ -176,6 +180,7 @@ def readColor():
         if rawColor == 5:
             color = "red"
             seesRed = True
+            print("aw yep red")
         #elif rawColor == 3:
         #    color = "green"
         elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
@@ -210,28 +215,10 @@ def getAngle():
     
 def drop():
     print("dropping") #debug
-    depositMotor.on_for_rotations(SpeedPercent(75), 1.9)
+    depositMotor.on_for_rotations(SpeedPercent(75), 1.75)
     time.sleep(0.5)
-    depositMotor.on_for_rotations(SpeedPercent(75), -1.9)
+    depositMotor.on_for_rotations(SpeedPercent(75), -1.75)
 
-'''def detectJumpInDist(threshold, dist):
-    while True:
-        distOld = ultraSoundSensor.distance_centimeters
-        time.sleep(0.005)
-        distNew = ultraSoundSensor.distance_centimeters
-        if distOld < 50:
-            if abs(distOld-distNew) >= threshold:
-                print("sees edge")
-                rotations = 0.00
-                while True:
-                    tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.01)
-                    rotations += 0.01
-                    dist_crossed = rotations* 22.3 #in cm
-                    if dist_crossed >= dist:
-                        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-                        #circleAngle = gyroSensor.circle_angle()
-                        break
-                tankDrive.turn_degrees(SpeedPercent(5), -90)'''
 
 def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further):
     #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
@@ -253,7 +240,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         distOld = dist
         rightTurn(4, 10)
         #tankDrive.off()
-        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1) 
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15) 
         #distOld = dist
         #time.sleep(0.5)
         #tankDrive.off()
@@ -264,7 +251,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         distOld = dist
         leftTurn(4, 10)
         tankDrive.off()
-        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off()
@@ -275,7 +262,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #print("hello is past second turn")
     if correct == 0:
         distOld = dist
-        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.1)
+        tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         distNew = dist
         #time.sleep(0.3)
     if distOld < 50:
@@ -286,17 +273,17 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                 rotation = 0.9
                 tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), rotation)
                 rotations += rotation
-                dist_crossed = rotations* 22.3 #in cm
+                dist_crossed = rotations * 22.3 #in cm
                 if dist_crossed >= drive_further:
                     tankDrive.off()
                     break
 
-            rightTurn(85, 10) #should be ninety overturns tho
+            rightTurn(80, 10) #should be ninety overturns tho
             tankDrive.off()
             time.sleep(1)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1.5) #this works very inconsistently
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 2) #this works very inconsistently
             time.sleep(2)
             print(getAngle())
             tankDrive.off()
@@ -393,6 +380,8 @@ def detectHouseEdges(threshold):
         print(distNew)
         if distNew > 0:
             if abs(distOld-distNew) >= threshold:
+                time.sleep(0.05)
+                distNew = dist
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 #print(distOld)#debug
                 #print(distNew)#debug
@@ -449,7 +438,7 @@ def getMultipleHouses():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    turnLeftToX(180, 10) #turn so that the sensor points outwards
+    turnLeftToX(150, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(1)
     while getAngle() < 350 and getAngle() > 100:
@@ -471,7 +460,7 @@ def getMultipleHouses():
 
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
 
-        anglesAndDists = {int(distToNextHouse) : int(anOfAprch)}
+        anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
 
         time.sleep(1)
         leftTurn(5, 10)
@@ -482,10 +471,10 @@ def getMultipleHouses():
     time.sleep(1)
     tankDrive.off()
 
-    turnRightToX(180, 10)
+    turnRightToX(150, 10)
     print("turned back")
     time.sleep(1)
-    toRemove = []
+    '''toRemove = []
     for x in anglesAndDists:
         print("checking dists")
         print(x, anglesAndDists[x])
@@ -498,7 +487,7 @@ def getMultipleHouses():
             toRemove.append(x)
     for x in toRemove:
         anglesAndDists.pop(x)
-    toRemove.clear()
+    toRemove.clear()'''
 
     print("checked angles and dist")
         
