@@ -60,26 +60,17 @@ Angle = 90
 time.sleep(1)
 
 def main():
-    #if __name__ == "__init__threads__":
-    #__init__threads__()
     print("u may press")
     #play tone
     global seesRed
     global seesGreen
 
     #gyroSensor.reset()
-    distThread = threading.Thread(target= read_dist)
-    distThread.start()
-    buttonThread = threading.Thread(target = readButton)
-    buttonThread.daemon = True
-    buttonThread.start()
-    colorThread = threading.Thread(target = readColor)
-    colorThread.start()
-    #angleThread = threading.Thread(target = readAngle)
-    #angleThread.start()
-    circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
-    circleAngleThread.start()
+
+    startThreads()
+
     #startingFanfare()
+    
     #while True:
     #    if buttonPressed == True:
     #        print("pressed")
@@ -137,8 +128,7 @@ def main():
 
     #finishFanfare()
 
-def __init__threads__():
-    #gyroSensor.reset()
+def startThreads():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
     buttonThread = threading.Thread(target = readButton)
