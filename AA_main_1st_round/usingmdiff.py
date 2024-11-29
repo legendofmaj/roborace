@@ -375,7 +375,7 @@ def rightTurn(degrees, speed):
 
 def turnRightToX(degrees, speed):
     angle = getAngle()
-    while angle > max(0, degrees - 5):
+    while angle > max(10, degrees - 5):
         mdiff.turn_right(speed, 1)
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
