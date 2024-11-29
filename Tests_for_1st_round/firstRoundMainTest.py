@@ -85,35 +85,50 @@ def main():
             tankDrive.off()   
             seesRed = False
             #gyroSensor.reset()
+            global posO
+            posO = circleAngle
             
             getMultipleHouses()
 
             #add the dists to a list and sort it
             distsToNextHouse = anglesAndDists.keys()
             print(distsToNextHouse, anglesAndDists.keys())
-            distsToNextHouse = [float(x) for x in distsToNextHouse]
+            distsToNextHouse = [int(x) for x in distsToNextHouse]
             distsToNextHouse = sorted(distsToNextHouse)
             print(distsToNextHouse)
             #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
             try:
-                shortestDist = float(distsToNextHouse[0])
+                shortestDist = int(distsToNextHouse[0])
                 wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
             except IndexError:
                 print("wtf is it now ")
 
             #drop abd 
             #turnLeftToX(180, 10)
-            turnRightToX(75, 10)
+            turnRightToX(50, 10)
             drop()
             time.sleep(0.5)
+            print("checking dists")
+            turnLeftToX((wantedAnOfAprch + 90), 10)
+            print("turning to angle")
+            time.sleep(1)
+            seenDist = dist
+            print(seenDist)
+            time.sleep(0.2)
 
-            turnLeftToX(wantedAnOfAprch, 10)
+            turnRightToX(wantedAnOfAprch + 5, 5)
+            #rightTurn(85, 7)
 
-            toDriveDist = shortestDist - 20
+            toDriveDist = seenDist - 13
             if toDriveDist > 5:
                 driveTillDistWheel(toDriveDist)
+                print("drove")
             
             leftTurn(90, 10)
+            time.sleep(0.2)
+            seesRed = False
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
+            posO = circleAngle
 
             #then drive to thew next house and then turn  
         
@@ -126,7 +141,7 @@ def main():
             tankDrive.off()
             break
         
-        adjustDist_findEdge(17, 4, 10, 35, (0.9*22.3))
+        adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
 
     #finishFanfare()
 
@@ -180,7 +195,7 @@ def readColor():
         if rawColor == 5:
             color = "red"
             seesRed = True
-            print("aw yep red")
+            #print("aw yep red")
         #elif rawColor == 3:
         #    color = "green"
         elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
@@ -265,7 +280,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         distNew = dist
         #time.sleep(0.3)
-    if distOld < 50:
+    if distOld != 0:
         if abs(distOld-distNew) >= threshold: # this works best when it dosnt need to turn first otherwise might seen an edge where ther isnt one
             print("sees edge")
             rotations = 0.00
@@ -279,14 +294,15 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     break
 
             rightTurn(80, 10) #should be ninety overturns tho
-            tankDrive.off()
+            #tankDrive.off()
             time.sleep(1)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 2) #this works very inconsistently
-            time.sleep(2)
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5) #this works very inconsistently
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+            time.sleep(1)
             print(getAngle())
-            tankDrive.off()
+            #tankDrive.off()
             time.sleep(1.5)
             #gyroSensor.reset()
             global posO
@@ -312,9 +328,10 @@ def driveTillDist(distance): #this doesnt work anymore
 def driveTillDistWheel(dist):
     #tankDrive.on(SpeedPercent(-5), SpeedPercent(-5))
     rotations = 0.00
+    rotation = 0.01
     while True:
-        tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), 0.03)
-        rotations += 0.03
+        tankDrive.on_for_rotations(SpeedPercent(-5), SpeedPercent(-5), rotation)
+        rotations += rotation
         dist_crossed = rotations * 22.3 #in cm
         if dist_crossed >= dist:
             break
@@ -380,7 +397,7 @@ def detectHouseEdges(threshold):
         print(distNew)
         if distNew > 0:
             if abs(distOld-distNew) >= threshold:
-                time.sleep(0.05)
+                time.sleep(0.1)
                 distNew = dist
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 #print(distOld)#debug
@@ -438,17 +455,19 @@ def getMultipleHouses():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    turnLeftToX(150, 10) #turn so that the sensor points outwards
+    turnLeftToX(170, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(1)
     while getAngle() < 350 and getAngle() > 100:
         if getAngle() > 350 or getAngle() < 50:
-            print("broke")
+            print("broke in multo")
             break
         global anglesAndDists
         #see if house
         print("seing houses")
-        detectHouseEdges(17)
+        detectHouseEdges(12)
+        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        tankDrive.off()
         print("saw houses")
         
         a = rightCornerDist 
@@ -462,13 +481,17 @@ def getMultipleHouses():
 
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
 
+        if getAngle() > 350 or getAngle() < 50:
+            print("broke in multo2")
+            break
+
         time.sleep(1)
         leftTurn(5, 10)
 
     print("checked for houses")
 
     tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
-    time.sleep(1)
+    time.sleep(5)
     tankDrive.off()
 
     turnRightToX(150, 10)
