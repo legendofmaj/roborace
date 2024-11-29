@@ -17,7 +17,7 @@ from ev3dev2.sound import Sound
 
 
 
-studmm = 8
+studmm = 7
 studs_that_wheels_are_apart = 15
 min_dist_between_wheels = 118 #mm
 mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
