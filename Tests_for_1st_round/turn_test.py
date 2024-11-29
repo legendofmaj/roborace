@@ -72,7 +72,7 @@ def main():
     posO = circleAngle
     print(getAngle())
 
-    betterTurnRightToX(90, 10)
+    betterTurnRightToX(0, 10)
 
     print(getAngle())
 
@@ -164,7 +164,7 @@ def getAngle():
 
 def betterTurnRightToX(degrees, speed):
     mdiff.odometry_start()
-    mdiff.turn_to_angle(SpeedPercent(speed), degrees)
+    mdiff.turn_to_angle(SpeedPercent(-speed), degrees)
     mdiff.odometry_stop()
 
 def betterTurnLeftToX(degrees, speed):
