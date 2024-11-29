@@ -124,7 +124,7 @@ def main():
                 driveTillDistWheel(toDriveDist)
                 print("drove")
             
-            mdiff.turn_left(90, 10)
+            mdiff.turn_left(10, 90)
             time.sleep(0.2)
             seesRed = False
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
@@ -253,25 +253,25 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
-        mdiff.turn_right(4, 10)
+        mdiff.turn_right(10, 4)
         #tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15) 
         #distOld = dist
         #time.sleep(0.5)
         #tankDrive.off()
-        mdiff.turn_left(4, 10)
+        mdiff.turn_left(10, 4)
         #tankDrive.off() 
         distNew = dist
     if correct == -1:
         distOld = dist
-        mdiff.turn_left(4, 10)
+        mdiff.turn_left(10, 3)
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off()
         #print("gets herd")
-        mdiff.turn_right(3, 10)
+        mdiff.turn_right(10, 3)
         tankDrive.off()
         distNew = dist
         #print("hello is past second turn")
@@ -293,7 +293,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     tankDrive.off()
                     break
 
-            mdiff.turn_right(80, 10) #should be ninety overturns tho
+            mdiff.turn_right(10, 85) #should be ninety overturns tho
             #tankDrive.off()
             time.sleep(1)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
