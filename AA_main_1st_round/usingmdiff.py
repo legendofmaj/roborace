@@ -17,7 +17,7 @@ from ev3dev2.sound import Sound
 
 
 
-studmm = 8
+studmm = 7
 studs_that_wheels_are_apart = 15
 min_dist_between_wheels = 118 #mm
 mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
@@ -58,7 +58,7 @@ Angle = 90
 
 #gyroSensor.reset()
 #tankDrive.gyro.reset()
-time.sleep(1)
+time.sleep(0.3)
 
 def main():
     
@@ -74,14 +74,21 @@ def main():
     zero = circleAngle
 
     #startingFanfare()
+    speaker.play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
-    #while True:
-    #    if buttonPressed == True:
-    #        break
-    #    time.sleep(0.05)
+    while True:
+       if btn.any() == True:
+           break
+       time.sleep(0.05)
+    global posO
+    
+    global Angle
+    posO = 90
+    zero = 90
+    Angle = 90
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
-    time.sleep(2)
+    time.sleep(0.5)
     #figure out how to detect an adge and drive parallel to a wall and see red
     while True:
         if seesRed == True:
@@ -89,7 +96,7 @@ def main():
             tankDrive.off()   
             seesRed = False
             #gyroSensor.reset()
-            global posO
+            
             posO = circleAngle
             
             getMultipleHouses()
@@ -109,13 +116,13 @@ def main():
 
             #drop abd 
             #betterTurnLeftToX(180, 10)
-            turnRightToX(50, 10)
+            turnRightToX(40, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
             turnLeftToX((wantedAnOfAprch + 90), 10)
             print("turning to angle")
-            time.sleep(1)
+            time.sleep(0.5)
             seenDist = dist
             print(seenDist)
             time.sleep(0.2)
@@ -304,10 +311,10 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5) #this works very inconsistently
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
-            time.sleep(1)
+            time.sleep(0.5)
             print(getAngle())
             #tankDrive.off()
-            time.sleep(1.5)
+            time.sleep(0.5)
             #gyroSensor.reset()
             global posO
             posO = circleAngle
@@ -462,7 +469,7 @@ def getMultipleHouses():
     tankDrive.off()
     print(getAngle())
     tankDrive.off()
-    time.sleep(1.5)
+    time.sleep(0.5)
     #gyroSensor.reset()
     global posO
     posO = circleAngle
@@ -470,9 +477,9 @@ def getMultipleHouses():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    turnLeftToX(170, 10) #turn so that the sensor points outwards
+    turnLeftToX(160, 10) #turn so that the sensor points outwards
     print("turned outwards")
-    time.sleep(1)
+    time.sleep(0.5)
     while getAngle() < 350 and getAngle() > 100:
         if getAngle() > 350 or getAngle() < 50:
             print("broke in multo")
