@@ -337,10 +337,16 @@ def driveTillDistWheel(dist):
             break
 
 #turning
-def betterTurnDegrees(degrees, speed):
+def betterTurnRightToX(degrees, speed):
     mdiff.odometry_start()
     mdiff.turn_to_angle(SpeedPercent(speed), degrees)
     mdiff.odometry_stop()
+
+def betterTurnLeftToX(degrees, speed):
+    mdiff.odometry_start()
+    mdiff.turn_to_angle(SpeedPercent(-speed), degrees)
+    mdiff.odometry_stop()
+    
 def leftTurn(degrees, speed):
     angle = getAngle()
     startAngle = angle
