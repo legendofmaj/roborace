@@ -83,7 +83,7 @@ def main():
     global posO
     
     global Angle
-    posO = 90
+    posO = circleAngle
     zero = 90
     Angle = 90
 
@@ -310,7 +310,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5) #this works very inconsistently
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
+            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
             time.sleep(0.5)
             print(getAngle())
             #tankDrive.off()
