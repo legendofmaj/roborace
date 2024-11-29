@@ -53,6 +53,7 @@ seesRed = False
 anglesAndDists = {1000000 : 1000000}
 
 posO = 90
+zero = 90
 Angle = 90
 
 #gyroSensor.reset()
@@ -60,6 +61,7 @@ Angle = 90
 time.sleep(1)
 
 def main():
+    
     print("u may press")
     #play tone
     global seesRed
@@ -68,6 +70,8 @@ def main():
     #gyroSensor.reset()
 
     startThreads()
+    global zero
+    zero = circleAngle
 
     #startingFanfare()
     
@@ -105,18 +109,18 @@ def main():
 
             #drop abd 
             #betterTurnLeftToX(180, 10)
-            betterTurnRightToX(50, 10)
+            turnRightToX(50, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
-            betterTurnLeftToX((wantedAnOfAprch + 90), 10)
+            turnLeftToX((wantedAnOfAprch + 90), 10)
             print("turning to angle")
             time.sleep(1)
             seenDist = dist
             print(seenDist)
             time.sleep(0.2)
 
-            betterTurnRightToX(wantedAnOfAprch + 5, 5)
+            turnRightToX(wantedAnOfAprch + 5, 5)
             #mdiff.turn_right(85, 7)
 
             toDriveDist = seenDist - 13
@@ -371,15 +375,16 @@ def rightTurn(degrees, speed):
 
 def turnRightToX(degrees, speed):
     angle = getAngle()
-    while angle > degrees:
-        tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
+    while angle > max(0, degrees - 5):
+        mdiff.turn_right(speed, 1)
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
     angle = getAngle()
-    while angle < degrees:
-        tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+    while angle < min(degrees + 5, 350):
+        #tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+        mdiff.turn_left(speed, 1)
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
@@ -422,7 +427,7 @@ def detectHouseEdges(threshold):
     time.sleep(1)
     #betterTurnDegrees(5, 15)
     if getAngle() < 350 and getAngle() > 150:
-        mdiff.turn_left(5, 10)
+        mdiff.turn_left(10, 5)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
         
@@ -465,7 +470,7 @@ def getMultipleHouses():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    betterTurnLeftToX(170, 10) #turn so that the sensor points outwards
+    turnLeftToX(170, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(1)
     while getAngle() < 350 and getAngle() > 100:
@@ -504,7 +509,7 @@ def getMultipleHouses():
     time.sleep(5)
     tankDrive.off()
 
-    betterTurnRightToX(150, 10)
+    turnRightToX(150, 10)
     print("turned back")
     time.sleep(1)
     '''toRemove = []
