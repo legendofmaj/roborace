@@ -346,7 +346,7 @@ def betterTurnLeftToX(degrees, speed):
     mdiff.odometry_start()
     mdiff.turn_to_angle(SpeedPercent(-speed), degrees)
     mdiff.odometry_stop()
-    
+
 def leftTurn(degrees, speed):
     angle = getAngle()
     startAngle = angle
@@ -354,6 +354,8 @@ def leftTurn(degrees, speed):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+
+#mdiff.turn_left(SpeedPercent(speed), degrees)
 
 def rightTurn(degrees, speed):
     angle = getAngle()
@@ -364,6 +366,8 @@ def rightTurn(degrees, speed):
         if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
             break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+
+#mdiff.right_turn(SpeedPercent(speed), degrees)
 
 def turnRightToX(degrees, speed):
     angle = getAngle()
