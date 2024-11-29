@@ -93,5 +93,23 @@ def main():
     turnLeftToX(180, 10)
     print("got here")
 
+    mdiff.turn_right(10, 4)
+        #tankDrive.off()
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.15) 
+        #distOld = dist
+        #time.sleep(0.5)
+        #tankDrive.off()
+    mdiff.turn_left(10, 4)
+    tankDrive.off()
+    mdiff.turn_left(10, 5)
+    time.sleep(0.5) 
+    tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
+        #distOld = dist
+        #time.sleep(0.5)
+    tankDrive.off()
+        #print("gets herd")
+    mdiff.turn_right(10, 4)
+    tankDrive.off()
+
 if __name__=="__main__":
     main()

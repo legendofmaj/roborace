@@ -135,7 +135,8 @@ def main():
                 driveTillDistWheel(toDriveDist)
                 print("drove")
             
-            mdiff.turn_left(10, 90)
+            #mdiff.turn_left(10, 90)
+            leftTurn(90, 10)
             time.sleep(0.2)
             seesRed = False
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
@@ -264,25 +265,29 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
-        mdiff.turn_right(10, 4)
-        #tankDrive.off()
+        #mdiff.turn_right(10, 4)
+        rightTurn(4, 10)
+        tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15) 
         #distOld = dist
         #time.sleep(0.5)
-        #tankDrive.off()
-        mdiff.turn_left(10, 4)
-        #tankDrive.off() 
+        tankDrive.off()
+        #mdiff.turn_left(10, 4)
+        leftTurn(4, 10)
+        tankDrive.off() 
         distNew = dist
     if correct == -1:
         distOld = dist
-        mdiff.turn_left(10, 3)
+        #mdiff.turn_left(10, 5)
+        leftTurn(4, 10)
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off()
         #print("gets herd")
-        mdiff.turn_right(10, 3)
+        #mdiff.turn_right(10, 4)
+        rightTurn(4, 10)
         tankDrive.off()
         distNew = dist
         #print("hello is past second turn")
@@ -304,9 +309,10 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     tankDrive.off()
                     break
 
-            mdiff.turn_right(10, 85) #should be ninety overturns tho
+            #mdiff.turn_right(10, 85) #should be ninety overturns tho
+            rightTurn(85, 10)
             #tankDrive.off()
-            time.sleep(1)
+            time.sleep(0.5)
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             time.sleep(0.1)
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5) #this works very inconsistently
@@ -319,7 +325,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             global posO
             posO = circleAngle
             print(getAngle())
-            time.sleep(1)
+            time.sleep(0.5)
 
 #driving
 def driveStraight(speed, rotations):
@@ -361,9 +367,11 @@ def betterTurnLeftToX(degrees, speed):
 def leftTurn(degrees, speed):
     angle = getAngle()
     startAngle = angle
-    while angle <= (startAngle + degrees):
+    while angle < min(350,(startAngle + degrees)):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
         angle = getAngle()
+        if angle > 350:
+            break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 #mdiff.turn_left(SpeedPercent(speed), degrees)
@@ -371,10 +379,10 @@ def leftTurn(degrees, speed):
 def rightTurn(degrees, speed):
     angle = getAngle()
     startAngle = angle
-    while angle >= max((startAngle - degrees), 0):
+    while angle > max((startAngle - degrees), 10):
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = getAngle()
-        if angle > 350 and angle <= 360:#if it slightly overturns at a 90°turn from ninety degrees
+        if angle < 10:#if it slightly overturns at a 90°turn from ninety degrees
             break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
@@ -383,15 +391,16 @@ def rightTurn(degrees, speed):
 def turnRightToX(degrees, speed):
     angle = getAngle()
     while angle > max(10, degrees - 5):
-        mdiff.turn_right(speed, 1)
+        #mdiff.turn_right(speed, 1)
+        tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
     angle = getAngle()
     while angle < min(degrees + 5, 350):
-        #tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
-        mdiff.turn_left(speed, 1)
+        tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+        #mdiff.turn_left(speed, 1)
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
@@ -404,7 +413,7 @@ def detectHouseEdges(threshold):
     global leftCornerAngle
     global rightCornerDist
     global leftCornerDist
-    tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
+    tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
     while True:
         if getAngle() > 350 or getAngle() < 50:
             tankDrive.off()
@@ -434,7 +443,8 @@ def detectHouseEdges(threshold):
     time.sleep(1)
     #betterTurnDegrees(5, 15)
     if getAngle() < 350 and getAngle() > 150:
-        mdiff.turn_left(10, 5)
+        #mdiff.turn_left(10, 5)
+        leftTurn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
         
@@ -477,7 +487,7 @@ def getMultipleHouses():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    turnLeftToX(160, 10) #turn so that the sensor points outwards
+    turnLeftToX(150, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(0.5)
     while getAngle() < 350 and getAngle() > 100:
@@ -508,7 +518,8 @@ def getMultipleHouses():
             break
 
         time.sleep(1)
-        mdiff.turn_left(5, 10)
+        #mdiff.turn_left(5, 10)
+        leftTurn(5, 10)
 
     print("checked for houses")
 
