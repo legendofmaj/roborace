@@ -4,7 +4,7 @@ import time
 from ev3dev2.motor import OUTPUT_B, OUTPUT_C, MoveDifferential, SpeedPercent
 from ev3dev2.wheel import EV3EducationSetTire
 
-STUD_MM = 8
+STUD_MM = 7
 
 mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, 15 * STUD_MM)
 
@@ -23,10 +23,12 @@ def turnToAngle(speed, degrees):
 
 def main():
     # Rotate 90 degrees clockwise
-    mdiff.turn_right(SpeedPercent(20), 90)
+    mdiff.turn_right(SpeedPercent(10), 90)
     time.sleep(1)
-    mdiff.turn_left(SpeedPercent(20), 90)
-    turnToAngle(20, 60)
+    mdiff.turn_left(SpeedPercent(10), 180)
+    time.sleep(2)
+    turnToAngle(10, 180)
+    print("got here")
 
 if __name__=="__main__":
     main()
