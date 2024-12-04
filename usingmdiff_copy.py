@@ -414,9 +414,10 @@ def turnRightToX(degrees, speed):
             langle = curpos()
             print(langle)
     else:
-        #while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
-        #    langle = curpos()
-        turnLeftToX(degrees, speed)
+        while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+            langle = curpos()
+            print(langle)
+        #turnLeftToX(degrees, speed)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
