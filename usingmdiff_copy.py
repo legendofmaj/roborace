@@ -55,7 +55,7 @@ anglesAndDists = {1000000 : 1000000}
 
 posO = 90
 zero = 90
-Angle = 90
+Angle = 0
 
 initialGyrosensorPosition = gyroSensor.angle
 #gyroSensor.reset()
@@ -99,7 +99,7 @@ def main():
             seesRed = False
             #gyroSensor.reset()
             
-            posO = gyroSensor.angle
+            posO = Angle
             
             getMultipleHouses()
 
@@ -225,8 +225,10 @@ def readAngle():
 
 def readCircleAngle():
     global circleAngle
+    global Angle
     while True:
         circleAngle = gyroSensor.circle_angle()
+        Angle = Angle
         time.sleep(0.05)
         #print(circleAngle)
 
@@ -243,7 +245,7 @@ def getAngle():
 #        return temp
 
 def getRelAngle(spos):
-    temp = (gyroSensor.angle) - spos
+    temp = Angle - spos
     return temp
 
     
@@ -391,7 +393,7 @@ def rightTurn(degrees, speed):
     relturn(degrees, speed)
 
 def relturn(degrees, speed):
-    cpos = gyroSensor.angle
+    cpos = Angle
     startAngle = getRelAngle(cpos) # Sollte nahe 0 sein, wenn Roboter nicht in Drehung ist
     while abs(getRelAngle(cpos)) > max(degrees, 10): # minimale Drehung 10° 
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
