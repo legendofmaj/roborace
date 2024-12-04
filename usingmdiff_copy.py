@@ -409,29 +409,44 @@ def curpos():
 
 def turnRightToX(degrees, speed):
     cpos = circleAngle#gyroSensor.circle_angle()
-    langle = cpos
-    tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed)) # dreht rechts
-    if (degrees < cpos):
-        while langle > (degrees + 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
-            langle = curpos()
-            print(langle)
+    if (degrees>cpos):
+        langle = cpos+360
     else:
-        while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        langle=cpos
+    tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed)) # dreht rechts
+    while langle > (degrees + 5):
+        # if (degrees < cpos):
+        #  # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        #     langle = curpos()
+        #     print("degrees < cpos"+ langle)
+        # else:
+        if (curpos()<=cpos):
+            langle = curpos()+360
+        else:
             langle = curpos()
-            print(langle)
+        print("right:  "+ langle)
         #turnLeftToX(degrees, speed)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
     cpos = circleAngle #gyroSensor.circle_angle()
-    langle = cpos
-    tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed)) # dreht links
-    if (degrees > cpos):
-        while langle < (degrees - 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
-            langle = curpos()
+    if (degrees<cpos):
+        langle = cpos-360
     else:
-        while (langle < (degrees +360 - 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        langle=cpos
+    tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed)) # dreht links
+    while langle < (degrees - 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        if (curpos()>=cpos):
+            langle = curpos()-360
+        else:
             langle = curpos()
+        print("left:  "+ langle)
+        # if (degrees > cpos):
+        #         langle = curpos()
+        # else:
+
+        #     while (langle < (degrees +360 - 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        #         langle = curpos()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 #determine how to get to next house
