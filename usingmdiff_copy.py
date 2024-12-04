@@ -399,22 +399,23 @@ def relturn(degrees, speed):
 
 def curpos():
     langle = circleAngle#gyroSensor.circle_angle()
-    time.sleep(0.25)
+    #time.sleep(0.25)
     return langle
 
 
 #mdiff.turn_right(SpeedPercent(speed), degrees)
 
 def turnRightToX(degrees, speed):
-    cpos = gyroSensor.circle_angle()
+    cpos = circleAngle#gyroSensor.circle_angle()
     langle = cpos
     tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed)) # dreht rechts
     if (degrees < cpos):
         while langle > (degrees + 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
             langle = curpos()
     else:
-        while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
-            langle = curpos()
+        #while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
+        #    langle = curpos()
+        turnLeftToX(degrees, speed)
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
