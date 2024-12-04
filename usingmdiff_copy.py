@@ -412,6 +412,7 @@ def turnRightToX(degrees, speed):
     if (degrees < cpos):
         while langle > (degrees + 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
             langle = curpos()
+            print(langle)
     else:
         #while ((langle+360) > (degrees + 5)): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
         #    langle = curpos()
