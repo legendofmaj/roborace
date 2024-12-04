@@ -31,7 +31,7 @@ depositMotor = MediumMotor(OUTPUT_A)
 motorRight = Motor(OUTPUT_B)
 motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
-gyroSensor = GyroSensor(INPUT_2,MODE_GYRO_ANG = 'GYRO-ANG') # returns values as degree # initializes and resets angle to be 0 degree
+gyroSensor = GyroSensor(INPUT_2)#,MODE_GYRO_ANG = 'GYRO-ANG') # returns values as degree # initializes and resets angle to be 0 degree
 gyroSensor.circle_angle() # switches to counting counter clockwise as positive direction # switching to this mode sets the gyro position to 90 degree
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 speaker = Sound()
@@ -398,7 +398,7 @@ def relturn(degrees, speed):
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def curpos():
-    langle = gyroSensor.circle_angle()
+    langle = circleAngle#gyroSensor.circle_angle()
     time.sleep(0.25)
     return langle
 
@@ -418,7 +418,7 @@ def turnRightToX(degrees, speed):
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def turnLeftToX(degrees, speed):
-    cpos = gyroSensor.circle_angle()
+    cpos = circleAngle #gyroSensor.circle_angle()
     langle = cpos
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed)) # dreht links
     if (degrees > cpos):
