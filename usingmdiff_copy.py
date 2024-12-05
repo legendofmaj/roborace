@@ -143,6 +143,8 @@ def main():
             seesRed = False
             tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
             posO = circleAngle
+            anglesAndDists.clear()
+            anglesAndDists = {1000000 : 1000000}
 
             #then drive to thew next house and then turn  
         
