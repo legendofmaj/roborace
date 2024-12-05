@@ -16,7 +16,7 @@ import modules.driving
 import modules.turning
 import modules.determine_angles_distances_next_house
 import modules.drop_packet
-import modules.parallelWallDrive
+import modules.oldParallelWallDrive
 
 #input and output list
 ultrasound_sensor_port = INPUT_3
@@ -51,7 +51,7 @@ def main():
             break
 
         #drive parallel to wall
-        modules.parallelWallDrive.main() #not final
+        modules.oldParallelWallDrive.main() #not final
         modules.driving.driveStraight(15)
     modules.driving.driveStraight(0)
    
@@ -81,7 +81,7 @@ def main():
     #turn 90°
     modules.turning.turnLeftToX(90, 15) #not final
     #drive parallel to wall
-    modules.parallelWallDrive.main() #not final
+    modules.oldParallelWallDrive.main() #not final
     modules.driving.driveStraight(15) #not final
 
     #Check for corner

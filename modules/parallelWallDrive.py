@@ -1,73 +1,61 @@
 #!/usr/bin/env python3
 
-from ev3dev2.sensor import INPUT_2, INPUT_3
-from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, LargeMotor, OUTPUT_C
-from ev3dev2.sensor.lego import UltrasonicSensor
-from ev3dev2.sensor.lego import GyroSensor
-
+# Import the necessary libraries
 import time
-import threading 
-import sys
-import math
+from ev3dev2.motor import *
+from ev3dev2.sensor import *
+from ev3dev2.sensor.lego import *
+from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
-#input and output list
-ultrasound_sensor_port = INPUT_3
-gyro_sensor_port = INPUT_2
-rightMotor = OUTPUT_B
-leftMotor = OUTPUT_C
+# Create the sensors and motors objects
+motorA = LargeMotor(OUTPUT_A)
+motorB = LargeMotor(OUTPUT_B)
+left_motor = motorA
+right_motor = motorB
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
+steering_drive = MoveSteering(OUTPUT_A, OUTPUT_B)
 
-tank_drive = MoveTank(leftMotor, rightMotor)
-ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
-gyro = GyroSensor(gyro_sensor_port)
-tank_drive.gyro = GyroSensor(INPUT_2)
-
-#Key variables
-desired_dist = 15
-dist = 0
+ultrasonic_sensor = UltrasonicSensor(INPUT_4)
 
 def main():
-    distThread = threading.Thread(target=read_dist)
-    distThread.start()
-    time.sleep(1)
+    #values for pid tuning
+    kp = 4
+    ki = 0.1
+    kd = 0.1
+
+    #other values for tuning
+    goal = 13#cm
+
+    #define other important values
+    integral = 0
+    previous_error = 0
+    deltaTime = 0
+    previous_time = time.time()
+    time.sleep(0.01) #a quick break, to not get a zero division error
+
     while True:
-        print(dist) #debug only
-        adjust_dist(check_dist(desired_dist, 4), 20)
+        current_time = time.time()
+        deltaTime = current_time - previous_time
         
-def read_dist():
-    while True:
-        global dist 
-        dist = ultrasound_sensor.distance_centimeters
-        time.sleep(0.01)
-    
-def drive(speed):
-    tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) #Replace with -speed on real robot
+        error = ultrasonic_sensor.distance_centimeters - goal
+        integral += (error * deltaTime)
+        derivative = (error - previous_error) / deltaTime
 
-def check_dist(desired_dist, tolerance):
-    #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
-    if dist > desired_dist  + tolerance:
-        print("dist too big")
-        correct = 1
-    elif dist < desired_dist - tolerance:
-        print("dist too small")
-        correct = -1
-    elif dist > desired_dist - tolerance and dist < desired_dist + tolerance:
-        correct = 0
-    return correct
+        turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 
-def adjust_dist(correct, speed):
-    tank_drive.off
-    if correct == 1:
-        tank_drive.turn_degrees(SpeedPercent(speed), -4)
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) 
-        time.sleep(0.2) 
-    if correct == -1:
-        tank_drive.turn_degrees(SpeedPercent(-speed), 4) 
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
-        time.sleep(0.2)
-    if correct == 0:
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
-        time.sleep(0.1)
+        #limit to safe values
+        if turnratio > 100:
+            turnratio = 100
+        elif turnratio < -100:
+            turnratio = -100
+
+        # print("distance: " + str(ultrasonic_sensor.distance_centimeters))
+        # print("turnratio: " + str(turnratio))
+        # print("deltaTime: " + str(deltaTime))
+        steering_drive.on(turnratio, 20)
+        previous_error = error
+        previous_time = current_time
+
 
 if __name__=="__main__":
     main()
