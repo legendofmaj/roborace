@@ -15,18 +15,14 @@ from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 
-
-
 studmm = 7
 studs_that_wheels_are_apart = 15
 min_dist_between_wheels = 118 #mm
-mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
-#or: mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
+moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
+#or: moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
 
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
-#tankDrive.gyro = GyroSensor(INPUT_2)
-btn = Button()
 depositMotor = MediumMotor(OUTPUT_A)
 motorRight = Motor(OUTPUT_B)
 motorLeft = Motor(OUTPUT_C)
@@ -34,7 +30,6 @@ colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 speaker = Sound()
-#tankDrive.gyro = gyroSensor
 
 stop_event = threading.Event()
 
@@ -74,10 +69,10 @@ def main():
     zero = circleAngle
 
     #startingFanfare()
-    speaker.play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
+    Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
     while True:
-       if btn.any() == True:
+       if Button().any() == True:
            break
        time.sleep(0.05)
     global posO
@@ -128,14 +123,14 @@ def main():
             time.sleep(0.2)
 
             turnRightToX(wantedAnOfAprch + 5, 5)
-            #mdiff.turn_right(85, 7)
+            #moveDifferential.turn_right(85, 7)
 
             toDriveDist = seenDist - 13
             if toDriveDist > 5:
                 driveTillDistWheel(toDriveDist)
                 print("drove")
             
-            #mdiff.turn_left(10, 90)
+            #moveDifferential.turn_left(10, 90)
             leftTurn(90, 10)
             time.sleep(0.2)
             seesRed = False
@@ -160,9 +155,6 @@ def main():
 def startThreads():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
-    buttonThread = threading.Thread(target = readButton)
-    buttonThread.daemon = True
-    buttonThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
     #angleThread = threading.Thread(target = readAngle)
@@ -171,10 +163,10 @@ def startThreads():
     circleAngleThread.start()
 
 def startingFanfare():
-    speaker.play_song([('C4',500), ('F4',250), ('C4',250)])#to be played before starting to navigate thru course
+    Sound().play_song([('C4',500), ('F4',250), ('C4',250)])#to be played before starting to navigate thru course
 
 def finishFanfare():
-    speaker.play_song([('C4', 400), ('E4', 400), ('G4', 400), ('B4', 400), ('G4', 400), ('B4', 650)])#to be played after finishing course
+    Sound().play_song([('C4', 400), ('E4', 400), ('G4', 400), ('B4', 400), ('G4', 400), ('B4', 650)])#to be played after finishing course
 
 
 def read_dist():
@@ -182,16 +174,6 @@ def read_dist():
         global dist 
         dist = ultraSoundSensor.distance_centimeters
         time.sleep(0.05)
-
-def readButton():
-    global buttonPressed
-    buttonPressed = False
-    while True:
-        if btn.any() == True:
-            buttonPressed = True
-            time.sleep(0.05)
-            break
-    print("started") #debug
 
 def readColor():
     global color
@@ -265,20 +247,20 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
-        #mdiff.turn_right(10, 4)
+        #moveDifferential.turn_right(10, 4)
         rightTurn(4, 10)
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15) 
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off()
-        #mdiff.turn_left(10, 4)
+        #moveDifferential.turn_left(10, 4)
         leftTurn(4, 10)
         tankDrive.off() 
         distNew = dist
     if correct == -1:
         distOld = dist
-        #mdiff.turn_left(10, 5)
+        #moveDifferential.turn_left(10, 5)
         leftTurn(4, 10)
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
@@ -286,7 +268,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #time.sleep(0.5)
         tankDrive.off()
         #print("gets herd")
-        #mdiff.turn_right(10, 4)
+        #moveDifferential.turn_right(10, 4)
         rightTurn(4, 10)
         tankDrive.off()
         distNew = dist
@@ -309,7 +291,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
                     tankDrive.off()
                     break
 
-            #mdiff.turn_right(10, 85) #should be ninety overturns tho
+            #moveDifferential.turn_right(10, 85) #should be ninety overturns tho
             rightTurn(85, 10)
             #tankDrive.off()
             time.sleep(0.5)
@@ -355,14 +337,14 @@ def driveTillDistWheel(dist):
 
 #turning
 def betterTurnRightToX(degrees, speed):
-    mdiff.odometry_start()
-    mdiff.turn_to_angle(SpeedPercent(speed), degrees)
-    mdiff.odometry_stop()
+    moveDifferential.odometry_start()
+    moveDifferential.turn_to_angle(SpeedPercent(speed), degrees)
+    moveDifferential.odometry_stop()
 
 def betterTurnLeftToX(degrees, speed):
-    mdiff.odometry_start()
-    mdiff.turn_to_angle(SpeedPercent(-speed), degrees)
-    mdiff.odometry_stop()
+    moveDifferential.odometry_start()
+    moveDifferential.turn_to_angle(SpeedPercent(-speed), degrees)
+    moveDifferential.odometry_stop()
 
 def leftTurn(degrees, speed):
     angle = getAngle()
@@ -374,7 +356,7 @@ def leftTurn(degrees, speed):
             break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
-#mdiff.turn_left(SpeedPercent(speed), degrees)
+#moveDifferential.turn_left(SpeedPercent(speed), degrees)
 
 def rightTurn(degrees, speed):
     angle = getAngle()
@@ -386,12 +368,12 @@ def rightTurn(degrees, speed):
             break
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
-#mdiff.turn_right(SpeedPercent(speed), degrees)
+#moveDifferential.turn_right(SpeedPercent(speed), degrees)
 
 def turnRightToX(degrees, speed):
     angle = getAngle()
     while angle > max(10, degrees - 5):
-        #mdiff.turn_right(speed, 1)
+        #moveDifferential.turn_right(speed, 1)
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
@@ -400,7 +382,7 @@ def turnLeftToX(degrees, speed):
     angle = getAngle()
     while angle < min(degrees + 5, 350):
         tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
-        #mdiff.turn_left(speed, 1)
+        #moveDifferential.turn_left(speed, 1)
         angle = getAngle()
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
@@ -443,7 +425,7 @@ def detectHouseEdges(threshold):
     time.sleep(1)
     #betterTurnDegrees(5, 15)
     if getAngle() < 350 and getAngle() > 150:
-        #mdiff.turn_left(10, 5)
+        #moveDifferential.turn_left(10, 5)
         leftTurn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
@@ -518,7 +500,7 @@ def getMultipleHouses():
             break
 
         time.sleep(1)
-        #mdiff.turn_left(5, 10)
+        #moveDifferential.turn_left(5, 10)
         leftTurn(5, 10)
 
     print("checked for houses")
