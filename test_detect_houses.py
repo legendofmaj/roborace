@@ -261,6 +261,9 @@ def getHousesNew(threshold):
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
         x += 1
+
+    edges.clear()
+    edges_keys.clear()
     '''if getAngle() > 350 or getAngle() < 50:
             print("broke in multo2")
             break'''
