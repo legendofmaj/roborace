@@ -29,7 +29,6 @@ motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
-speaker = Sound()
 
 stop_event = threading.Event()
 
@@ -51,8 +50,6 @@ posO = 90
 zero = 90
 Angle = 90
 
-#gyroSensor.reset()
-#tankDrive.gyro.reset()
 time.sleep(0.3)
 
 def main():
@@ -62,13 +59,10 @@ def main():
     global seesRed
     global seesGreen
 
-    #gyroSensor.reset()
-
     startThreads()
     global zero
     zero = circleAngle
 
-    #startingFanfare()
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
     while True:
@@ -90,8 +84,7 @@ def main():
             print("red")
             tankDrive.off()   
             seesRed = False
-            #gyroSensor.reset()
-            
+
             posO = circleAngle
             
             getMultipleHouses()
@@ -150,15 +143,11 @@ def main():
         
         adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
 
-    #finishFanfare()
-
 def startThreads():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
     colorThread = threading.Thread(target = readColor)
     colorThread.start()
-    #angleThread = threading.Thread(target = readAngle)
-    #angleThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 
@@ -189,19 +178,10 @@ def readColor():
         if rawColor == 5:
             color = "red"
             seesRed = True
-            #print("aw yep red")
-        #elif rawColor == 3:
-        #    color = "green"
         elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
             color = "green"
             seesGreen = True
         time.sleep(0.1)
-
-def readAngle():
-    #global angle
-    while True:
-     #   angle = gyroSensor.angle
-        time.sleep(0.05)
 
 def readCircleAngle():
     global circleAngle
@@ -231,8 +211,6 @@ def drop():
 
 def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further):
     #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
-    #print("jeah no")
-    #global distOld
     #threshold, drive_further = 35, 22.3
     correct = 0
     if dist > desired_dist  + tolerance:
@@ -267,7 +245,6 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #distOld = dist
         #time.sleep(0.5)
         tankDrive.off()
-        #print("gets herd")
         #moveDifferential.turn_right(10, 4)
         rightTurn(4, 10)
         tankDrive.off()
@@ -277,7 +254,6 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         distOld = dist
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         distNew = dist
-        #time.sleep(0.3)
     if distOld != 0:
         if abs(distOld-distNew) >= threshold: # this works best when it dosnt need to turn first otherwise might seen an edge where ther isnt one
             print("sees edge")
@@ -303,7 +279,6 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
             print(getAngle())
             #tankDrive.off()
             time.sleep(0.5)
-            #gyroSensor.reset()
             global posO
             posO = circleAngle
             print(getAngle())
@@ -315,14 +290,6 @@ def driveStraight(speed, rotations):
 
 def smoothDriveStraight(speed):
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
-
-def driveTillDist(distance): #this doesnt work anymore
-    while True:
-        if dist <= distance:
-            print("broke") #debug
-            break
-        driveStraight(20, 0.1)
-        print("rolled") #debug
 
 def driveTillDistWheel(dist):
     #tankDrive.on(SpeedPercent(-5), SpeedPercent(-5))
@@ -388,7 +355,6 @@ def turnLeftToX(degrees, speed):
 
 #determine how to get to next house
 def detectHouseEdges(threshold):
-    #gyroSensor.reset()
     #betterTurnRightToX(7, 7)
     print("seeking")
     global rightCornerAngle
@@ -413,8 +379,6 @@ def detectHouseEdges(threshold):
                 time.sleep(0.1)
                 distNew = dist
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-                #print(distOld)#debug
-                #print(distNew)#debug
                 rightCornerAngle = angleNew
                 rightCornerDist = distNew + 10
                 print(rightCornerAngle)#debug
@@ -443,8 +407,6 @@ def detectHouseEdges(threshold):
         distNew = dist
         print(distNew)
         if abs(distOld-distNew) >= threshold:
-            #print(distOld)#debug
-            #print(distNew)#debug
             leftCornerAngle = angleOld
             leftCornerDist = distOld + 10
             print(leftCornerAngle)#debug
@@ -462,7 +424,6 @@ def getMultipleHouses():
     print(getAngle())
     tankDrive.off()
     time.sleep(0.5)
-    #gyroSensor.reset()
     global posO
     posO = circleAngle
     time.sleep(0.5)
@@ -512,20 +473,6 @@ def getMultipleHouses():
     turnRightToX(150, 10)
     print("turned back")
     time.sleep(1)
-    '''toRemove = []
-    for x in anglesAndDists:
-        print("checking dists")
-        print(x, anglesAndDists[x])
-        betterTurnLeftToX((anglesAndDists[x] + 90), 10)
-        print("turning to angle")
-        time.sleep(1)
-        seenDist = dist
-        if seenDist > (x-10) + 10 or seenDist < (x-10) - 10:
-            print("doesnt think its right")
-            toRemove.append(x)
-    for x in toRemove:
-        anglesAndDists.pop(x)
-    toRemove.clear()'''
 
     print("checked angles and dist")
         
