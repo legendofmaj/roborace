@@ -21,12 +21,13 @@ steering_drive = MoveSteering(OUTPUT_A, OUTPUT_B)
 ultrasonic_sensor = UltrasonicSensor(INPUT_4)
 
 def main():
-    kp = 2
-    midpoint = 15 #50
+    kp = 3
+    goal = 10 #50
     while True:
-        turnratio = kp * (ultrasonic_sensor.distance_centimeters - midpoint)
-        print(turnratio)
-        #tank_drive.on(20, 20)
+        error = ultrasonic_sensor.distance_centimeters - goal
+        turnratio = kp * error
+        print("distance: " + str(ultrasonic_sensor.distance_centimeters))
+        print("turnratio: " + str(turnratio))
         steering_drive.on(turnratio, 20)
 
 if __name__=="__main__":
