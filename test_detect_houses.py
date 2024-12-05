@@ -297,3 +297,36 @@ def getAngleOfApproach(a, b, alpha, beta):
 def getDistToNextHouse(a, alpha, anOfAprch):
     distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
     return distToNextHouse
+
+def getHousePrimitive():
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    tankDrive.off()
+    print(getAngle())
+    tankDrive.off()
+    time.sleep(0.5)
+    #gyroSensor.reset()
+    global posO
+    posO = circleAngle
+    time.sleep(0.5)
+    print(getAngle())
+    time.sleep(0.5)
+    print("driven")
+    turnLeftToX(150, 10)
+    dist_short = 1000
+    angle_short = 180
+    while getAngle() < 350 and getAngle() > 100:
+        if getAngle() > 350 or getAngle() < 50:
+            print("broke in multo")
+            break
+        distOld = dist #ultraSoundSensor.distance_centimeters
+        angleOld = circleAngle
+        time.sleep(0.1)
+        distNew = dist
+        angleNew = circleAngle
+        if distOld > distNew:
+            if dist_short > distNew:
+                dist_short = distNew
+                angle_short = angleNew
+    global anglesAndDists
+    anglesAndDists[int(dist_short)] = int(angle_short)
+
