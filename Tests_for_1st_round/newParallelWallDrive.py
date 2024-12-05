@@ -36,6 +36,10 @@ def main():
         turnratio = error * kp
         print("turn: " + str(turnratio))
         tank_drive.turn_degrees(SpeedPercent(35), turnratio)
+        if Button().left == True:
+            kp += 1
+        elif Button().right == True:
+            kp -= 1
 
 if __name__=="__main__":
     main()
