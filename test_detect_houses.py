@@ -185,6 +185,8 @@ def getHousesNew(threshold):
     time.sleep(0.5)
     print("driven")
     turnLeftToX(150, 10)
+    dist_at_oneOFive = dist
+    edges = {900 : [1000, 1]}
     while getAngle() < 350 and getAngle() > 100:
         if getAngle() > 350 or getAngle() < 50:
             print("broke in multo")
@@ -212,6 +214,7 @@ def getHousesNew(threshold):
             leftCornerDist = distOld + 10
             print(leftCornerAngle)#debug
             print(leftCornerDist)#debug
+            edges[leftCornerAngle] = [leftCornerDist, 2]
             leftTurn(5, 10)
             print("lil turn")
 
@@ -226,6 +229,7 @@ def getHousesNew(threshold):
             rightCornerDist = distNew + 10
             print(rightCornerAngle)#debug
             print(rightCornerDist)#debug
+            edges[rightCornerAngle] = [rightCornerDist, 1]
             leftTurn(5, 10)
             print("lil turn")
 
@@ -236,22 +240,46 @@ def getHousesNew(threshold):
                 break
             continue
 
-        print("checking")
-        
-        a = rightCornerDist 
-        b = leftCornerDist 
-        alpha = rightCornerAngle
-        beta = leftCornerAngle
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+    leftest_edge = edges[edges_keys[0]]
+    if leftest_edge[1] == 2:
+        edges[150] = [dist_at_oneOFive, 1]
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
 
+    for x in range(len(edges)):
+        right = edges[edges_keys[x]]
+        left = edges[edges_keys[(x+1)]]
+        a = right[0]#rightCornerDist 
+        b = left[0]#leftCornerDist 
+        alpha = edges[edges_keys[x]]#rightCornerAngle
+        beta = edges[edges_keys[(x+1)]]#leftCornerAngle
         anOfAprch = getAngleOfApproach(a, b, alpha, beta)
-
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
-
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
-
-        if getAngle() > 350 or getAngle() < 50:
+        x += 1
+    '''if getAngle() > 350 or getAngle() < 50:
             print("broke in multo2")
-            break
+            break'''
+
+
+    '''print("checking")
+        
+    a = rightCornerDist 
+    b = leftCornerDist 
+    alpha = rightCornerAngle
+    beta = leftCornerAngle
+
+    anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+
+    distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
+
+    anglesAndDists[int(distToNextHouse)] = int(anOfAprch)'''
+
+        
 
         time.sleep(1)
         #mdiff.turn_left(5, 10)
