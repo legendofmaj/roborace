@@ -151,13 +151,6 @@ def startThreads():
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 
-def startingFanfare():
-    Sound().play_song([('C4',500), ('F4',250), ('C4',250)])#to be played before starting to navigate thru course
-
-def finishFanfare():
-    Sound().play_song([('C4', 400), ('E4', 400), ('G4', 400), ('B4', 400), ('G4', 400), ('B4', 650)])#to be played after finishing course
-
-
 def read_dist():
     while True:
         global dist 
