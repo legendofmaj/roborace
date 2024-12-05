@@ -408,6 +408,8 @@ def curpos():
 #mdiff.turn_right(SpeedPercent(speed), degrees)
 
 def turnRightToX(degrees, speed):
+    if degrees < 10:
+        degrees = 10
     cpos = circleAngle#gyroSensor.circle_angle()
     if (degrees>cpos):
         langle = cpos+360
