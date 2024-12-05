@@ -1,45 +1,33 @@
 #!/usr/bin/env python3
 
-from ev3dev2.sensor import INPUT_2, INPUT_3
-from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, LargeMotor, OUTPUT_C
-from ev3dev2.sensor.lego import UltrasonicSensor
-from ev3dev2.sensor.lego import GyroSensor
-
+# Import the necessary libraries
 import time
-import sys
 import math
+from ev3dev2.motor import *
+from ev3dev2.sensor import *
+from ev3dev2.sensor.lego import *
+from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
-#Input and Output list
-ultrasound_sensor_port = INPUT_3
-rightMotor = OUTPUT_A
-leftMotor = OUTPUT_B
-gyro_sensor_port = INPUT_2
-tank_drive = MoveTank(leftMotor, rightMotor)
+# Create the sensors and motors objects
+motorA = LargeMotor(OUTPUT_A)
+motorB = LargeMotor(OUTPUT_B)
+left_motor = motorA
+right_motor = motorB
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
+steering_drive = MoveSteering(OUTPUT_A, OUTPUT_B)
 
-
-tank_drive = MoveTank(leftMotor, rightMotor)
-ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
-gyro = GyroSensor(gyro_sensor_port)
-
+# ultrasonic_sensor_in2 = UltrasonicSensor(INPUT_2)
+# ultrasonic_sensor_in3 = UltrasonicSensor(INPUT_3)
+ultrasonic_sensor = UltrasonicSensor(INPUT_4)
 
 def main():
-    tank_drive.on(SpeedPercent(10), SpeedPercent(10))
-    goalCm = 10
-    kp = 1
+    kp = 2
+    midpoint = 15 #50
     while True:
-        distanceCm = ultrasound_sensor.distance_centimeters
-        print("current: " + str(distanceCm))
-        error = distanceCm - goalCm
-        print("error: " + str(error))
-        print("kp: " + str(kp))
-        turnratio = error * kp
-        print("turn: " + str(turnratio))
-        tank_drive.turn_degrees(SpeedPercent(35), turnratio)
-        if Button().left == True:
-            kp += 1
-        elif Button().right == True:
-            kp -= 1
+        turnratio = kp * (ultrasonic_sensor.distance_centimeters - midpoint)
+        print(turnratio)
+        #tank_drive.on(20, 20)
+        steering_drive.on(turnratio, 20)
 
 if __name__=="__main__":
     main()
