@@ -13,7 +13,7 @@ mdiff = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_whe
 
 def betterTurnDegrees(degrees, speed):
     mdiff.odometry_start()
-    mdiff.turn_to_angle(SpeedPercent(speed), degrees)
+    mdiff.turn_to_angle(SpeedPercent(-speed), degrees)
     mdiff.odometry_stop()
 
 #example usage
