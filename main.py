@@ -54,7 +54,7 @@ time.sleep(0.3)
 
 def main():
     
-    print("u may press")
+    print("please press")
     #play tone
     global seesRed
     global seesGreen
@@ -100,7 +100,7 @@ def main():
                 shortestDist = int(distsToNextHouse[0])
                 wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
             except IndexError:
-                print("wtf is it now ")
+                print("sorting distances: index error")
 
             #drop abd 
             #betterTurnLeftToX(180, 10)
@@ -221,7 +221,7 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         correct = -1
     elif dist > desired_dist - tolerance and dist < desired_dist + tolerance:
         correct = 0
-        print("hmm sees to be right")
+        print("distance is correct")
     tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
         distOld = dist
@@ -365,7 +365,6 @@ def detectHouseEdges(threshold):
     while True:
         if getAngle() > 350 or getAngle() < 50:
             tankDrive.off()
-            print("nope")
             break
         angleOld = getAngle()
         distOld = dist
@@ -396,7 +395,6 @@ def detectHouseEdges(threshold):
         
     while True:
         if getAngle() > 350 or getAngle() < 50:
-            print("broke")
             break
         #this here so it doesnt get stuck indefinitly executing
         angleOld = getAngle()
@@ -482,9 +480,9 @@ def getAngleOfApproach(a, b, alpha, beta):
         anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
     except ZeroDivisionError:
         anOfAprch = 90
-        print("fuck fuck fuck fuck FUUUUCK")
+        print("Angle of Approach calculation: zero division error")
     except:
-        print("wtf is wrong now?")
+        print("Angle of Approach calculation: unknown error")
     return anOfAprch
 
 def getDistToNextHouse(a, alpha, anOfAprch):
