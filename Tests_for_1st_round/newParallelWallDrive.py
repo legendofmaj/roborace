@@ -17,6 +17,19 @@ steering_drive = MoveSteering(OUTPUT_C, OUTPUT_B)
 
 ultrasonic_sensor = UltrasonicSensor(INPUT_3)
 
+diststart=17
+circleAngle=0.0
+distarryx=(list(range(0,360)))
+distarry=(list(range(0,360)))
+mind=1000000
+minphi=1000000
+mindavg=1000000
+minphiavg=1000000
+
+
+
+
+
 def main():
     #values for pid tuning
     kp = 1.0
