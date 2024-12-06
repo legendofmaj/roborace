@@ -14,7 +14,7 @@ from ev3dev2.button import Button
 from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
-import modules.newParallelWallDriveUsingColorCheck
+#import modules.newParallelWallDriveUsingColorCheck
 import modules.test_detect_houses
 import modules.modultwo
 import modules.oldParallelWallDrive
@@ -70,9 +70,9 @@ def main():
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
     while True:
-       if Button().any() == True:
+        if Button().any() == True:
            break
-       time.sleep(0.05)
+        time.sleep(0.05)
     global posO
     
     global Angle
@@ -165,8 +165,8 @@ def main():
 def startThreads():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
-    colorThread = threading.Thread(target = readColor)
-    colorThread.start()
+    #colorThread = threading.Thread(target = readColor)
+    #colorThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 

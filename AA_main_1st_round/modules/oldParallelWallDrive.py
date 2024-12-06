@@ -6,7 +6,7 @@ from ev3dev2.motor import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import *
 
-import modultwo
+import modules.modultwo
 #from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
 # Create the sensors and motors objects
@@ -109,7 +109,8 @@ def main():
 
             
         if (countv>20) :
-            turnratio = modultwo.main()#-100
+            turnratio = 0
+            modules.modultwo.main()#-100
             countv=0
 
         print("distance: " + str(ultrasonic_sensor.distance_centimeters) + "     error: "+str(errorv))
@@ -128,14 +129,14 @@ def checkColor():
     colorSeen = [False , False, False]
     rawColor = color_sensor.color
     col_raw = color_sensor.raw
-    rawColor = color_sensor.color
-    col_raw = color_sensor.raw
     if rawColor == 5:
         colorSeen[1] = True
         colorSeen[0] = True
+        colorSeen[2] = False
     elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
         colorSeen[0] = True
         colorSeen[2] = True
+        colorSeen[1] = False
     return colorSeen
 
 

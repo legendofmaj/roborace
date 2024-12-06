@@ -278,7 +278,7 @@ def swipelr(spos):
     # print('Starting thread...')
     # circleAngleThread.start()
 
-    relswipel(45,10.0)
+    relswiper(90, 10.0)
 
     sleep(1)
     # event.set()
@@ -293,7 +293,7 @@ def swipelr(spos):
     # print('Starting thread...')
     # circleAngleThread.start()
 
-    relswiper(45,10.0)
+    relswipel(120, 10.0)
     sleep(1)
     # event.set()
     # circleAngleThread.join()
@@ -302,6 +302,8 @@ def swipelr(spos):
     minphiavg=(minphi+lphi)/2
     print("mind l:",lmind,"mind r:",mind,"mind Avg:",mindavg)
     print("minphi l:",lphi,"mind r:",minphi,"mind Avg:",minphiavg)
+
+    turntoxr(minphiavg, 10)
 
 
 def getRelAnglev(spos):

@@ -371,6 +371,7 @@ def getHousePrimitive():
     dist_short = 1000
     angle_short = 180
     while getAngle() < 350 and getAngle() > 100:
+        tankDrive.on(SpeedPercent(-5), SpeedPercent(5))
         if getAngle() > 350 or getAngle() < 50:
             print("broke in multo")
             break
