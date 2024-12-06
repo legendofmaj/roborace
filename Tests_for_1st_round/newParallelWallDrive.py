@@ -5,6 +5,8 @@ import time
 from ev3dev2.motor import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import *
+
+import modultwo
 #from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
 # Create the sensors and motors objects
@@ -16,6 +18,7 @@ tank_drive = MoveTank(OUTPUT_C, OUTPUT_B)
 steering_drive = MoveSteering(OUTPUT_C, OUTPUT_B)
 
 ultrasonic_sensor = UltrasonicSensor(INPUT_3)
+color_sensor = ColorSensor(INPUT_1)
 
 diststart=17
 circleAngle=0.0
@@ -106,7 +109,7 @@ def main():
 
             
         if (countv>20) :
-            turnratio = -100
+            turnratio = modultwo.main()#-100
             countv=0
 
         print("distance: " + str(ultrasonic_sensor.distance_centimeters) + "     error: "+str(errorv))
@@ -116,6 +119,23 @@ def main():
         steering_drive.on(turnratio, -20)
         previous_error = errorv
         previous_time = current_time
+
+        if checkColor()[0] == True:
+            break
+
+def checkColor():
+    colorSeen = [False , False, False]
+    rawColor = color_sensor.color
+    col_raw = color_sensor.raw
+    rawColor = color_sensor.color
+    col_raw = color_sensor.raw
+    if rawColor == 5:
+        colorSeen[1] = True
+        colorSeen[0] = True
+    elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
+        colorSeen[0] = True
+        colorSeen[2] = True
+    return colorSeen
 
 
 if __name__=="__main__":
