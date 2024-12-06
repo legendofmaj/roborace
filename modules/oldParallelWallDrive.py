@@ -1,73 +1,143 @@
 #!/usr/bin/env python3
 
-from ev3dev2.sensor import INPUT_2, INPUT_3
-from ev3dev2.button import Button
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, LargeMotor, OUTPUT_C
-from ev3dev2.sensor.lego import UltrasonicSensor
-from ev3dev2.sensor.lego import GyroSensor
-
+# Import the necessary libraries
 import time
-import threading 
-import sys
-import math
+from ev3dev2.motor import *
+from ev3dev2.sensor import *
+from ev3dev2.sensor.lego import *
 
-#input and output list
-ultrasound_sensor_port = INPUT_3
-gyro_sensor_port = INPUT_2
-rightMotor = OUTPUT_B
-leftMotor = OUTPUT_C
+import modultwo
+#from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
-tank_drive = MoveTank(leftMotor, rightMotor)
-ultrasound_sensor = UltrasonicSensor(ultrasound_sensor_port)
-gyro = GyroSensor(gyro_sensor_port)
-tank_drive.gyro = GyroSensor(INPUT_2)
+# Create the sensors and motors objects
+motorA = LargeMotor(OUTPUT_C)
+motorB = LargeMotor(OUTPUT_B)
+left_motor = motorA
+right_motor = motorB
+tank_drive = MoveTank(OUTPUT_C, OUTPUT_B)
+steering_drive = MoveSteering(OUTPUT_C, OUTPUT_B)
 
-#Key variables
-desired_dist = 15
-dist = 0
+ultrasonic_sensor = UltrasonicSensor(INPUT_3)
+color_sensor = ColorSensor(INPUT_1)
+
+diststart=17
+circleAngle=0.0
+distarryx=(list(range(0,360)))
+distarry=(list(range(0,360)))
+mind=1000000
+minphi=1000000
+mindavg=1000000
+minphiavg=1000000
+
+
+
+
 
 def main():
-    distThread = threading.Thread(target=read_dist)
-    distThread.start()
-    time.sleep(1)
+    #values for pid tuning
+    kp = 1.0
+    ki = 0.2
+    kd = 0.2
+
+    #other values for tuning
+    goal = 13#cm
+
+    #define other important values
+    integral = 0
+    previous_error = 0
+    deltaTime = 0
+    stopint = 1
+    countx = 0
+    countd = 0
+    countv = 0
+    previous_time = time.time()
+    time.sleep(0.01) #a quick break, to not get a zero division error
+
     while True:
-        print(dist) #debug only
-        adjust_dist(check_dist(desired_dist, 4), 20)
+        current_time = time.time()
+        deltaTime = current_time - previous_time
         
-def read_dist():
-    while True:
-        global dist 
-        dist = ultrasound_sensor.distance_centimeters
-        time.sleep(0.01)
-    
-def drive(speed):
-    tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) #Replace with -speed on real robot
+        errorv = ultrasonic_sensor.distance_centimeters - goal
+        integral += stopint*(errorv * deltaTime)
+        derivative = (errorv - previous_error) / deltaTime
 
-def check_dist(desired_dist, tolerance):
-    #Note: If distance is correct it is 0, if it is too big it is 1, if it is too small it is -1
-    if dist > desired_dist  + tolerance:
-        print("dist too big")
-        correct = 1
-    elif dist < desired_dist - tolerance:
-        print("dist too small")
-        correct = -1
-    elif dist > desired_dist - tolerance and dist < desired_dist + tolerance:
-        correct = 0
-    return correct
+        if (abs(errorv)>10.0):
+            kp=0.2
+       #     countx+=1
+       # elif ((countx>0)and(countx<4)):
+       #     countx+=1
+        else:
+            kp=1.0
+        
+        if (abs(derivative)>100):
+            kd=1.0
+            ki=0.02
+            stopint=0
+            countd+=1
+        elif ((countd>0)and(countd<4)):    
+            countd+=1
+        else:
+            kd=0.2 
+            ki=0.2
+            stopint=1
+            countd=0
 
-def adjust_dist(correct, speed):
-    tank_drive.off
-    if correct == 1:
-        tank_drive.turn_degrees(SpeedPercent(speed), -4)
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed)) 
-        time.sleep(0.2) 
-    if correct == -1:
-        tank_drive.turn_degrees(SpeedPercent(-speed), 4) 
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
-        time.sleep(0.2)
-    if correct == 0:
-        tank_drive.on(SpeedPercent(-speed), SpeedPercent(-speed))
-        time.sleep(0.1)
+#""" 
+#        if ((abs(errorv)>10.0)or(abs(derivative)>100)) :
+#            kd=1.0
+#            ki=0.02
+#            stopint=0
+#        else:
+#            kp=1.0
+#            kd=0.2 
+#            ki=0.2
+#            stopint=1
+# """
+
+        turnratio = (kp * errorv) + (ki * integral) + (kd * derivative)
+        turnratio_o = turnratio
+        #limit to safe values
+        if turnratio > 25:
+            turnratio = 25
+            if ( (errorv - previous_error)>0):
+                countv+=1
+        elif turnratio < -100:
+            turnratio = -100
+
+        #if ( (errorv>10.0) and (previous_error>10.0) and ((errorv - previous_error)>0) ):
+        #    countx+=1
+
+            
+        if (countv>20) :
+            turnratio = modultwo.main()#-100
+            countv=0
+
+        print("distance: " + str(ultrasonic_sensor.distance_centimeters) + "     error: "+str(errorv))
+        print("turnratio calculated: " + str(turnratio_o))
+        print("turnratio limited: " + str(turnratio) + " countv: " + str(countv)+ " countd: " + str(countd))
+        print("deltaTime: " + str(deltaTime) + "    deriv: " + str(derivative))
+        steering_drive.on(turnratio, -20)
+        previous_error = errorv
+        previous_time = current_time
+        checked_color = checkColor()
+        if checked_color[0] == True:
+            return checked_color
+            break
+
+def checkColor():
+    colorSeen = [False , False, False]
+    rawColor = color_sensor.color
+    col_raw = color_sensor.raw
+    rawColor = color_sensor.color
+    col_raw = color_sensor.raw
+    if rawColor == 5:
+        colorSeen[1] = True
+        colorSeen[0] = True
+    elif (col_raw[0]*2) < col_raw[1] and (col_raw[2]*2) < col_raw[1]:
+        colorSeen[0] = True
+        colorSeen[2] = True
+    return colorSeen
+
 
 if __name__=="__main__":
     main()

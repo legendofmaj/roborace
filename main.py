@@ -16,6 +16,8 @@ from ev3dev2.sound import Sound
 
 import modules.newParallelWallDriveUsingColorCheck
 import modules.test_detect_houses
+import modules.modultwo
+import modules.oldParallelWallDrive
 
 studmm = 7
 studs_that_wheels_are_apart = 15
@@ -81,8 +83,10 @@ def main():
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(0.5)
     #figure out how to detect an adge and drive parallel to a wall and see red
+    color = [False, False, False]
     while True:
-        if seesRed == True:
+        color = modules.oldParallelWallDrive.main()
+        if color[1] == True:
             print("red")
             tankDrive.off()   
             seesRed = False
@@ -114,18 +118,21 @@ def main():
             wantedAnOfAprch = int(float(modules.test_detect_houses.anglesAndDists[modules.test_detect_houses.dist_short]))
             
             #debug_WARNING: does the new file (test_detect_houses) already do this, or does it need to be done here?
-            turnRightToX(40, 10)
+            #turnRightToX(40, 10)
+            modules.modultwo.turntoxr(50, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
-            turnLeftToX((wantedAnOfAprch + 90), 10)
+            modules.modultwo.turntoxl((wantedAnOfAprch + 90), 10)
+            #turnLeftToX((wantedAnOfAprch + 90), 10)
             print("turning to angle")
             time.sleep(0.5)
             seenDist = dist
             print(seenDist)
             time.sleep(0.2)
 
-            turnRightToX(wantedAnOfAprch + 5, 5)
+            modules.modultwo.turntoxr(wantedAnOfAprch, 10)
+            #turnRightToX(wantedAnOfAprch + 5, 5)
             #moveDifferential.turn_right(85, 7)
 
             toDriveDist = seenDist - 13
@@ -134,15 +141,16 @@ def main():
                 print("drove")
             
             #moveDifferential.turn_left(10, 90)
-            leftTurn(90, 10)
+            modules.modultwo.relturnv(90, 10)
+            #leftTurn(90, 10)
             time.sleep(0.2)
             seesRed = False
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
+            #tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
             posO = circleAngle
 
             #then drive to thew next house and then turn  
         
-        if seesGreen == True: 
+        if color[2] == True: 
             tankDrive.off()
             seesGreen = False
             print("green")
@@ -152,7 +160,7 @@ def main():
             break
         #drive parallel to wall
         #adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
-        modules.newParallelWallDriveUsingColorCheck.main()
+        #modules.newParallelWallDriveUsingColorCheck.main()'''
 
 def startThreads():
     distThread = threading.Thread(target= read_dist)

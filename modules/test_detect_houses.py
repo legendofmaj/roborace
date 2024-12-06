@@ -14,6 +14,8 @@ from ev3dev2.button import Button
 from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
+import modules.modultwo
+
 
 
 
@@ -364,7 +366,8 @@ def getHousePrimitive():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    turnLeftToX(150, 10)
+    modules.modultwo.turntoxl(150, 10)
+    #turnLeftToX(150, 10)
     dist_short = 1000
     angle_short = 180
     while getAngle() < 350 and getAngle() > 100:
