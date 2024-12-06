@@ -32,7 +32,7 @@ motorRight = Motor(OUTPUT_B)
 motorLeft = Motor(OUTPUT_C)
 colorSensor = ColorSensor(INPUT_1)
 gyroSensor = GyroSensor(INPUT_2)#,MODE_GYRO_ANG = 'GYRO-ANG') # returns values as degree # initializes and resets angle to be 0 degree
-gyroSensor.circle_angle() # switches to counting counter clockwise as positive direction # switching to this mode sets the gyro position to 90 degree
+#gyroSensor.circle_angle() # switches to counting counter clockwise as positive direction # switching to this mode sets the gyro position to 90 degree
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 speaker = Sound()
 #tankDrive.gyro = gyroSensor
@@ -57,7 +57,7 @@ posO = 90
 zero = 90
 Angle = 0
 
-initialGyrosensorPosition = gyroSensor.angle
+#initialGyrosensorPosition = gyroSensor.angle
 #gyroSensor.reset()
 #tankDrive.gyro.reset()
 time.sleep(0.3)
@@ -84,11 +84,11 @@ def main():
     global Angle
     global dist
     global zero
-    global initialGyrosensorPosition 
+    #global initialGyrosensorPosition 
     #zero = circleAngle
     posO = circleAngle
     Angle = 90
-    print("angle: ",posO," circle_angle: ",initialGyrosensorPosition)
+    print("angle: ",posO)#, " circle_angle: ",initialGyrosensorPosition)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(0.5)
     #figure out how to detect an edge and drive parallel to a wall and see red
@@ -99,7 +99,7 @@ def main():
             seesRed = False
             #gyroSensor.reset()
             
-            posO = Angle
+            posO = circleAngle
             
             getMultipleHouses()
 
@@ -230,8 +230,8 @@ def readCircleAngle():
     global Angle
     while True:
         circleAngle = gyroSensor.circle_angle()
-        Angle = Angle
-        time.sleep(0.05)
+        Angle = gyroSensor.angle
+        time.sleep(0.12)
         #print(circleAngle)
 
 def getAngle():
@@ -266,20 +266,24 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
     #threshold, drive_further = 35, 22.3
     global dist
     correct = 0
+    distOld = 0
+    distNew = 0
     if dist > desired_dist  + tolerance:
-        print("dist too big")
+        print("dist too big " + str(dist) + " to "+ str(desired_dist + tolerance))
         correct = 1
     elif dist < desired_dist - tolerance:
-        print("dist too small")
+        print("dist too small "+ str(dist) + " to "+ str(desired_dist - tolerance))
         correct = -1
     elif ((dist > desired_dist - tolerance) and (dist < desired_dist + tolerance)):
         correct = 0
         print("hmm seems to be right")
     tankDrive.off()
     if correct == 1: #it starts turning outwards for some rteason and doesnt turn abcjk in
+        print("dist large entered")
         distOld = dist
         #mdiff.turn_right(10, 4)
         rightTurn(4, 10)
+        print("turn")
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15) 
         #distOld = dist
@@ -287,12 +291,15 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         tankDrive.off()
         #mdiff.turn_left(10, 4)
         leftTurn(4, 10)
+        print("turn 2")
         tankDrive.off() 
         distNew = dist
-    if correct == -1:
+    elif correct == -1:
+        print("dist smol entered")
         distOld = dist
         #mdiff.turn_left(10, 5)
         leftTurn(4, 10)
+        print("turn")
         tankDrive.off()
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         #distOld = dist
@@ -301,10 +308,12 @@ def adjustDist_findEdge(desired_dist, tolerance, speed, threshold, drive_further
         #print("gets herd")
         #mdiff.turn_right(10, 4)
         rightTurn(4, 10)
+        print("turn 2")
         tankDrive.off()
         distNew = dist
         #print("hello is past second turn")
-    if correct == 0:
+    elif correct == 0:
+        print("fancy its right driving")
         distOld = dist
         tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), 0.15)
         distNew = dist
@@ -397,12 +406,12 @@ def rightTurn(degrees, speed):
 def relturn(degrees, speed):
     cpos = Angle
     startAngle = getRelAngle(cpos) # Sollte nahe 0 sein, wenn Roboter nicht in Drehung ist
-    while abs(getRelAngle(cpos)) > max(degrees, 10): # minimale Drehung 10° 
+    while abs(getRelAngle(cpos)) < max(degrees, 4): # minimale Drehung 4° 
         tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
     tankDrive.on(SpeedPercent(0), SpeedPercent(0))
 
 def curpos():
-    langle = circleAngle#gyroSensor.circle_angle()
+    langle = getAngle()#gyroSensor.circle_angle()
     #time.sleep(0.25)
     return langle
 
@@ -412,7 +421,7 @@ def curpos():
 def turnRightToX(degrees, speed):
     if degrees < 10:
         degrees = 10
-    cpos = circleAngle#gyroSensor.circle_angle()
+    cpos = getAngle()#gyroSensor.circle_angle()
     if (degrees>cpos):
         langle = cpos+360
     else:
@@ -424,27 +433,27 @@ def turnRightToX(degrees, speed):
         #     langle = curpos()
         #     print("degrees < cpos"+ langle)
         # else:
-        if (curpos()<=cpos):
+        if (curpos()<=degrees):
             langle = curpos()+360
         else:
             langle = curpos()
-        print("right:  "+ langle)
+        print("right:  "+ str(langle))
         #turnLeftToX(degrees, speed)
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+    tankDrive.off()
 
 def turnLeftToX(degrees, speed):
-    cpos = circleAngle #gyroSensor.circle_angle()
+    cpos = getAngle() #gyroSensor.circle_angle()
     if (degrees<cpos):
         langle = cpos-360
     else:
         langle=cpos
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed)) # dreht links
     while langle < (degrees - 5): # 5 Grad vor erreichen des Zielwinkels wird abgeschaltet
-        if (curpos()>=cpos):
+        if (curpos()>=degrees):
             langle = curpos()-360
         else:
             langle = curpos()
-        print("left:  "+ langle)
+        print("left:  "+ str(langle))
         # if (degrees > cpos):
         #         langle = curpos()
         # else:
