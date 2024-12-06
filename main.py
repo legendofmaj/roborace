@@ -14,7 +14,7 @@ from ev3dev2.button import Button
 from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
-import modules.parallelWallDrive
+import modules.newParallelWallDriveUsingColorCheck
 
 studmm = 7
 studs_that_wheels_are_apart = 15
@@ -143,7 +143,7 @@ def main():
             break
         #drive parallel to wall
         #adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
-        modules.parallelWallDrive.main()
+        modules.newParallelWallDriveUsingColorCheck.main()
 
 def startThreads():
     distThread = threading.Thread(target= read_dist)
