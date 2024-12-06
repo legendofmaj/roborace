@@ -20,8 +20,8 @@ ultrasonic_sensor = UltrasonicSensor(INPUT_3)
 def main():
     #values for pid tuning
     kp = 1.0
-    ki = 0.1
-    kd = 0.1
+    ki = 0.2
+    kd = 0.2
 
     #other values for tuning
     goal = 13#cm
@@ -30,6 +30,10 @@ def main():
     integral = 0
     previous_error = 0
     deltaTime = 0
+    stopint = 1
+    countx = 0
+    countd = 0
+    countv = 0
     previous_time = time.time()
     time.sleep(0.01) #a quick break, to not get a zero division error
 
@@ -37,23 +41,67 @@ def main():
         current_time = time.time()
         deltaTime = current_time - previous_time
         
-        error = ultrasonic_sensor.distance_centimeters - goal
-        integral += (error * deltaTime)
-        derivative = (error - previous_error) / deltaTime
+        errorv = ultrasonic_sensor.distance_centimeters - goal
+        integral += stopint*(errorv * deltaTime)
+        derivative = (errorv - previous_error) / deltaTime
 
-        turnratio = (kp * error) + (ki * integral) + (kd * derivative)
+        if (abs(errorv)>10.0):
+            kp=0.2
+       #     countx+=1
+       # elif ((countx>0)and(countx<4)):
+       #     countx+=1
+        else:
+            kp=1.0
+        
+        if (abs(derivative)>100):
+            kd=1.0
+            ki=0.02
+            stopint=0
+            countd+=1
+        elif ((countd>0)and(countd<4)):    
+            countd+=1
+        else:
+            kd=0.2 
+            ki=0.2
+            stopint=1
+            countd=0
 
+#""" 
+#        if ((abs(errorv)>10.0)or(abs(derivative)>100)) :
+#            kd=1.0
+#            ki=0.02
+#            stopint=0
+#        else:
+#            kp=1.0
+#            kd=0.2 
+#            ki=0.2
+#            stopint=1
+# """
+
+        turnratio = (kp * errorv) + (ki * integral) + (kd * derivative)
+        turnratio_o = turnratio
         #limit to safe values
-        if turnratio > 12.5:
-            turnratio = 12.5
-        elif turnratio < -12.5:
-            turnratio = -12.5
+        if turnratio > 25:
+            turnratio = 25
+            if ( (errorv - previous_error)>0):
+                countv+=1
+        elif turnratio < -100:
+            turnratio = -100
 
-        print("distance: " + str(ultrasonic_sensor.distance_centimeters))
-        print("turnratio: " + str(turnratio))
-        print("deltaTime: " + str(deltaTime))
+        #if ( (errorv>10.0) and (previous_error>10.0) and ((errorv - previous_error)>0) ):
+        #    countx+=1
+
+            
+        if (countv>20) :
+            turnratio = -100
+            countv=0
+
+        print("distance: " + str(ultrasonic_sensor.distance_centimeters) + "     error: "+str(errorv))
+        print("turnratio calculated: " + str(turnratio_o))
+        print("turnratio limited: " + str(turnratio) + " countv: " + str(countv)+ " countd: " + str(countd))
+        print("deltaTime: " + str(deltaTime) + "    deriv: " + str(derivative))
         steering_drive.on(turnratio, -20)
-        previous_error = error
+        previous_error = errorv
         previous_time = current_time
 
 
