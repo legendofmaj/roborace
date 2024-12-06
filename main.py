@@ -106,13 +106,14 @@ def main():
             # except IndexError:
             #     print("sorting distances: index error")
 
-           #debug_WARNING: does the new file (test_detect_houses) already do this, or does it need to be done here?
+           
 
             #betterTurnLeftToX(180, 10)
 
             #debug_WARNING: I am very unsure if this will work, please make sure it doesn't give an error
             wantedAnOfAprch = int(float(modules.test_detect_houses.anglesAndDists[modules.test_detect_houses.dist_short]))
-
+            
+            #debug_WARNING: does the new file (test_detect_houses) already do this, or does it need to be done here?
             turnRightToX(40, 10)
             drop()
             time.sleep(0.5)
