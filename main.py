@@ -15,6 +15,7 @@ from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 import modules.newParallelWallDriveUsingColorCheck
+import modules.test_detect_houses
 
 studmm = 7
 studs_that_wheels_are_apart = 15
@@ -88,23 +89,30 @@ def main():
 
             posO = circleAngle
             
-            getMultipleHouses()
+            #getMultipleHouses()
+            modules.test_detect_houses.getHousePrimitive()
 
-            #add the dists to a list and sort it
-            distsToNextHouse = anglesAndDists.keys()
-            print(distsToNextHouse, anglesAndDists.keys())
-            distsToNextHouse = [int(x) for x in distsToNextHouse]
-            distsToNextHouse = sorted(distsToNextHouse)
-            print(distsToNextHouse)
-            #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
-            try:
-                shortestDist = int(distsToNextHouse[0])
-                wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
-            except IndexError:
-                print("sorting distances: index error")
+            #debug: this is all done in other file
+            # #add the dists to a list and sort it
+            # distsToNextHouse = anglesAndDists.keys()
+            # print(distsToNextHouse, anglesAndDists.keys())
+            # distsToNextHouse = [int(x) for x in distsToNextHouse]
+            # distsToNextHouse = sorted(distsToNextHouse)
+            # print(distsToNextHouse)
+            # #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
+            # try:
+            #     shortestDist = int(distsToNextHouse[0])
+            #     wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
+            # except IndexError:
+            #     print("sorting distances: index error")
 
-            #drop abd 
+           #debug_WARNING: does the new file (test_detect_houses) already do this, or does it need to be done here?
+
             #betterTurnLeftToX(180, 10)
+
+            #debug_WARNING: I am very unsure if this will work, please make sure it doesn't give an error
+            wantedAnOfAprch = int(float(modules.test_detect_houses.anglesAndDists[modules.test_detect_houses.dist_short]))
+
             turnRightToX(40, 10)
             drop()
             time.sleep(0.5)
