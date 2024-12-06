@@ -161,7 +161,7 @@ def readCircleAngle():
     global Angle
     while True:
         circleAngle = gyroSensor.circle_angle()
-        Angle = Angle
+        Angle = gyroSensor.angle
         time.sleep(0.05)
         #print(circleAngle)
 
@@ -250,7 +250,7 @@ def getHousesNew(threshold):
     edges_keys = [int(x) for x in edges_keys]
     edges_keys = sorted(edges_keys)
 
-    for x in range(len(edges)):
+    '''for x in range(len(edges)):
         right = edges[edges_keys[x]]
         left = edges[edges_keys[(x+1)]]
         a = right[0]#rightCornerDist 
@@ -260,7 +260,36 @@ def getHousesNew(threshold):
         anOfAprch = getAngleOfApproach(a, b, alpha, beta)
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
-        x += 1
+        x += 1'''
+    #def find_angles():
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+    leftest_edge = edges[edges_keys[0]]
+    if leftest_edge[1] == 2:
+        edges[150] = [dist_at_oneOFive, 1]
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+
+    for x in range(len(edges)):
+        if x % 2 != 0:
+            continue
+        right = edges[edges_keys[x]]
+        left = edges[edges_keys[(x+1)]]
+        a = int(right[0])#rightCornerDist 
+        b = int(left[0])#leftCornerDist 
+        alpha = int(edges_keys[x])#rightCornerAngle
+        beta = int(edges_keys[(x+1)])#leftCornerAngle
+        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+        distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
+        anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
+        print(left)
+        print(right)
+        print(alpha)
+        print(beta)
+        print(anglesAndDists)
+        print(x)
 
     edges.clear()
     edges_keys.clear()
