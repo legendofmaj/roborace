@@ -6,7 +6,7 @@ This repository contains a possible solution to the exercise given in the Robora
 
 ### What should the robot do?
 
-In short the ev3, is supposed to be programmed as a delivery robot. It should deliver a parcel to houses that are marked with a red line without bumping into anything. Detailed explanations can be found on [the homepage of the University of Stuttgart] (https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
+In short the ev3, is supposed to be programmed as a delivery robot. It should deliver a parcel to houses that are marked with a red line without bumping into anything. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 
 The Roborace was divided into several tasks. Specifically the qualification and the main event.
 
