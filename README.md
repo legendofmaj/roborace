@@ -13,13 +13,6 @@ The Roborace was divided into several tasks. Specifically the qualification and 
 - For the qualifying the robot should simply drive along a house, search for another house, drive to the 2nd house and then drive along it’s wall until a line is reached. This code along with the necessary explanations can be found [here](https://github.com/legendofmaj/ev3/releases/tag/qualifying).
 - For the main event, the task was a little more complex, as there were more houses involved and the house walls weren’t straight. The code for the main event can be found [here](https://github.com/legendofmaj/ev3).
 
-### Limitations
-
-It should be mentioned however that the current implementation has a few drawbacks. 
-
-- First of all the robot moves rather slowly, this can be changed with a single variable but may have unforeseen consequences.
-- Additionally, the PID parameters used to keep the robot orthogonal to the wall require more tweaking.
-
 ## Further reading
 
 ### Operating System
@@ -39,3 +32,10 @@ Commit conventions: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cf
 Variable/function conventions: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md
 
 ## Code explanation
+
+### Limitations
+
+It should be mentioned however that the current implementation has a few drawbacks. 
+
+- First of all the robot moves rather slowly, this can be changed with a single variable but may have unforeseen consequences.
+- Additionally, the PID parameters used to keep the robot orthogonal to the wall require more tweaking.
