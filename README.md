@@ -1,4 +1,4 @@
-# Roborace 2024 - Solution - Teamname
+# Roborace 2024 - possible solution
 
 A possible solution to the exercise given in the Roborace Stuttgart 2024 using the ev3dev2 Python library.
 
@@ -8,25 +8,25 @@ A possible solution to the exercise given in the Roborace Stuttgart 2024 using t
 [Readme in Deutsch](https://github.com/legendofmaj/ev3/blob/README/miscellaneous/README_in_Deutsch.md)
 ## Features
 
-In short the robot, is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
+In short, the robot is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 
-### main features
+### Main features
 
 - drive along walls and corners (using a PID controller)
 - find other houses
-- drive to other houses (using trigonometry)
+- move to other houses (using trigonometry)
 
-### other features
+### Other features
 
 - play sounds
-- turn a number of degrees (relative to current and starting position)
+- turn a number of degrees (relative to current and start position)
 - drop packages
 
 ## Code explanation
 
-### drive along walls and corners
+### Drive along walls and corners
 
-This is the basis for the robot driving along the wall. It uses the the difference between the current distance to a house and the distance it is supposed to have and plugs it into a PID controller formula. The output value is then used for steering. 
+This is the basis for the robot driving along the wall. It uses the the difference between the current distance to a house and the distance it is supposed to have and plugs it into a PID controller formula. The output value is then used for steering the robot.
 
 ```python
 error = ultrasonic_sensor.distance_centimeters - goal
@@ -40,9 +40,9 @@ steering_drive.on(turnratio, 20)
 
 [entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/parallelWallDrive.py)
 
-### find other houses
+### Find other houses
 
-This is the basis for dectecting houses edges. It permanently calculates the difference between the current distance and the last and looks for big jumps. If a jump is big enough, a house edge is detected the current angle and distance are saved.
+This is the basis for dectecting the edges of houses. It constantly calculates the difference between the current and the last distance and looks for large jumps. If a jump is large enough, a house edge is detected and the current angle and distance are stored.
 
 ```python
 while True:
@@ -56,7 +56,7 @@ while True:
 ```
 [entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/determine_angles_distances_next_house.py)
 
-### drive to other houses using trigonometry
+### Drive to other houses using trigonometry
 
 This is the formula for calculating the angle of approach to the next house.
 
@@ -72,11 +72,11 @@ anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*
 
 ## Credit
 
-We want to give credit to these projects which were a great help to us.
+We would like to give credit to these projects that helped us a lot.
 
 ### Operating system and library
 
-Operating system and language bindings which are the basis of our project. https://www.ev3dev.org/docs/getting-started/
+Operating system and language bindings that form the basis of our project. https://www.ev3dev.org/docs/getting-started/
 
 ### Documentation
 
