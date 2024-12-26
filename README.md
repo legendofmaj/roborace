@@ -18,34 +18,6 @@ In short the robot, is programmed as a delivery robot. Detailed explanations can
 - turn a number of degrees (relative to current and starting position)
 - drop packages
 
-## Credit
-
-We want to give credit to these projects which were a great help to us.
-
-### Operating system and library
-
-Operating system and language bindings which are the basis of our project. https://www.ev3dev.org/docs/getting-started/
-
-### Documentation
-
-The library documentation. https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
-
-### Simulation
-
-Simulations to test code without having the ev3 at hand.
-
-[3D Simulation](https://gears.aposteriori.com.sg/) [2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
-
-> Config files can be found in the repository under miscellaneous
-
-### Naming conventions
-
-Naming conventions for both commits and code to make the the project readable.
-
-Commit conventions: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
-
-Coding conventions: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md
-
 ## Code explanation
 
 ### drive along walls and corners
@@ -93,3 +65,31 @@ anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*
 <img src="https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa" width="450">
 
 [entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/get_angle_of_approach.py)
+
+## Credit
+
+We want to give credit to these projects which were a great help to us.
+
+### Operating system and library
+
+Operating system and language bindings which are the basis of our project. https://www.ev3dev.org/docs/getting-started/
+
+### Documentation
+
+The library documentation. https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
+
+### Simulation
+
+Simulations to test code without having the ev3 at hand.
+
+[3D Simulation](https://gears.aposteriori.com.sg/) [2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
+
+> Config files can be found in the repository under miscellaneous
+
+### Naming conventions
+
+Naming conventions for both commits and code to make the the project readable.
+
+Commit conventions: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+
+Coding conventions: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md
