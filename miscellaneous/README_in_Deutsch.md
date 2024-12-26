@@ -25,7 +25,7 @@ Kurz gesagt, der Roboter ist als Lieferroboter programmiert. Detaillierte Erklä
 
 ### Entlang von Wänden und Ecken fahren
 
-Folgendes ist die Grundlage für Entlangfahren von Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz, die der Roboter haben soll, und setzt diese in eine PID-Regler-Formel ein. Der Ausgabewert wird dann zur Steuerung genutzt.
+Folgendes ist die Grundlage für das Entlangfahren an Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz, die der Roboter haben soll, und setzt diese in eine PID-Regler-Formel ein. Der Ausgabewert wird dann zur Steuerung genutzt.
 
 ```python
 error = ultrasonic_sensor.distance_centimeters - goal
