@@ -2,6 +2,9 @@
 
 A possible solution to the exercise given in the Roborace Stuttgart 2024 using the ev3dev2 Python library.
 
+![language](https://img.shields.io/badge/language-python-blue?logo=python)
+[![library](https://img.shields.io/badge/library-ev3dev2-orange)](https://www.ev3dev.org)
+
 ## Features
 
 In short the robot, is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
