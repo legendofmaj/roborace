@@ -1,130 +1,99 @@
-# Roborace 2024
+# Roborace 2024 - possible solution
 
-## Simulation
-[3D Simulation](https://gears.aposteriori.com.sg/)
-[2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
-> Config files können im Repo unter miscellaneous gefunden werden
+A possible solution to the exercise given in the Roborace Stuttgart 2024 using the ev3dev2 Python library.
 
-## Konventionen zur Namensgebung
+![language](https://img.shields.io/badge/language-python-blue?logo=python)
+[![library](https://img.shields.io/badge/library-ev3dev2-orange)](https://www.ev3dev.org)
 
-> [!WARNING]
->
->Es ist *wichtig*, den Namensgebungskonventionen zu folgen, um den Code für andere und in der Zukunft lesbar zu machen
+[Readme in Deutsch](https://github.com/legendofmaj/ev3/blob/README/miscellaneous/README_in_Deutsch.md)
+## Features
 
-### Allgemeines Format:
+In short, the robot is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 
-**Typ (optional Bereich): Beschreibung**
+### Main features
 
-### Beispiele:
+- drive along walls and corners (using a PID controller)
+- find other houses
+- move to other houses (using trigonometry)
 
-- Gut: "feat(movement): add tank steering"
+### Other features
 
-- Schlecht: "Fixed some stuff"
+- play sounds
+- turn a number of degrees (relative to current and start position)
+- drop packages
 
-### Anmerkung:
-> [!WARNING]
->
->Achtet darauf, den *Imperativ* und das *Präsens* zu verwenden: „change“ nicht „changed“ oder „changes“
-Siehe auch: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+## Code explanation
 
+### Drive along walls and corners
 
-## Code Referenz
+This is the basis for the robot driving along the wall. It uses the the difference between the current distance to a house and the distance it is supposed to have and plugs it into a PID controller formula. The output value is then used for steering the robot.
 
-https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
+```python
+error = ultrasonic_sensor.distance_centimeters - goal
+integral += (error * deltaTime)
+derivative = (error - previous_error) / deltaTime
 
-## Verwendung von Git
+turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 
-### [Git Installieren](https://git-scm.com/)
-
-1. Git.exe von der verlinkten Website herunterladen 
-
-- bei Windows unter Download for Windows auf Click Download here ganz oben drücken
-
-2. Installer als Admin ausführen
-
-- Unter **select components** und **Windows explorer integration** **Open Git GUI** **nicht** aktivieren, da es meist nicht verwendet wird und das Menü unsauber macht
-- Unter **select default editor** ist besser anstelle von vim VS Code zu verwenden, da wir es später so oder so brauchen
-- Unter **adjust the name of the initial branch in new repositories override the default branch** auswählen und main in die Textbox eingeben
-- Bei allem hier nicht angegebenen einfach die Standard einstellungen verwenden
-
-
-
-### Git einrichten
-
-1. In den Ordner gehen wo das Projekt letzendlich sein soll e.g.: Home/documents/Roborace und open **Git Bash here** drücken
-
-```javascript
-git config --global user.name "Dein GitHub Benutzername"
+steering_drive.on(turnratio, 20)
 ```
 
-```javascript
-git config --global user.email "Deine GitHub E-Mail"
+[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/parallelWallDrive.py)
+
+### Find other houses
+
+This is the basis for dectecting the edges of houses. It constantly calculates the difference between the current and the last distance and looks for large jumps. If a jump is large enough, a house edge is detected and the current angle and distance are stored.
+
+```python
+while True:
+  distOld = ultraSoundSensor.distance_centimeters
+  distNew = ultraSoundSensor.distance_centimeters
+  if abs(distOld-distNew) >= threshold and distNew < 100:           
+  importantValues.rightCornerAngle = gyroSensor.circle_angle() 
+  importantValue.rightCornerDist = distNew
+  break
+  #repeat for left side
+```
+[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/determine_angles_distances_next_house.py)
+
+### Drive to other houses using trigonometry
+
+This is the formula for calculating the angle of approach to the next house.
+
+```python
+
+anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
+#a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
 ```
 
-```javascript
-git init
-```
+<img src="https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa" width="450">
 
-```javascript
-git pull https://github.com/legendofmaj/ev3.git
-```
+[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/get_angle_of_approach.py)
 
-2. Git zum ersten mal verwenden
+## Credit
 
-```javascript
-git status
-```
+We would like to give credit to these projects that helped us a lot.
 
-```javascript
-git add .
-```
+### Operating system and library
 
-```javascript
-git commit -m "Was du verändert hast"
-```
+Operating system and language bindings that form the basis of our project. https://www.ev3dev.org/docs/getting-started/
 
-```javascript
-git remote add origin https://github.com/legendofmaj/ev3.git
-```
+### Documentation
 
-```javascript
-git push --set-upstream origin main
-```
+The library documentation. https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
 
-3. Änderungen machen
+### Simulation
 
-```javascript
-git status
-```
+Simulations to test code without having the ev3 at hand.
 
-```javascript
-git add .
-```
+[3D Simulation](https://gears.aposteriori.com.sg/) [2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
 
-```javascript
-git commit -m "Was du verändert hast"
-```
+> Config files can be found in the repository under miscellaneous
 
-```javascript
-git push
-```
+### Naming conventions
 
+Naming conventions for both commits and code to make the the project readable.
 
+Commit conventions: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 
-### [Verbinden des ev3 mit dem PC](https://www.ev3dev.org/docs/getting-started/)
-
-1. [Netzwerkverbindung einrichten](https://www.ev3dev.org/docs/networking) (Achtung: Dies muss später vielleicht durch Bluetooth ersetzt werden)
-
-- Unter Windows 11 wird man nachdem man im Control Panel auf Devices and Printers geht in die Einstellungs-App verwiesen, hier muss man auf "erweiterte Einstellung", ganz unten auf der Seite gehen, um wieder ins Control Panel zu kommen.
-- Das Umbenennen des ev3 funktioniert nur mit f5 in einem der Netzwerk Menüs.
-- Unter Linux sollte man darauf achten unbedingt den **"nm-connection-editor"** zu verwenden.
-
-2. [SSH Verbindung](https://www.ev3dev.org/docs/tutorials/connecting-to-ev3dev-with-ssh/)
-
-- In PUTTY auf Windows einfach den Hostname, also **"robot"** im Feld eingeben. Bei dem SSH Passwort handelt es sich um **"maker"**.
-- Nur in Linux: Anstelle von [robot@ev3dev.local](mailto:robot@ev3dev.local), sollte man die IPv4-Adresse eingeben, welche auf dem Roboter unter **Wireless and Networks>All Network Connections>Wired>IPv4** zu finden ist. Also **ssh robot@IPv4**.
-
-3. [Programmierung](https://github.com/ev3dev/ev3dev-lang-python)
-
-- Hinweis zum Ausführen, immer über Run oder F5 gehen.
-- Um sich mit dem Roboter zu verbinden, unter "ev3 device browser" auf "device not found" gehen und dann erst robot und dann die IPv4 Adresse eingeben.
+Coding conventions: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md

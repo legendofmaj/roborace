@@ -14,6 +14,10 @@ from ev3dev2.button import Button
 from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
+#import modules.newParallelWallDriveUsingColorCheck
+import modules.test_detect_houses
+import modules.modultwo
+import modules.oldParallelWallDrive
 
 studmm = 7
 studs_that_wheels_are_apart = 15
@@ -66,9 +70,9 @@ def main():
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
     while True:
-       if Button().any() == True:
+        if Button().any() == True:
            break
-       time.sleep(0.05)
+        time.sleep(0.05)
     global posO
     
     global Angle
@@ -79,43 +83,56 @@ def main():
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(0.5)
     #figure out how to detect an adge and drive parallel to a wall and see red
+    color = [False, False, False]
     while True:
-        if seesRed == True:
+        color = modules.oldParallelWallDrive.main()
+        if color[1] == True:
             print("red")
             tankDrive.off()   
             seesRed = False
 
             posO = circleAngle
             
-            getMultipleHouses()
+            #getMultipleHouses()
+            modules.test_detect_houses.getHousePrimitive()
 
-            #add the dists to a list and sort it
-            distsToNextHouse = anglesAndDists.keys()
-            print(distsToNextHouse, anglesAndDists.keys())
-            distsToNextHouse = [int(x) for x in distsToNextHouse]
-            distsToNextHouse = sorted(distsToNextHouse)
-            print(distsToNextHouse)
-            #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
-            try:
-                shortestDist = int(distsToNextHouse[0])
-                wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
-            except IndexError:
-                print("sorting distances: index error")
+            #debug: this is all done in other file
+            # #add the dists to a list and sort it
+            # distsToNextHouse = anglesAndDists.keys()
+            # print(distsToNextHouse, anglesAndDists.keys())
+            # distsToNextHouse = [int(x) for x in distsToNextHouse]
+            # distsToNextHouse = sorted(distsToNextHouse)
+            # print(distsToNextHouse)
+            # #figure out which one is the shortest and save it, also figure out which is the correspaonding angle and save it
+            # try:
+            #     shortestDist = int(distsToNextHouse[0])
+            #     wantedAnOfAprch = int(float(anglesAndDists[shortestDist]))
+            # except IndexError:
+            #     print("sorting distances: index error")
 
-            #drop abd 
+           
+
             #betterTurnLeftToX(180, 10)
-            turnRightToX(40, 10)
+
+            #debug_WARNING: I am very unsure if this will work, please make sure it doesn't give an error
+            wantedAnOfAprch = int(float(modules.test_detect_houses.anglesAndDists[modules.test_detect_houses.dist_short]))
+            
+            #debug_WARNING: does the new file (test_detect_houses) already do this, or does it need to be done here?
+            #turnRightToX(40, 10)
+            modules.modultwo.turntoxr(50, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
-            turnLeftToX((wantedAnOfAprch + 90), 10)
+            modules.modultwo.turntoxl((wantedAnOfAprch + 90), 10)
+            #turnLeftToX((wantedAnOfAprch + 90), 10)
             print("turning to angle")
             time.sleep(0.5)
             seenDist = dist
             print(seenDist)
             time.sleep(0.2)
 
-            turnRightToX(wantedAnOfAprch + 5, 5)
+            modules.modultwo.turntoxr(wantedAnOfAprch, 10)
+            #turnRightToX(wantedAnOfAprch + 5, 5)
             #moveDifferential.turn_right(85, 7)
 
             toDriveDist = seenDist - 13
@@ -124,15 +141,16 @@ def main():
                 print("drove")
             
             #moveDifferential.turn_left(10, 90)
-            leftTurn(90, 10)
+            modules.modultwo.relturnv(90, 10)
+            #leftTurn(90, 10)
             time.sleep(0.2)
             seesRed = False
-            tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
+            #tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.5)
             posO = circleAngle
 
             #then drive to thew next house and then turn  
         
-        if seesGreen == True: 
+        if color[2] == True: 
             tankDrive.off()
             seesGreen = False
             print("green")
@@ -140,14 +158,15 @@ def main():
             time.sleep(3)
             tankDrive.off()
             break
-        
-        adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
+        #drive parallel to wall
+        #adjustDist_findEdge(17, 4, 10, 20, (0.9*22.3))
+        #modules.newParallelWallDriveUsingColorCheck.main()'''
 
 def startThreads():
     distThread = threading.Thread(target= read_dist)
     distThread.start()
-    colorThread = threading.Thread(target = readColor)
-    colorThread.start()
+    #colorThread = threading.Thread(target = readColor)
+    #colorThread.start()
     circleAngleThread = threading.Thread(target = readCircleAngle)#, args=(stop_event))
     circleAngleThread.start()
 
