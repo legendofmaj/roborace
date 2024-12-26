@@ -5,6 +5,7 @@ A possible solution to the exercise given in the Roborace Stuttgart 2024 using t
 ![language](https://img.shields.io/badge/language-python-blue?logo=python)
 [![library](https://img.shields.io/badge/library-ev3dev2-orange)](https://www.ev3dev.org)
 
+[Readme in Deutsch](https://github.com/legendofmaj/ev3/blob/README/miscellaneous/README_in_Deutsch.md)
 ## Features
 
 In short the robot, is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
