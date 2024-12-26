@@ -7,25 +7,25 @@ Eine mögliche Lösung zur Aufgabe des diesjährigen Roborace Stuttgart mithilfe
 
 ## Funktionen
 
-Kurz gesagt ist der Roboter als Lieferroboter programmiert. Detaillierte Erklärungen können auf [der Homepage der Universität Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
+Kurz gesagt, ist der Roboter als Lieferroboter programmiert. Detaillierte Erklärungen können auf [der Homepage der Universität Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 
-### zentrale Funktionen
+### Zentrale Funktionen
 
 - entlang von Wänden und Ecken fahren (mithilfe eines PID-Reglers)
 - andere Häuser finden
 - zu anderen Häusern fahren (mithilfe von Trigonometrie)
 
-### weitere Funktionen
+### Weitere Funktionen
 
 - Töne abspielen
-- eine Anzahl an Grad drehen (sowohl relativ zu aktuellen als auch zur ursprünglichen Position)
-- Packete abwerfen
+- unterschiedliche Gradzahl drehen (sowohl relativ zur aktuellen als auch zur ursprünglichen Position)
+- Pakete abwerfen
 
 ## Code Erklärung
 
 ### Entlang von Wänden und Ecken fahren
 
-Folgendes ist die Grundlage für Entlangfahren von Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz die der Roboter haben soll und tut diese in eine PID-Regler-Formel. Der Ausgabewert wird dann zur Steuerung genutzt.
+Folgendes ist die Grundlage für Entlangfahren von Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz, die der Roboter haben soll, und setzt diese in eine PID-Regler-Formel ein. Der Ausgabewert wird dann zur Steuerung genutzt.
 
 ```python
 error = ultrasonic_sensor.distance_centimeters - goal
@@ -41,7 +41,7 @@ steering_drive.on(turnratio, 20)
 
 ### Andere Häuser finden
 
-Folgendes ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen Distanz und der Letzten und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt und der aktuelle Winkel sowie die Distanz zum nächsten Haus gespeichert.
+Folgendes ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen und der letzten Distanz und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt, und der aktuelle Winkel sowie die Distanz zum nächsten Haus wird gespeichert.
 
 ```python
 while True:
@@ -69,31 +69,31 @@ anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*
 
 [ganze Datei](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/get_angle_of_approach.py)
 
-## Credit
+## Danksagungen
 
-Wir möchten diesen Projekten danken, welche eine große Hilfe für uns waren.
+Wir möchten folgenden Projekten danken, welche eine große Hilfe für uns waren.
 
 ### Betriebssystem und Bibliothek
 
-Betriebssystem und Bibliothek, welche die Grundlage für uns Projekt darstellen. https://www.ev3dev.org/docs/getting-started/
+Betriebssystem und Bibliothek, welche die Grundlage für unser Projekt darstellen. https://www.ev3dev.org/docs/getting-started/
 
 ### Dokumentation
 
-Die Bibltiothek's Dokumentation. https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
+Die Bibliotheksdokumentation. https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/index.html
 
 ### Simulation
 
-Simulationen, um das Programm zu testen, ohne den ev3 bei Hand zu haben.
+Simulationen, um das Programm zu testen, ohne den ev3 physisch nutzen zu können.
 
 [3D Simulation](https://gears.aposteriori.com.sg/) [2D Simulation](https://www.aposteriori.com.sg/Ev3devSim/)
 
-> Konfigurationsdateien können im Repository unter miscellanous gefunden werden.
+> Konfigurationsdateien können im Repository unter miscellaneous gefunden werden.
 
 ### Namensgebungskonventionen
 
-Namensgebungskonventionen für sowohl Commit als auch den Quellcode, um das Projekt lesbar zu halten.
+Namensgebungskonventionen für sowohl Commits als auch den Quellcode, um das Projekt lesbar zu halten.
 
-Commit Konventionen: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+Commitkonventionen: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 
 Programmierkonventionen: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md
 
