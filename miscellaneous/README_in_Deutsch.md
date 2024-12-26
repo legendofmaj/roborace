@@ -1,13 +1,12 @@
-# Roborace 2024 - Lösung - Teamname
+# Roborace 2024 - Lösung - MPG Happy Hippos
 
-Eine mögliche Lösung zur Aufgabe diesjährigen Aufgabe des Roborace Stuttgart mithilfe der ev3dev2 Python Bibliothek.
+Eine mögliche Lösung zur Aufgabe des diesjährigen Roborace Stuttgart mithilfe der ev3dev2 Python Bibliothek.
 
 ![language](https://img.shields.io/badge/language-python-blue?logo=python)
 [![library](https://img.shields.io/badge/library-ev3dev2-orange)](https://www.ev3dev.org)
 
 ## Funktionen
 
-In short the robot, is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 Kurz gesagt ist der Roboter als Lieferroboter programmiert. Detaillierte Erklärungen können auf [der Homepage der Universität Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
 
 ### zentrale Funktionen
@@ -19,14 +18,14 @@ Kurz gesagt ist der Roboter als Lieferroboter programmiert. Detaillierte Erklär
 ### weitere Funktionen
 
 - Töne abspielen
-- eine Anzahl an Grad drehen (sowohl relativ zu aktuellen als auch ursprünglichen Position)
+- eine Anzahl an Grad drehen (sowohl relativ zu aktuellen als auch zur ursprünglichen Position)
 - Packete abwerfen
 
 ## Code Erklärung
 
 ### Entlang von Wänden und Ecken fahren
 
-Das ist die Grundlage für Entlangfahren von Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz die der Roboter haben soll und tut diese in eine PID-Regler-Formel. Der Ausgabewert wird dann zur Steuerung genutzt.
+Folgendes ist die Grundlage für Entlangfahren von Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz die der Roboter haben soll und tut diese in eine PID-Regler-Formel. Der Ausgabewert wird dann zur Steuerung genutzt.
 
 ```python
 error = ultrasonic_sensor.distance_centimeters - goal
@@ -42,7 +41,7 @@ steering_drive.on(turnratio, 20)
 
 ### Andere Häuser finden
 
-Das ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen Distanz und der Letzten und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt und der aktuelle Winkel sowie die Distanz zum nächsten Haus gespeichert.
+Folgendes ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen Distanz und der Letzten und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt und der aktuelle Winkel sowie die Distanz zum nächsten Haus gespeichert.
 
 ```python
 while True:
@@ -58,7 +57,7 @@ while True:
 
 ### Zu anderen Häusern fahren (mithilfe von Trigonometrie)
 
-Das ist die Formel um den Anfahrtswinkel zum nächsten Haus zu berechnen.
+Folgendes ist die Formel um den Anfahrtswinkel zum nächsten Haus zu berechnen.
 
 ```python
 
@@ -94,7 +93,7 @@ Simulationen, um das Programm zu testen, ohne den ev3 bei Hand zu haben.
 
 Namensgebungskonventionen für sowohl Commit als auch den Quellcode, um das Projekt lesbar zu halten.
 
-Commit Conventionen: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+Commit Konventionen: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 
 Programmierkonventionen: https://android.googlesource.com/platform/external/google-styleguide/+/refs/tags/android-s-beta-2/pyguide.md
 
