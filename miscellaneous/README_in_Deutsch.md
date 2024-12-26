@@ -7,7 +7,7 @@ Eine mögliche Lösung zur Aufgabe des diesjährigen Roborace Stuttgart mithilfe
 
 ## Funktionen
 
-Kurz gesagt, ist der Roboter als Lieferroboter programmiert. Detaillierte Erklärungen können auf [der Homepage der Universität Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
+Kurz gesagt, der Roboter ist als Lieferroboter programmiert. Detaillierte Erklärungen können auf [der Homepage der Universität Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/) gefunden werden.
 
 ### Zentrale Funktionen
 
