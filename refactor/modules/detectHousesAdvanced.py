@@ -23,8 +23,6 @@ studmm = 7
 studs_that_wheels_are_apart = 15
 min_dist_between_wheels = 118 #mm
 moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
-#or: moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, min_dist_between_wheels)
-
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
 depositMotor = MediumMotor(OUTPUT_A)
@@ -36,10 +34,13 @@ ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
 stop_event = threading.Event()
 
-col_raw = [0, 0, 0]
+col_raw = [
+    0,
+    0,
+    0
+]
 tbdDistance = 10
 dist = 0.0
-circleAngle = 90
 rightCornerDist = 0.0
 leftCornerDist = 0.0
 rightCornerAngle = 0
@@ -52,15 +53,9 @@ anglesAndDists = {1000000 : 1000000}
 
 posO = 90
 zero = 90
-Angle = 90
-
-
-
-
 
 #determine how to get to next house
-def detectHouseEdges(threshold):
-    #betterTurnRightToX(7, 7)
+def detectHouseEdge(threshold):
     print("seeking")
     global rightCornerAngle
     global leftCornerAngle
@@ -72,16 +67,16 @@ def detectHouseEdges(threshold):
             tankDrive.off()
             break
         angleOld = getAngle()
-        distOld = dist
+        distOld = modules.anglesDistsThread.threadOutput.dist
         print(distOld)
         time.sleep(0.07)
         angleNew = getAngle()
-        distNew = dist
+        distNew = modules.anglesDistsThread.threadOutput.dist
         print(distNew)
         if distNew > 0:
             if abs(distOld-distNew) >= threshold:
                 time.sleep(0.1)
-                distNew = dist
+                distNew = modules.anglesDistsThread.threadOutput.dist
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 rightCornerAngle = angleNew
                 rightCornerDist = distNew + 10
@@ -103,11 +98,11 @@ def detectHouseEdges(threshold):
             break
         #this here so it doesnt get stuck indefinitly executing
         angleOld = getAngle()
-        distOld = dist
+        distOld = modules.anglesDistsThread.threadOutput.dist
         print(distOld)
         time.sleep(0.07)
         angleNew = getAngle()
-        distNew = dist
+        distNew = modules.anglesDistsThread.threadOutput.dist
         print(distNew)
         if abs(distOld-distNew) >= threshold:
             leftCornerAngle = angleOld
@@ -128,7 +123,7 @@ def getMultipleHouses():
     tankDrive.off()
     time.sleep(0.5)
     global posO
-    posO = circleAngle
+    posO = modules.anglesDistsThread.threadOutput.circleAngle
     time.sleep(0.5)
     print(getAngle())
     time.sleep(0.5)
@@ -143,7 +138,7 @@ def getMultipleHouses():
         global anglesAndDists
         #see if house
         print("seing houses")
-        detectHouseEdges(12)
+        detectHouseEdge(12)
         tankDrive.on(SpeedPercent(0), SpeedPercent(0))
         tankDrive.off()
         print("saw houses")
@@ -194,4 +189,145 @@ def getDistToNextHouse(a, alpha, anOfAprch):
     distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
     return distToNextHouse
 
+def getHousesAdvanced(threshold):
+    #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    tankDrive.off()
+    print(getAngle())
+    tankDrive.off()
+    time.sleep(0.5)
+    global posO
+    posO = modules.anglesDistsThread.threadOutput.circleAngle
+    time.sleep(0.5)
+    print(getAngle())
+    time.sleep(0.5)
+    print("driven")
+    turnLeftToX(150, 10)
+    dist_at_oneOFive = modules.anglesDistsThread.threadOutput.dist
+    edges = {900 : [1000, 1]}
+    while getAngle() < 350 and getAngle() > 100:
+        if getAngle() > 350 or getAngle() < 50:
+            print("broke in multo")
+            break
+        global anglesAndDists
+        #see if house
+        print("seing houses")
+        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        tankDrive.off()
+        tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
 
+        angleOld = getAngle()
+        distOld = modules.anglesDistsThread.threadOutput.dist
+        print(distOld)
+        time.sleep(0.07)
+        angleNew = getAngle()
+        distNew = modules.anglesDistsThread.threadOutput.dist
+        print(distNew)
+
+        if (distOld - distNew) < 0 and abs(distOld - distNew) >= threshold:
+            print("dist jump further, left edge")
+            #print(distOld)#debug
+            #print(distNew)#debug
+            leftCornerAngle = angleOld
+            leftCornerDist = distOld + 10
+            print(leftCornerAngle)#debug
+            print(leftCornerDist)#debug
+            edges[leftCornerAngle] = [leftCornerDist, 2]
+            leftTurn(5, 10)
+            print("lil turn")
+
+        elif (distOld - distNew) > 0 and abs(distOld - distNew) >= threshold:
+            print("dist jump closer, right edge")
+            time.sleep(0.1)
+            distNew = modules.anglesDistsThread.threadOutput.dist
+            tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+            #print(distOld)#debug
+            #print(distNew)#debug
+            rightCornerAngle = angleNew
+            rightCornerDist = distNew + 10
+            print(rightCornerAngle)#debug
+            print(rightCornerDist)#debug
+            edges[rightCornerAngle] = [rightCornerDist, 1]
+            leftTurn(5, 10)
+            print("lil turn")
+
+        else:
+            print("passes")
+            if getAngle() > 350 or getAngle() < 50:
+                print("broke in passing")
+                break
+            continue
+
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+    leftest_edge = edges[edges_keys[0]]
+    if leftest_edge[1] == 2:
+        edges[150] = [dist_at_oneOFive, 1]
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+
+    #def find_angles():
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+    leftest_edge = edges[edges_keys[0]]
+    if leftest_edge[1] == 2:
+        edges[150] = [dist_at_oneOFive, 1]
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+
+    for x in range(len(edges)):
+        if x % 2 != 0:
+            continue
+        right = edges[edges_keys[x]]
+        left = edges[edges_keys[(x+1)]]
+        a = int(right[0])#rightCornerDist 
+        b = int(left[0])#leftCornerDist 
+        alpha = int(edges_keys[x])#rightCornerAngle
+        beta = int(edges_keys[(x+1)])#leftCornerAngle
+        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+        distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
+        anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
+        print(left)
+        print(right)
+        print(alpha)
+        print(beta)
+        print(anglesAndDists)
+        print(x)
+
+    edges.clear()
+    edges_keys.clear()
+
+    time.sleep(1)
+    leftTurn(5, 10)
+
+    print("checked for houses")
+
+    tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
+    time.sleep(5)
+    tankDrive.off()
+
+    turnRightToX(150, 10)
+    print("turned back")
+    time.sleep(1)
+    toRemove = []
+    for x in anglesAndDists:
+        print("checking dists")
+        print(x, anglesAndDists[x])
+        turnLeftToX((anglesAndDists[x] + 90), 10)
+        print("turning to angle")
+        time.sleep(1)
+        seenDist = modules.anglesDistsThread.threadOutput.dist
+        if seenDist > (x-10) + 10 or seenDist < (x-10) - 10:
+            print("doesnt think its right")
+            toRemove.append(x)
+    for x in toRemove:
+        anglesAndDists.pop(x)
+    toRemove.clear()
+
+    time.sleep(0.2)
+
+    print("checked angles and dist")

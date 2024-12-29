@@ -38,7 +38,11 @@ gyroSensor = GyroSensor(INPUT_2)
 
 stop_event = threading.Event()
 
-col_raw = [0, 0, 0]
+col_raw = [
+    0,
+    0,
+    0
+]
 tbdDistance = 10
 rightCornerDist = 0.0
 leftCornerDist = 0.0
@@ -69,7 +73,7 @@ def main():
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
     while True:
-        if Button().any() == True:
+        if Button().any():
            break
         time.sleep(0.05)
     global posO
@@ -78,10 +82,14 @@ def main():
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(0.5)
-    color = [False, False, False]
+    color = [
+        False,
+        False,
+        False
+    ]
     while True:
         color = modules.parallelWallDrive.main()
-        if color[1] == True:
+        if color[1]:
             print("red")
             tankDrive.off()   
             seesRed = False
@@ -114,7 +122,7 @@ def main():
             seesRed = False
             posO = threadOutput.circleAngle
         
-        if color[2] == True: 
+        if color[2]: 
             tankDrive.off()
             seesGreen = False
             print("green")
