@@ -52,7 +52,6 @@ anOfAprch = 0.0
 seesGreen = False
 seesRed = False
 
-anglesAndDists = {1000000 : 1000000}
 
 posO = 90
 zero = 90
@@ -96,9 +95,9 @@ def main():
 
             posO = threadOutput.circleAngle
             
-            modules.detectHousesPrimitive.getHousePrimitive()
+            anglesAndDists = modules.detectHousesPrimitive.getHousePrimitive()
 
-            wantedAnOfAprch = int(float(modules.detectHousesPrimitive.anglesAndDists[modules.detectHousesPrimitive.dist_short]))
+            wantedAnOfAprch = int(float(anglesAndDists[modules.detectHousesPrimitive.dist_short]))
             
             modules.turning.turntoxr(50, 10)
             drop()
