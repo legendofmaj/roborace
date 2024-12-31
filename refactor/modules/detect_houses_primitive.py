@@ -26,14 +26,10 @@ def get_house_primitive():
     most direct way to the next house, so the robot sweeps around once and  then remembers the 
     shortest distance and the angle at which it was located and saves this into a dict which it 
     then returns"""
-    #global dist_short ?I'm not sure if this breaks anything
     tank_drive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tank_drive.off()
     print(getAngle())
     tank_drive.off()
-    time.sleep(0.5)
-    #global pos_0 ?I'm not sure if this breaks anything
-    pos_0 = threadOutput.circleAngle
     time.sleep(0.5)
     print(getAngle())
     time.sleep(0.5)
@@ -54,7 +50,6 @@ def get_house_primitive():
             if dist_short > dist_new:
                 dist_short = dist_new
                 angle_short = angle_new
-    #global anglesAndDists ?I am not sure if this break anything
-    anglesAndDists = {int(dist_short) : int(angle_short)}
-    return anglesAndDists
+    angles_and_dists = {int(dist_short) : int(angle_short)}
+    return angles_and_dists
 # End-of-file (EOF)
