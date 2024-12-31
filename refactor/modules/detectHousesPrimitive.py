@@ -6,7 +6,7 @@
 
 import time
 
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
+from ev3dev2.motor import OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveDifferential
 from ev3dev2.wheel import EV3EducationSetTire
 
 import modules.turning
