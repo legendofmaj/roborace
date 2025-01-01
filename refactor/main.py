@@ -21,7 +21,7 @@ from ev3dev2.sound import Sound
 
 from modules.anglesDistsThread import *
 import modules.parallelWallDrive
-import modules.detectHousesPrimitive
+import refactor.modules.detect_houses_primitive
 import modules.turning
 
 studmm = 7
@@ -95,9 +95,9 @@ def main():
 
             posO = threadOutput.circleAngle
             
-            anglesAndDists = modules.detectHousesPrimitive.getHousePrimitive()
+            anglesAndDists = modules.detect_houses_primitive.getHousePrimitive()
 
-            wantedAnOfAprch = int(float(anglesAndDists[modules.detectHousesPrimitive.dist_short]))
+            wantedAnOfAprch = int(float(anglesAndDists[modules.detect_houses_primitive.dist_short]))
             
             modules.turning.turntoxr(50, 10)
             drop()
