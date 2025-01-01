@@ -1,5 +1,5 @@
-"""reads out values of angles and dists using threads"""
 #!/usr/bin/env python3
+"""reads out values of angles and dists using threads"""
 
 import time
 import threading
