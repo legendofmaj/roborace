@@ -3,6 +3,7 @@
 
 import time
 import threading
+import dataclasses
 
 from ev3dev2.sensor import INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import UltrasonicSensor
@@ -11,6 +12,7 @@ from ev3dev2.sensor.lego import GyroSensor
 gyroSensor = GyroSensor(INPUT_2)
 ultraSoundSensor = UltrasonicSensor(INPUT_3)
 
+@dataclasses.dataclass
 class ThreadOutput:
     """class containing measured values
     a class is used as this allows current values to be exported"""
