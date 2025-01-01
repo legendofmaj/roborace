@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 """This module is a very primitive way to determine at which angle and distance the next house is"""
 #Additional notes:
 #seems to be the most reliable if most unelegant and unprecise approach.
 #if houses are present which do not match the given geometric parameters
 #for a target house they will still be driven at
 
-#!/usr/bin/env python3
 
 import time
 
