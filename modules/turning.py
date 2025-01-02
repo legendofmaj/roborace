@@ -1,5 +1,5 @@
-"""module containing functions for turning"""
 #!/usr/bin/env python3
+"""module containing functions for turning"""
 
 import time
 
