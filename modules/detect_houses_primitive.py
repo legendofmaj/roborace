@@ -12,7 +12,7 @@ from ev3dev2.motor import OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveDiffer
 from ev3dev2.wheel import EV3EducationSetTire
 
 import turning
-from anglesDistsThread import threadOutput, getAngle
+from angles_dists_thread import threadOutput, getAngle
 
 STUD_MM = 7
 STUDS_THAT_WHEELS_ARE_APART = 15

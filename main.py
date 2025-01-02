@@ -19,7 +19,7 @@ from ev3dev2.sound import Sound
 # import modules.modultwo
 # import modules.oldParallelWallDrive
 
-from modules.anglesDistsThread import *
+from modules.angles_dists_thread import *
 import modules.parallelWallDrive
 import modules.detect_houses_primitive
 import modules.turning
