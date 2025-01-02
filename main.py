@@ -21,7 +21,7 @@ from ev3dev2.sound import Sound
 
 from modules.anglesDistsThread import *
 import modules.parallelWallDrive
-import refactor.modules.detect_houses_primitive
+import modules.detect_houses_primitive
 import modules.turning
 
 studmm = 7

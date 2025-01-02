@@ -11,8 +11,8 @@ import time
 from ev3dev2.motor import OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveDifferential
 from ev3dev2.wheel import EV3EducationSetTire
 
-import modules.turning
-from modules.anglesDistsThread import threadOutput, getAngle
+import turning
+from anglesDistsThread import threadOutput, getAngle
 
 STUD_MM = 7
 STUDS_THAT_WHEELS_ARE_APART = 15
@@ -34,7 +34,7 @@ def get_house_primitive():
     print(getAngle())
     time.sleep(0.5)
     print("driven")
-    modules.turning.turntoxl(150, 10)
+    turning.turn_to_x_left(150, 10)
     dist_short = 1000
     angle_short = 180
     while getAngle() < 350 and getAngle() > 100:

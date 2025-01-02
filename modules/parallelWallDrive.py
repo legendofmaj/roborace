@@ -8,8 +8,8 @@ from ev3dev2.sensor.lego import *
 import math
 import time
 
-from modules.turning import *
-import modules.anglesDistsThread
+from turning import *
+import anglesDistsThread
 
 #from ev3dev2.sensor.virtual import * #only necessary for the simulation
 
@@ -56,7 +56,7 @@ def main():
         current_time = time.time()
         deltaTime = current_time - previous_time
         
-        errorv = modules.anglesDistsThread.threadOutput.dist - goal
+        errorv = anglesDistsThread.threadOutput.dist - goal
         integral += stopint*(errorv * deltaTime)
         derivative = (errorv - previous_error) / deltaTime
 
@@ -99,11 +99,11 @@ def main():
 
             print("turning left absolut")
 
-            turntoxl(minphiavg,10.0)
+            turn_to_x_left(minphiavg,10.0)
             time.sleep(1)
             countv=0
 
-        print("distance: " + str(modules.anglesDistsThread.threadOutput.dist) + "     error: "+str(errorv))
+        print("distance: " + str(anglesDistsThread.threadOutput.dist) + "     error: "+str(errorv))
         print("turnratio calculated: " + str(turnratio_o))
         print("turnratio limited: " + str(turnratio) + " countv: " + str(countv)+ " countd: " + str(countd))
         print("deltaTime: " + str(deltaTime) + "    deriv: " + str(derivative))
@@ -159,42 +159,42 @@ def swipelr():
     print("mind l:",lmind,"mind r:",mind,"mind Avg:",mindavg)
     print("minphi l:",lphi,"mind r:",minphi,"mind Avg:",minphiavg)
 
-    turntoxr(minphiavg, 10)
+    turn_to_x_right(minphiavg, 10)
 
 def relswipel(degrees, speed):
     global distarry
     global mind
     global minphi
-    cpos = modules.anglesDistsThread.threadOutput.circleAngle
+    cpos = anglesDistsThread.threadOutput.circleAngle
     target = cpos + degrees
     print("relturnv.target:",target)
     tolerance=5
     if (target<360):
-        while modules.anglesDistsThread.threadOutput.circleAngle < target-tolerance:
-            tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
+        while anglesDistsThread.threadOutput.circleAngle < target-tolerance:
+            tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
             time.sleep(0.1)
-            print("relturnv.circleAngle1:", modules.anglesDistsThread.threadOutput.circleAngle) 
-            dphi=distarry[int(modules.anglesDistsThread.threadOutput.circleAngle)]
+            print("relturnv.circleAngle1:", anglesDistsThread.threadOutput.circleAngle) 
+            dphi=distarry[int(anglesDistsThread.threadOutput.circleAngle)]
             print("distance:",dphi)
             if dphi<mind:
                 mind=dphi
-                minphi=modules.anglesDistsThread.threadOutput.circleAngle
+                minphi=anglesDistsThread.threadOutput.circleAngle
         print("relturnv.Done1")
     else:
         npos=0
-        while ((modules.anglesDistsThread.threadOutput.circleAngle+npos<target-tolerance)):
-            tankDrive.on(SpeedPercent(speed), SpeedPercent(-speed))
+        while ((anglesDistsThread.threadOutput.circleAngle+npos<target-tolerance)):
+            tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
             time.sleep(0.1)
-            if modules.anglesDistsThread.threadOutput.circleAngle<cpos:
+            if anglesDistsThread.threadOutput.circleAngle<cpos:
                 npos=360
-            print("relturnv.circleAngle2:", modules.anglesDistsThread.threadOutput.circleAngle) 
-            dphi=distarry[int(modules.anglesDistsThread.threadOutput.circleAngle)]
+            print("relturnv.circleAngle2:", anglesDistsThread.threadOutput.circleAngle) 
+            dphi=distarry[int(anglesDistsThread.threadOutput.circleAngle)]
             print("distance:",dphi)
             if dphi<mind:
                 mind=dphi
-                minphi=modules.anglesDistsThread.threadOutput.circleAngle
+                minphi=anglesDistsThread.threadOutput.circleAngle
         print("relturnv.Done2")
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+    tank_drive.on(SpeedPercent(0), SpeedPercent(0))
     print("relturnv.Done3")
     print("minphi:",minphi,"mind:",mind)
 
@@ -203,35 +203,35 @@ def relswiper(degrees, speed):
     global mind
     global minphi
 
-    cpos = modules.anglesDistsThread.threadOutput.circleAngle
+    cpos = anglesDistsThread.threadOutput.circleAngle
     target = cpos - degrees
     print("relswiper.target:",target)
     tolerance=5
     if (target>0):
-        while modules.anglesDistsThread.threadOutput.circleAngle > target+tolerance:
-            tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+        while anglesDistsThread.threadOutput.circleAngle > target+tolerance:
+            tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
             time.sleep(0.1)
-            print("relswiper.circleAngle1:", modules.anglesDistsThread.threadOutput.circleAngle) #, (getRelAnglev(cpos)))
-            dphi=distarry[int(modules.anglesDistsThread.threadOutput.circleAngle)]
+            print("relswiper.circleAngle1:", anglesDistsThread.threadOutput.circleAngle) #, (getRelAnglev(cpos)))
+            dphi=distarry[int(anglesDistsThread.threadOutput.circleAngle)]
             print("relswiper.distance1:",dphi)
             if dphi<mind:
                 mind=dphi
-                minphi=modules.anglesDistsThread.threadOutput.circleAngle
+                minphi=anglesDistsThread.threadOutput.circleAngle
         print("relswiper.Done1")
     else:
         npos=0
-        while ((modules.anglesDistsThread.threadOutput.circleAngle-npos>target+tolerance)):
-            tankDrive.on(SpeedPercent(-speed), SpeedPercent(speed))
+        while ((anglesDistsThread.threadOutput.circleAngle-npos>target+tolerance)):
+            tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
             time.sleep(0.1)
-            if cpos-modules.anglesDistsThread.threadOutput.circleAngle<0:
+            if cpos-anglesDistsThread.threadOutput.circleAngle<0:
                 npos=360
-            print("relswiper.circleAngle2:", modules.anglesDistsThread.threadOutput.circleAngle) #, (getRelAnglev(cpos)))
-            dphi=distarry[int(modules.anglesDistsThread.threadOutput.circleAngle)]
+            print("relswiper.circleAngle2:", anglesDistsThread.threadOutput.circleAngle) #, (getRelAnglev(cpos)))
+            dphi=distarry[int(anglesDistsThread.threadOutput.circleAngle)]
             print("relswiper.distance2:",dphi)
             if dphi<mind:
                 mind=dphi
-                minphi=modules.anglesDistsThread.threadOutput.circleAngle
+                minphi=anglesDistsThread.threadOutput.circleAngle
         print("relswiper.Done2")
-    tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+    tank_drive.on(SpeedPercent(0), SpeedPercent(0))
     print("relswiper.Done3")
     print("minphi:",minphi,"mind:",mind)   
