@@ -12,7 +12,7 @@ from ev3dev2.motor import OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveDiffer
 from ev3dev2.wheel import EV3EducationSetTire
 
 import turning
-from angles_dists_thread import threadOutput, getAngle
+from angles_dists_thread import ThreadOutput, get_angle
 
 STUD_MM = 7
 STUDS_THAT_WHEELS_ARE_APART = 15
@@ -28,24 +28,24 @@ def get_house_primitive():
     then returns"""
     tank_drive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tank_drive.off()
-    print(getAngle())
+    print(get_angle())
     tank_drive.off()
     time.sleep(0.5)
-    print(getAngle())
+    print(get_angle())
     time.sleep(0.5)
     print("driven")
     turning.turn_to_x_left(150, 10)
     dist_short = 1000
     angle_short = 180
-    while getAngle() < 350 and getAngle() > 100:
+    while get_angle() < 350 and get_angle() > 100:
         tank_drive.on(SpeedPercent(-5), SpeedPercent(5))
-        if getAngle() > 350 or getAngle() < 50:
+        if get_angle() > 350 or get_angle() < 50:
             print("broke in multo")
             break
-        dist_old = threadOutput.dist
+        dist_old = ThreadOutput.dist
         time.sleep(0.1)
-        dist_new = threadOutput.dist
-        angle_new = threadOutput.circleAngle
+        dist_new = ThreadOutput.dist
+        angle_new = ThreadOutput.circleAngle
         if dist_old > dist_new:
             if dist_short > dist_new:
                 dist_short = dist_new
