@@ -65,9 +65,9 @@ def main():
     global seesRed
     global seesGreen
 
-    startThreads()
+    start_threads()
     global zero
-    zero = threadOutput.circleAngle
+    zero = ThreadOutput.circle_angle
 
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
@@ -76,7 +76,7 @@ def main():
            break
         time.sleep(0.05)
     global posO
-    posO = threadOutput.circleAngle
+    posO = ThreadOutput.circle_angle
     zero = 90
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
@@ -93,33 +93,33 @@ def main():
             tankDrive.off()   
             seesRed = False
 
-            posO = threadOutput.circleAngle
+            posO = ThreadOutput.circle_angle
             
             anglesAndDists = modules.detect_houses_primitive.getHousePrimitive()
 
             wantedAnOfAprch = int(float(anglesAndDists[modules.detect_houses_primitive.dist_short]))
             
-            modules.turning.turntoxr(50, 10)
+            modules.turning.turn_to_x_right(50, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
-            modules.turning.turntoxl((wantedAnOfAprch + 90), 10)
+            modules.turning.turn_to_x_left((wantedAnOfAprch + 90), 10)
             print("turning to angle")
             time.sleep(0.5)
-            seenDist = threadOutput.dist
+            seenDist = ThreadOutput.dist
             print(seenDist)
             time.sleep(0.2)
-            modules.turning.turntoxr(wantedAnOfAprch, 10)
+            modules.turning.turn_to_x_right(wantedAnOfAprch, 10)
 
             toDriveDist = seenDist - 13
             if toDriveDist > 5:
                 driveTillDistWheel(toDriveDist)
                 print("drove")
             
-            modules.turning.relturnv(90, 10)
+            modules.turning.relative_turnv(90, 10)
             time.sleep(0.2)
             seesRed = False
-            posO = threadOutput.circleAngle
+            posO = ThreadOutput.circle_angle
         
         if color[2]: 
             tankDrive.off()

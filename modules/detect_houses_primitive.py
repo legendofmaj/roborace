@@ -45,7 +45,7 @@ def get_house_primitive():
         dist_old = ThreadOutput.dist
         time.sleep(0.1)
         dist_new = ThreadOutput.dist
-        angle_new = ThreadOutput.circleAngle
+        angle_new = ThreadOutput.circle_angle
         if dist_old > dist_new:
             if dist_short > dist_new:
                 dist_short = dist_new

@@ -64,14 +64,14 @@ def detectHouseEdge(threshold):
     global leftCornerDist
     tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
     while True:                                                 ###turns until it finds a jump in the measured distance
-        if getAngle() > 350 or getAngle() < 50:
+        if get_angle() > 350 or get_angle() < 50:
             tankDrive.off()
             break
-        angleOld = getAngle()
+        angleOld = get_angle()
         distOld = angles_dists_thread.threadOutput.dist
         print(distOld)
         time.sleep(0.07)
-        angleNew = getAngle()
+        angleNew = get_angle()
         distNew = angles_dists_thread.threadOutput.dist
         print(distNew)
         if distNew > 0:
@@ -88,21 +88,21 @@ def detectHouseEdge(threshold):
     tankDrive.off()
     time.sleep(1)
     #betterTurnDegrees(5, 15)
-    if getAngle() < 350 and getAngle() > 150:                           ###turns a little bit to prevent the same edge from being seen twice
+    if get_angle() < 350 and get_angle() > 150:                           ###turns a little bit to prevent the same edge from being seen twice
         #moveDifferential.turn_left(10, 5)
         left_turn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
         
     while True:                                                 ###turns until it finds a jump in the measured distance
-        if getAngle() > 350 or getAngle() < 50:
+        if get_angle() > 350 or get_angle() < 50:
             break
         #the above is here so it doesnt get stuck indefinitly executing
-        angleOld = getAngle()
+        angleOld = get_angle()
         distOld = angles_dists_thread.threadOutput.dist
         print(distOld)
         time.sleep(0.07)
-        angleNew = getAngle()
+        angleNew = get_angle()
         distNew = angles_dists_thread.threadOutput.dist
         print(distNew)
         if abs(distOld-distNew) >= threshold:               ###here it checks for the jump and if it finds one it will save its location
@@ -122,20 +122,20 @@ def getMultipleHouses():
     #drive forward about 1x the length of the robot from the color sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
-    print(getAngle())
+    print(get_angle())
     tankDrive.off()
     time.sleep(0.5)
     global posO
     posO = angles_dists_thread.threadOutput.circleAngle
     time.sleep(0.5)
-    print(getAngle())
+    print(get_angle())
     time.sleep(0.5)
     print("driven")
     turn_left_to_x(150, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(0.5)
-    while getAngle() < 350 and getAngle() > 100: ###executes the detectHouesEdge function over and over again until it finds all houses in its given arc
-        if getAngle() > 350 or getAngle() < 50:
+    while get_angle() < 350 and get_angle() > 100: ###executes the detectHouesEdge function over and over again until it finds all houses in its given arc
+        if get_angle() > 350 or get_angle() < 50:
             print("broke in multo")
             break
         global anglesAndDists
@@ -151,13 +151,13 @@ def getMultipleHouses():
         alpha = rightCornerAngle
         beta = leftCornerAngle
 
-        anOfAprch = getAngleOfApproach(a, b, alpha, beta) ###uses the getAngleOfApproach function to determine the angle of approach
+        anOfAprch = get_angleOfApproach(a, b, alpha, beta) ###uses the get_angleOfApproach function to determine the angle of approach
 
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch) ###uses the getDistToNextHouse function to determine the distance to the detected house
 
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch) ###saves both those values into a dict
 
-        if getAngle() > 350 or getAngle() < 50:
+        if get_angle() > 350 or get_angle() < 50:
             print("broke in multo2")
             break
 
@@ -177,7 +177,7 @@ def getMultipleHouses():
     print("checked angles and dist")
 
 #uses trigonometry to find the angle of approach to the next house whereasin the angle of approach represents the orthogonal line from the house wall to the robots axis of rotation
-def getAngleOfApproach(a, b, alpha, beta):
+def get_angleOfApproach(a, b, alpha, beta):
     global anOfAprch
     try:
         anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
@@ -200,20 +200,20 @@ def getHousesAdvanced(threshold):
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
-    print(getAngle())
+    print(get_angle())
     tankDrive.off()
     time.sleep(0.5)
     global posO
     posO = angles_dists_thread.threadOutput.circleAngle
     time.sleep(0.5)
-    print(getAngle())
+    print(get_angle())
     time.sleep(0.5)
     print("driven")
     turn_left_to_x(150, 10)
     dist_at_oneOFive = angles_dists_thread.threadOutput.dist
     edges = {900 : [1000, 1]}
-    while getAngle() < 350 and getAngle() > 100: ###begins turning to find the houses
-        if getAngle() > 350 or getAngle() < 50:
+    while get_angle() < 350 and get_angle() > 100: ###begins turning to find the houses
+        if get_angle() > 350 or get_angle() < 50:
             print("broke in multo")
             break
         global anglesAndDists
@@ -223,11 +223,11 @@ def getHousesAdvanced(threshold):
         tankDrive.off()
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
 
-        angleOld = getAngle()
+        angleOld = get_angle()
         distOld = angles_dists_thread.threadOutput.dist
         print(distOld)
         time.sleep(0.07)
-        angleNew = getAngle()
+        angleNew = get_angle()
         distNew = angles_dists_thread.threadOutput.dist
         print(distNew)
 
@@ -260,7 +260,7 @@ def getHousesAdvanced(threshold):
 
         else:
             print("passes")
-            if getAngle() > 350 or getAngle() < 50:
+            if get_angle() > 350 or get_angle() < 50:
                 print("broke in passing")
                 break
             continue
@@ -285,7 +285,7 @@ def getHousesAdvanced(threshold):
         b = int(left[0])#leftCornerDist 
         alpha = int(edges_keys[x])#rightCornerAngle
         beta = int(edges_keys[(x+1)])#leftCornerAngle
-        anOfAprch = getAngleOfApproach(a, b, alpha, beta)
+        anOfAprch = get_angleOfApproach(a, b, alpha, beta)
         distToNextHouse = getDistToNextHouse(a, alpha, anOfAprch)
         anglesAndDists[int(distToNextHouse)] = int(anOfAprch)
         print(left)
