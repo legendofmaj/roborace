@@ -48,7 +48,7 @@ def turn_left_to_x(degrees, speed):
 def relative_turn(degrees, speed):
     """function to turn for a specific amount of degrees in a direction specified"""
     current_pos = anglesDistsThread.threadOutput.Angle
-    while abs(anglesDistsThread.getReleft_angle(current_pos)) < max(degrees, 10):
+    while abs(anglesDistsThread.getRelAngle(current_pos)) < max(degrees, 10):
         #min turn: 10°
         tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
     tank_drive.off()
