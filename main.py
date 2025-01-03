@@ -35,14 +35,13 @@ col_raw = [
     0,
     0
 ]
+
 tbdDistance = 10
 rightCornerDist = 0.0
 leftCornerDist = 0.0
 rightCornerAngle = 0
 leftCornerAngle = 0
 anOfAprch = 0.0
-seesGreen = False
-seesRed = False
 
 
 posO = 90
@@ -54,9 +53,6 @@ def main():
     """function containing the main code of the project"""
     print("please press")
     #play tone
-    global seesRed
-    global seesGreen
-
     start_threads()
     global zero
     zero = ThreadOutput.circle_angle
@@ -82,8 +78,7 @@ def main():
         color = modules.parallelWallDrive.main()
         if color[1]:
             print("red")
-            tankDrive.off()   
-            seesRed = False
+            tankDrive.off()
 
             posO = ThreadOutput.circle_angle
             
@@ -110,12 +105,10 @@ def main():
             
             modules.turning.relative_turnv(90, 10)
             time.sleep(0.2)
-            seesRed = False
             posO = ThreadOutput.circle_angle
         
         if color[2]: 
             tankDrive.off()
-            seesGreen = False
             print("green")
             smooth_drive_straight(20)
             time.sleep(3)
