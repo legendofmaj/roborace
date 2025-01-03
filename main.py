@@ -58,10 +58,10 @@ def main():
     ZERO = modules.angles_dists_thread.ThreadOutput.circle_angle
 
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
-    
+
     while True:
         if Button().any():
-           break
+            break
         time.sleep(0.05)
     global POS_O
     POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
@@ -81,11 +81,11 @@ def main():
             tankDrive.off()
 
             POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
-            
+
             angles_and_dists = modules.detect_houses_primitive.getHousePrimitive()
 
             wanted_an_of_aprch = int(float(angles_and_dists[modules.detect_houses_primitive.dist_short]))
-            
+
             modules.turning.turn_to_x_right(50, 10)
             drop()
             time.sleep(0.5)
@@ -102,12 +102,12 @@ def main():
             if to_drive_dist > 5:
                 drive_till_dist_wheel(to_drive_dist)
                 print("drove")
-            
+
             modules.turning.relative_turnv(90, 10)
             time.sleep(0.2)
             POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
-        
-        if color[2]: 
+
+        if color[2]:
             tankDrive.off()
             print("green")
             smooth_drive_straight(20)
@@ -115,7 +115,7 @@ def main():
             tankDrive.off()
             break
 
-    
+
 def drop():
     """function to drop the parcel"""
     print("dropping")
