@@ -52,7 +52,6 @@ time.sleep(0.3)
 def main():
     """function containing the main code of the project"""
     print("please press")
-    #play tone
     start_threads()
     global zero
     zero = ThreadOutput.circle_angle
@@ -118,13 +117,11 @@ def main():
     
 def drop():
     """function to drop the parcel"""
-    print("dropping") #debug
+    print("dropping")
     depositMotor.on_for_rotations(SpeedPercent(75), 1.75)
     time.sleep(0.5)
     depositMotor.on_for_rotations(SpeedPercent(75), -1.75)
 
-
-#driving
 def drive_straight(speed, rotations):
     """function to drive forward for a specified number of rotations"""
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
