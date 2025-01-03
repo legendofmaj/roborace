@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+"""main module of the project"""
 
 import time
-import threading 
+import threading
 
 from ev3dev2.sensor import INPUT_2
 from ev3dev2.sensor.lego import GyroSensor
@@ -144,3 +145,4 @@ def drive_till_dist_wheel(dist):
 
 if __name__=="__main__":
     main()
+# End-of-file (EOF)
