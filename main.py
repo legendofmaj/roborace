@@ -11,7 +11,7 @@ from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 
-from modules.angles_dists_thread import start_threads, ThreadOutput
+import modules.angles_dists_thread
 import modules.parallelWallDrive
 import modules.detect_houses_primitive
 import modules.turning
@@ -52,9 +52,9 @@ time.sleep(0.3)
 def main():
     """function containing the main code of the project"""
     print("please press")
-    start_threads()
+    modules.angles_dists_thread.start_threads()
     global zero
-    zero = ThreadOutput.circle_angle
+    zero = modules.angles_dists_thread.ThreadOutput.circle_angle
 
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
@@ -63,7 +63,7 @@ def main():
            break
         time.sleep(0.05)
     global posO
-    posO = ThreadOutput.circle_angle
+    posO = modules.angles_dists_thread.ThreadOutput.circle_angle
     zero = 90
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
@@ -79,7 +79,7 @@ def main():
             print("red")
             tankDrive.off()
 
-            posO = ThreadOutput.circle_angle
+            posO = modules.angles_dists_thread.ThreadOutput.circle_angle
             
             anglesAndDists = modules.detect_houses_primitive.getHousePrimitive()
 
@@ -92,7 +92,7 @@ def main():
             modules.turning.turn_to_x_left((wantedAnOfAprch + 90), 10)
             print("turning to angle")
             time.sleep(0.5)
-            seenDist = ThreadOutput.dist
+            seenDist = modules.angles_dists_thread.ThreadOutput.dist
             print(seenDist)
             time.sleep(0.2)
             modules.turning.turn_to_x_right(wantedAnOfAprch, 10)
@@ -104,7 +104,7 @@ def main():
             
             modules.turning.relative_turnv(90, 10)
             time.sleep(0.2)
-            posO = ThreadOutput.circle_angle
+            posO = modules.angles_dists_thread.ThreadOutput.circle_angle
         
         if color[2]: 
             tankDrive.off()
