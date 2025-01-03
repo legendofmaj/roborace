@@ -16,10 +16,10 @@ import modules.parallelWallDrive
 import modules.detect_houses_primitive
 import modules.turning
 
-studmm = 7
-studs_that_wheels_are_apart = 15
-min_dist_between_wheels = 118 #mm
-moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, studs_that_wheels_are_apart * studmm)
+STUD_MM = 7
+STUDS_THAT_WHEELS_ARE_APART = 15
+MIN_DIST_BETWEEN_WHEELS = 118 #mm
+moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, STUDS_THAT_WHEELS_ARE_APART * STUD_MM)
 
 
 tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
@@ -36,16 +36,16 @@ col_raw = [
     0
 ]
 
-tbdDistance = 10
-rightCornerDist = 0.0
-leftCornerDist = 0.0
-rightCornerAngle = 0
-leftCornerAngle = 0
-anOfAprch = 0.0
+TBDDISTANCE = 10
+RIGHTCORNERDIST = 0.0
+LEFTCORNERDIST = 0.0
+RIGHTCORNERANGLE = 0
+LEFTCORNERANGLE = 0
+ANOFAPRCH = 0.0
 
 
-posO = 90
-zero = 90
+POS_O = 90
+ZERO = 90
 
 time.sleep(0.3)
 
@@ -53,8 +53,8 @@ def main():
     """function containing the main code of the project"""
     print("please press")
     modules.angles_dists_thread.start_threads()
-    global zero
-    zero = modules.angles_dists_thread.ThreadOutput.circle_angle
+    global ZERO
+    ZERO = modules.angles_dists_thread.ThreadOutput.circle_angle
 
     Sound().play_file('/home/robot/ev3/miscellaneous/soundFiles/Audio1.wav', volume=100, play_type=0)
     
@@ -62,9 +62,9 @@ def main():
         if Button().any():
            break
         time.sleep(0.05)
-    global posO
-    posO = modules.angles_dists_thread.ThreadOutput.circle_angle
-    zero = 90
+    global POS_O
+    POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
+    ZERO = 90
 
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 1)
     time.sleep(0.5)
@@ -79,32 +79,32 @@ def main():
             print("red")
             tankDrive.off()
 
-            posO = modules.angles_dists_thread.ThreadOutput.circle_angle
+            POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
             
-            anglesAndDists = modules.detect_houses_primitive.getHousePrimitive()
+            angles_and_dists = modules.detect_houses_primitive.getHousePrimitive()
 
-            wantedAnOfAprch = int(float(anglesAndDists[modules.detect_houses_primitive.dist_short]))
+            wanted_an_of_aprch = int(float(angles_and_dists[modules.detect_houses_primitive.dist_short]))
             
             modules.turning.turn_to_x_right(50, 10)
             drop()
             time.sleep(0.5)
             print("checking dists")
-            modules.turning.turn_to_x_left((wantedAnOfAprch + 90), 10)
+            modules.turning.turn_to_x_left((wanted_an_of_aprch + 90), 10)
             print("turning to angle")
             time.sleep(0.5)
-            seenDist = modules.angles_dists_thread.ThreadOutput.dist
-            print(seenDist)
+            seen_dist = modules.angles_dists_thread.ThreadOutput.dist
+            print(seen_dist)
             time.sleep(0.2)
-            modules.turning.turn_to_x_right(wantedAnOfAprch, 10)
+            modules.turning.turn_to_x_right(wanted_an_of_aprch, 10)
 
-            toDriveDist = seenDist - 13
-            if toDriveDist > 5:
-                drive_till_dist_wheel(toDriveDist)
+            to_drive_dist = seen_dist - 13
+            if to_drive_dist > 5:
+                drive_till_dist_wheel(to_drive_dist)
                 print("drove")
             
             modules.turning.relative_turnv(90, 10)
             time.sleep(0.2)
-            posO = modules.angles_dists_thread.ThreadOutput.circle_angle
+            POS_O = modules.angles_dists_thread.ThreadOutput.circle_angle
         
         if color[2]: 
             tankDrive.off()
