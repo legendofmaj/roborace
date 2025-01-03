@@ -13,7 +13,7 @@ from ev3dev2.sound import Sound
 
 
 import modules.angles_dists_thread
-import modules.parallelWallDrive
+import modules.parallel_wall_drive
 import modules.detect_houses_primitive
 import modules.turning
 
@@ -75,7 +75,7 @@ def main():
         False
     ]
     while True:
-        color = modules.parallelWallDrive.main()
+        color = modules.parallel_wall_drive.main()
         if color[1]:
             print("red")
             tankDrive.off()
