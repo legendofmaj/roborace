@@ -11,7 +11,7 @@ from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
 
-from modules.angles_dists_thread import *
+from modules.angles_dists_thread import start_threads, ThreadOutput
 import modules.parallelWallDrive
 import modules.detect_houses_primitive
 import modules.turning
