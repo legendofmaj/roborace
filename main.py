@@ -51,7 +51,7 @@ zero = 90
 time.sleep(0.3)
 
 def main():
-    
+    """function containing the main code of the project"""
     print("please press")
     #play tone
     global seesRed
@@ -105,7 +105,7 @@ def main():
 
             toDriveDist = seenDist - 13
             if toDriveDist > 5:
-                driveTillDistWheel(toDriveDist)
+                drive_till_dist_wheel(toDriveDist)
                 print("drove")
             
             modules.turning.relative_turnv(90, 10)
@@ -124,6 +124,7 @@ def main():
 
     
 def drop():
+    """function to drop the parcel"""
     print("dropping") #debug
     depositMotor.on_for_rotations(SpeedPercent(75), 1.75)
     time.sleep(0.5)
@@ -132,12 +133,15 @@ def drop():
 
 #driving
 def driveStraight(speed, rotations):
+    """function to drive forward for a specified number of rotations"""
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
 
 def smoothDriveStraight(speed):
+    """function to drive forward"""
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
-def driveTillDistWheel(dist):
+def drive_till_dist_wheel(dist):
+    """function to drive a specified distance"""
     rotations = 0.00
     rotation = 0.01
     while True:
