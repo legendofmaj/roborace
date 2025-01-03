@@ -117,7 +117,7 @@ def main():
             tankDrive.off()
             seesGreen = False
             print("green")
-            smoothDriveStraight(20)
+            smooth_drive_straight(20)
             time.sleep(3)
             tankDrive.off()
             break
@@ -132,11 +132,11 @@ def drop():
 
 
 #driving
-def driveStraight(speed, rotations):
+def drive_straight(speed, rotations):
     """function to drive forward for a specified number of rotations"""
     tankDrive.on_for_rotations(SpeedPercent(-speed), SpeedPercent(-speed), rotations)
 
-def smoothDriveStraight(speed):
+def smooth_drive_straight(speed):
     """function to drive forward"""
     tankDrive.on(SpeedPercent(-speed), SpeedPercent(-speed))
 
