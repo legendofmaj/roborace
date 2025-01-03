@@ -2,22 +2,14 @@
 
 import time
 import threading 
-import sys
-import math
 
-from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
-from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor import INPUT_2
 from ev3dev2.sensor.lego import GyroSensor
-from ev3dev2.sensor.lego import ColorSensor
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential, SpeedRPM
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential
 from ev3dev2.button import Button
 from ev3dev2.wheel import EV3EducationSetTire
 from ev3dev2.sound import Sound
 
-# #import modules.newParallelWallDriveUsingColorCheck
-# import modules.test_detect_houses
-# import modules.modultwo
-# import modules.oldParallelWallDrive
 
 from modules.angles_dists_thread import *
 import modules.parallelWallDrive
