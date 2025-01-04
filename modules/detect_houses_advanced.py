@@ -17,7 +17,7 @@ from ev3dev2.sound import Sound
 
 from angles_dists_thread import *
 from turning import *
-from parallelWallDrive import *
+from parallel_wall_drive import *
 
 studmm = 7
 studs_that_wheels_are_apart = 15
