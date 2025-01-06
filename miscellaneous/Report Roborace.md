@@ -12,6 +12,6 @@ Achtung: Für den fertigen Bericht muss die Formulierung besser gestaltet werden
 | David | Ablegemechanismus mit Chassis verbunden, Motoren/Sensoren verkabelt |  | 21.10 |
 | Michi | Verbindung mit VS Code |  | 21.10 |
 | David | Farbsensensorausleste programm angefangen, Angefangen Firmware auf EV3 brick zu isnstallieren (will grad nicht so richtig) |  | 22.10 |
-| Maximilian | Mehrere Häuser aus pappkarton hergestellt. 4 x 3 Meter große Unterlage aus Papier für Testsstrecke gebaut. Beides David für Tests zur verfügung gestellt. |  | 29.10 |
-| Maximilian | Weiteres Haus zum Testen für die Vorrunde gebaut |  | 27.11 |
-| Maximilian | Weitere 2 Häuser, diesesmal in komplexeren Formen gebaut |  | 02.12 |
+| Maximilian | Teststrecke gebaut | Mehrere Häuser aus pappkarton hergestellt. 4 x 3 Meter große Unterlage aus Papier für Testsstrecke gebaut. Beides David für Tests zur verfügung gestellt  | 29.10 |
+| Maximilian | Weiteres Haus gebaut | Weiteres Haus für die Teststrecke zur Vorrunde mit den dementsprechenden Maßen und Ansprüchen gebaut | 27.11 |
+| Maximilian | Weitere 2 Häuser gebaut | Weitere 2 Häuser, diesesmal in komplexeren Formen für das Finale gebaut | 02.12 |
