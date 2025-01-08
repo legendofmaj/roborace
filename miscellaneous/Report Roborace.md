@@ -11,7 +11,7 @@ Achtung: Für den fertigen Bericht muss die Formulierung besser gestaltet werden
 | David | Chassis gebaut  | betrieben mit 2 großen ev3 Motoren an großen Rädern (tank steering) und einem omnidirectional wheel (Stahlkugel in Kugelgelenk) Chassis enthält auch Drehsensor und Farbsensor(schräg auf Boden gerichtet) | 20.10 |
 | David | Ablegemechanismus mit Chassis verbunden, Motoren/Sensoren verkabelt | Die Verbindungen bestehen aus simplen Steckverbindungen, sind aber dennnoch relativ stabil. | 21.10 |
 | Michi | Verbindung mit VS Code | Eine SHH Verbindung wurde mithilfe des Mikro USB Kabels und Putty hergestellt und eine VS Code Erweiterung installiert um das hochladen zu vereinfachen. | 21.10 |
-| David | Farbsensensorausleste programm angefangen, Angefangen Firmware auf EV3 brick zu isnstallieren (will grad nicht so richtig) |  | 22.10 |
+| David | Farbsensensorausleste programm angefangen, Angefangen Firmware auf EV3 brick zu isnstallieren (will grad nicht so richtig) | Mithilfe der SD Karte wurde das Betriebssystem auf den EV3 Brick geladen und getestet. Nach einingen Versuchen gelang dies erfolgreich | 22.10 |
 | Maximilian | Teststrecke gebaut | Mehrere Häuser aus Pappkarton hergestellt. 4 x 3 Meter große Unterlage aus Papier für Testsstrecke gebaut. Beides David für Tests zur Verfügung gestellt  | 29.10 |
 | Maximilian | Weiteres Haus gebaut | Weiteres Haus für die Teststrecke zur Vorrunde mit den dementsprechenden Maßen und Ansprüchen gebaut | 27.11 |
 | Maximilian | Weitere 2 Häuser gebaut | Weitere 2 Häuser, diesesmal in komplexeren Formen für das Finale gebaut | 02.12 |
