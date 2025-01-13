@@ -48,6 +48,7 @@ Die Wand mit dem kürzesten Abstand soll im rechten Winkel angefahren werden. Di
 anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
 *detect_houses_advanced.py line:183*
 ```
+
 <span class="caption">[*detect__houses_advanced.py, Line: 183*](modules/detect_houses_advanced.py)</span>
 
 [![SKetch](https://github-production-user-asset-6210df.s3.amazonaws.com/152505444/398716933-824af1e1-f8b9-4086-b86a-2cafe2ced7aa.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250113T193106Z&X-Amz-Expires=300&X-Amz-Signature=75440960467866e0b458bb6aed832a27714d1880d7cc8436cfc0e2265187d9bd&X-Amz-SignedHeaders=host)](https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa)
@@ -55,10 +56,12 @@ anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a
 beta ist der Winkel des Sensors bei der ersten Ecke relativ zur Hauswand, alpha ist der Winkel des Sensors bei der zweiten Ecke relativ zur Hauswand, a ist die Distanz bis zur ersten Ecke, b die Distanz bis zur zweiten Ecke, alpha' ist der Winkel, den man über beta hinausgehen muss, um auf der Senkrechten der Hauswand zu sein. 
 Bevor die nächste Hauswand angefahren wird, wird jedoch noch das Paket abgeworfen. Damit der Roboter nicht über das abgeworfene Paket fährt, dreht er sich kurz in Richtung Hauswand, läßt das Paket fallen und steuert dann die nächste Wand an.
 
-Da der Sensor um 90° zur Fahrtrichtung gedreht ist, kann er während des Anfahrens der Wand keine Distanzdaten zu dieser liefern. Darum wird, ebenfalls mit Trigonometrie, die Distanz zur nächsten Wand berechnet. 
+Da der Sensor um 90° zur Fahrtrichtung gedreht ist, kann er während des Anfahrens der Wand keine Distanzdaten zu dieser liefern. Darum wird, ebenfalls mit Trigonometrie, die Distanz zur nächsten Wand berechnet.
+
 ```python
 distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
 ```
+
 <span class="caption">[*detect__houses_advanced.py, Line: 193*](modules/detect_houses_advanced.py)</span>
 
 Von dieser berechneten Distanz wird noch der Sollabstand abgezogen, damit der Roboter nicht mit der Wand kollidiert (, da eine Kollision mit einem Haus zu einer Zeitstrafe führt).
@@ -76,6 +79,7 @@ turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 
 steering_drive.on(turnratio, 20)
 ```
+
 steering_drive.on(turnratio, 20) steuert den Motor mit dem Korrekturwert an.
 Die Ermittlung der Differenz zwischen Solldistanz und aktueller Distanz geschieht in der "main" Function des Mouduls [parallel_wall_drive.py](modules/parallel_wall_drive.py).
 
