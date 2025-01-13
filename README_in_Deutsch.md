@@ -13,7 +13,7 @@ Detaillierte Erklärungen zur Aufgabe können im [Anhang](#Anhang) "Aufgabenstel
 
 ### Zentrale Funktionen
 
-- entlang von Wänden und Ecken fahren (mithilfe eines PID-Reglers)
+- entlang von Wänden und Ecken fahren (mithilfe eines PID-Reglers [2])
 - andere Häuser finden
 - zu anderen Häusern fahren (optimaler Kurs wird mithilfe von Trigonometrie berechnet)
 
@@ -36,13 +36,36 @@ Aus Gründen der Vereinfachung wurde auf eine zusätzliche Mittelschicht (middle
 ### Strategie
 
 Der Roboter fährt an der Wand eines Hauses entlang, bis der Farbsensor eine rote Linie erkennt. Während der Fahrt versucht der Roboter mit Hilfe des Abstandsensors einen Abstand von 13cm zur Wand zu halten.
-Sobald die Rote Linie detektiert wurde hält der Roboter an. Es folgt eine Drehung, die einen   Winkelbereich von ~180° abdeckt. Während der Drehung wird kontinuierlich der Abstand erfasst und ausgewertet. Über eine Kantenerkennung werden die Positionen der Ecken der in der Nähe stehenden Häuser erfasst und deren Abstände und Winkel in einem Diktionary gespeichert.
+Sobald die Rote Linie detektiert wurde hält der Roboter an. Es folgt eine Drehung, die einen Winkelbereich von ~180° abdeckt.
+
+[![Übersicht Scanbereich](Strategic_Sketch.png)](https://github.com/legendofmaj/ev3/blob/final_refactor/Strategic_Sketch.png)
+
+Während der Drehung wird kontinuierlich der Abstand erfasst und ausgewertet. Über eine Kantenerkennung werden die Positionen der Ecken der in der Nähe stehenden Häuser erfasst und deren Abstände und Winkel in einem Diktionary gespeichert.
+
 Die Wand mit dem kürzesten Abstand soll im rechten Winkel angefahren werden. Dieser Ansteuerwinkel wird mittels Cosinussatz errechnet.
-Bevor die nächste Hauswand angefahren wird, wird jedoch noch das Paket abgeworfen. Damit der Roboter nicht über das abgeworfene Paket fährt, dreht er sich kirz aus der Richtung, läßt das Paket fallen und steuert dann die nächste Wand an.
+
+```python
+anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
+*detect_houses_advanced.py line:183*
+```
+<span class="caption">[*detect__houses_advanced.py, Line: 183*](modules/detect_houses_advanced.py)</span>
+
+[![SKetch](https://github-production-user-asset-6210df.s3.amazonaws.com/152505444/398716933-824af1e1-f8b9-4086-b86a-2cafe2ced7aa.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250113T193106Z&X-Amz-Expires=300&X-Amz-Signature=75440960467866e0b458bb6aed832a27714d1880d7cc8436cfc0e2265187d9bd&X-Amz-SignedHeaders=host)](https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa)
+
+beta ist der Winkel des Sensors bei der ersten Ecke relativ zur Hauswand, alpha ist der Winkel des Sensors bei der zweiten Ecke relativ zur Hauswand, a ist die Distanz bis zur ersten Ecke, b die Distanz bis zur zweiten Ecke, alpha' ist der Winkel, den man über beta hinausgehen muss, um auf der Senkrechten der Hauswand zu sein. 
+Bevor die nächste Hauswand angefahren wird, wird jedoch noch das Paket abgeworfen. Damit der Roboter nicht über das abgeworfene Paket fährt, dreht er sich kurz in Richtung Hauswand, läßt das Paket fallen und steuert dann die nächste Wand an.
+
+Da der Sensor um 90° zur Fahrtrichtung gedreht ist, kann er während des Anfahrens der Wand keine Distanzdaten zu dieser liefern. Darum wird, ebenfalls mit Trigonometrie, die Distanz zur nächsten Wand berechnet. 
+```python
+distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
+```
+<span class="caption">[*detect__houses_advanced.py, Line: 193*](modules/detect_houses_advanced.py)</span>
+
+Von dieser berechneten Distanz wird noch der Sollabstand abgezogen, damit der Roboter nicht mit der Wand kollidiert (, da eine Kollision mit einem Haus zu einer Zeitstrafe führt).
 
 ### Entlang von Wänden und Ecken fahren
 
-Folgendes ist die Grundlage für das Entlangfahren an Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz, die der Roboter haben soll, und setzt diese in eine PID-Regler-Formel ein. Der Ausgabewert wird dann zur Steuerung genutzt.
+Folgendes ist die Grundlage für das Entlangfahren an Wänden. Es nutzt die Differenz zwischen der aktuellen Distanz zu einem Haus und der Distanz, die der Roboter haben soll, und setzt diese in eine PID-Regler-Formel ein. Der Ausgabewert "turnratio" wird dann zur Steuerung genutzt.
 
 ```python
 error = ultrasonic_sensor.distance_centimeters - goal
@@ -53,43 +76,47 @@ turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 
 steering_drive.on(turnratio, 20)
 ```
-
-Die Ermittlung der Differenz zwischen Solldistanz und
-
-[ganze Datei](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/parallelWallDrive.py)
+steering_drive.on(turnratio, 20) steuert den Motor mit dem Korrekturwert an.
+Die Ermittlung der Differenz zwischen Solldistanz und aktueller Distanz geschieht in der "main" Function des Mouduls [parallel_wall_drive.py](modules/parallel_wall_drive.py).
 
 ### Andere Häuser finden
 
 Folgendes ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen und der letzten Distanz und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt, und der aktuelle Winkel sowie die Distanz zum nächsten Haus wird gespeichert.
 
-```python
-while True:
-  distOld = ultraSoundSensor.distance_centimeters
-  distNew = ultraSoundSensor.distance_centimeters
-  if abs(distOld-distNew) >= threshold and distNew < 100:     
-  importantValues.rightCornerAngle = gyroSensor.circle_angle() 
-  importantValue.rightCornerDist = distNew
-  break
-  #repeat for left side
-```
-
-[ganze Datei](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/determine_angles_distances_next_house.py)
-
-### Zu anderen Häusern fahren (mithilfe von Trigonometrie)
-
-Folgendes ist die Formel um den Anfahrtswinkel zum nächsten Haus zu berechnen.
+Momentan gibt es bei scharfen Ecken das Problem, dass der Roboter entweder viel zu stark oder viel zu wenig dreht (je nach p, i und d).
+Um dies zu lösen, müsste man dem Algorithmus die Fähigkeit geben, Ecken zu erkennnen. 
+Beim Erkennen einer Ecke ist der PID-Regler zu verlassen, um die Ecke herumzufahren, den Roboter ernuet parallel auszurichten und dann wieder in den PID-Reglers zu gehen.
 
 ```python
-
-anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha
-#a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
+angleOld = get_angle(pos_o)
+distOld = angles_dists_thread.threadOutput.dist
+print(distOld)
+time.sleep(0.07)
+angleNew = get_angle(pos_o)
+distNew = angles_dists_thread.threadOutput.dist
+print(distNew)
+if distNew > 0:
+  if abs(distOld-distNew) >= threshold:                       ###here it checks for the jump and if it finds one it will save its location
+      time.sleep(0.1)
+      distNew = angles_dists_thread.threadOutput.dist
+      tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+      rightCornerAngle = angleNew
+      rightCornerDist = distNew + 10
+      print(rightCornerAngle)#debug
+      print(rightCornerDist)#debug
+      break
 ```
 
-<img src="https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa" width="450">
+[detect_houses_advanced.py](modules/detect_houses_advanced.py)
 
-[ganze Datei](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/get_angle_of_approach.py)
+### Drehen 
+Bei der gyrosensor.angle Funktion gab es das Problem, dass die Kalibrierung und Reset() Funktion nicht richtich funktioniert hat.
+Darum musste die circle_angle() Funktion verwendet werden. Dies führt zu weiteren Problem bei Überschreitung der 360° Grenze.
+Dies haben wir durch Fallanalysen in den Drehfunktionen gelöst.
 
-# Anhang
+[turning.py](modules/turning.py)
+namentlich: turn_right_to_x, turn_left_to_x, turn_to_x_left, turn_to_x_right, relative_turnv
+
 
 ## Aufgabenstellung
 
@@ -101,7 +128,9 @@ Durch Industrie 4.0, individuell gefertigte Produkte und zunehmendes Onlineshopp
 
 # Literatur
 
-[1] Aufgabenstellung Roborace 2024: in elektronischer Form als lokale Datei Aufgabenstellung_Roborace2024.pdf und auf der Internetseite der Universität Stuttgart https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/Aufgabenstellung_Roborace2024.pdf
+[1] Aufgabenstellung Roborace 2024: in elektronischer Form als lokale Datei Aufgabenstellung_Roborace2024.pdf und auf der Internetseite der Universität Stuttgart [https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/Aufgabenstellung_Roborace2024.pdf](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/Aufgabenstellung_Roborace2024.pdf)
+
+[2] Was ist ein PID-Regler?: [https://www.ist.uni-stuttgart.de/de/lehre/roborace/informationen/](https://www.ist.uni-stuttgart.de/de/lehre/roborace/informationen/)
 
 # Danksagungen
 

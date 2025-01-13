@@ -92,13 +92,9 @@ def main():
             print("checking dists")
             modules.turning.turn_to_x_left((wanted_an_of_aprch + 90), 10)
             print("turning to angle")
-            time.sleep(0.5)
-            seen_dist = modules.angles_dists_thread.ThreadOutput.dist
-            print(seen_dist)
             time.sleep(0.2)
-            modules.turning.turn_to_x_right(wanted_an_of_aprch, 10)
 
-            to_drive_dist = seen_dist - 13
+            to_drive_dist = modules.detect_houses_primitive.dist_short - 13
             if to_drive_dist > 5:
                 drive_till_dist_wheel(to_drive_dist)
                 print("drove")
