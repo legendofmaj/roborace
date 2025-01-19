@@ -76,7 +76,7 @@ anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a
 
 <!--  [![SKetch](https://github-production-user-asset-6210df.s3.amazonaws.com/152505444/398716933-824af1e1-f8b9-4086-b86a-2cafe2ced7aa.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250113%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250113T193106Z&X-Amz-Expires=300&X-Amz-Signature=75440960467866e0b458bb6aed832a27714d1880d7cc8436cfc0e2265187d9bd&X-Amz-SignedHeaders=host)](https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa) -->
 
-[![SKetch](./Angle_sketch.png)](https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa)
+[![SKetch](Trigonometry_Sketch.png)](https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa)
 
 beta ist der Winkel des Sensors bei der ersten Ecke relativ zur Hauswand, alpha ist der Winkel des Sensors bei der zweiten Ecke relativ zur Hauswand, a ist die Distanz bis zur ersten Ecke, b die Distanz bis zur zweiten Ecke, alpha' ist der Winkel, den man über beta hinausgehen muss, um auf der Senkrechten der Hauswand zu sein.
 Bevor die nächste Hauswand angefahren wird, wird jedoch noch das Paket abgeworfen. Damit der Roboter nicht über das abgeworfene Paket fährt, dreht er sich kurz in Richtung Hauswand, läßt das Paket fallen und steuert dann die nächste Wand an.
