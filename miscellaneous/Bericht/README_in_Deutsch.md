@@ -185,6 +185,12 @@ Die Aufgabenstellung erfolgte durch den Fachbereich des Studiengangs technische 
 
 Durch Industrie 4.0, individuell gefertigte Produkte und zunehmendes Onlineshopping steigt die Zahl der zu verteilenden Güter stark an. Während Industrie 4.0 und Produktion on-demand vielversprechende Möglichkeiten sind, Ressourcen effizient zu nutzen, stellen diese Entwicklungen neue Herausforderungen an die Logistik. Um diesen Herausforderungen zu begegnen und gleichzeitig umweltfreundliche Lieferketten aufzubauen, arbeiten Paketlieferdienste an autonomen Lieferfahrzeugen. Solch ein Fahrzeug soll im diesjährigen Roborace-Wettbewerb konstruiert werden. Die Aufgabe des Roboters ist es, mehrere Häuser anzufahren und dort Pakete abzuliefern. (weitere Details siehe [[1](#literatur)])
 
+## Ordener-Dateistruktur
+
+**miscellaneous** enthält den Ordner für den Bericht, ein Ideen-Dokument, den code der vorherigen Runden, config-Dateien und Sound-Dateien
+**modules** enthält Dateien für Drehfunktionen, wall-drive, etc
+Im hauptordner enthält .gitgnore, main und das englische README
+
 ## Flussdiagramm
 
 ![Flowchart.png](Flowchart.png)
