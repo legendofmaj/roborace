@@ -193,7 +193,8 @@ Im hauptordner enthält .gitgnore, main und das englische README
 
 ## Flussdiagramm
 
-![Flowchart.png](..\..\miscellaneous\resources\Flowchart.png)
+![Flowchart](https://github.com/user-attachments/assets/dc581ddc-b7be-4576-af6c-66763a9b1961)
+
 
 ## Literatur
 
