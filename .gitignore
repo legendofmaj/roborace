@@ -100,7 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-
-
 #LibreOffice Lock files
 *.odg#
