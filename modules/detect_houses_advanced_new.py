@@ -1,0 +1,328 @@
+#!/usr/bin/env python3
+
+#two more approaches to find the next house
+
+import time
+import threading
+import math
+
+from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
+from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor.lego import GyroSensor
+from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MediumMotor, Motor, MoveDifferential
+from ev3dev2.wheel import EV3EducationSetTire
+
+import angles_dists_thread
+from turning import turn_left_to_x, left_turn, turn_right_to_x
+#from parallel_wall_drive import *
+
+STUDMM = 7
+STUDS_THAT_WHEELS_ARE_APART = 15
+MIN_DIST_BETWEEN_WHEELS = 118 #mm
+moveDifferential = MoveDifferential(OUTPUT_B, OUTPUT_C, EV3EducationSetTire, STUDS_THAT_WHEELS_ARE_APART * STUDMM)
+
+tankDrive = MoveTank(OUTPUT_B, OUTPUT_C)
+depositMotor = MediumMotor(OUTPUT_A)
+motorRight = Motor(OUTPUT_B)
+motorLeft = Motor(OUTPUT_C)
+colorSensor = ColorSensor(INPUT_1)
+gyroSensor = GyroSensor(INPUT_2)
+ultraSoundSensor = UltrasonicSensor(INPUT_3)
+
+stop_event = threading.Event()
+
+col_raw = [
+    0,
+    0,
+    0
+]
+TBD_DISTANCE = 10
+dist = 0.0
+right_corner_dist = 0.0
+left_corner_dist = 0.0
+right_corner_angle = 0
+left_corner_angle = 0
+angle_of_approach = 0.0
+sees_green = False
+sees_red = False
+
+angles_and_dists = {1000000 : 1000000}
+
+pos_o = angles_dists_thread.ThreadOutput.circle_angle
+zero = 90
+
+#determine how to get to next house this is the simpler of the two, but struggles if a house wall is going beyond the 150° arc in which it looks
+
+#this will only find one house and it will assume that the right edge of the house is to the left of the current angle of the robot
+def detect_house_edge(threshold):
+    print("seeking")
+    global right_corner_angle
+    global left_corner_angle
+    global right_corner_dist
+    global left_corner_dist
+    tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
+    while True:                                                 ###turns until it finds a jump in the measured distance
+        if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+            tankDrive.off()
+            break
+        angle_old = angles_dists_thread.get_angle(pos_o)
+        dist_old = angles_dists_thread.ThreadOutput.dist
+        print(dist_old)
+        time.sleep(0.07)
+        angle_new = angles_dists_thread.get_angle(pos_o)
+        dist_new = angles_dists_thread.ThreadOutput.dist
+        print(dist_new)
+        if dist_new > 0:
+            if abs(dist_old-dist_new) >= threshold:                       ###here it checks for the jump and if it finds one it will save its location
+                time.sleep(0.1)
+                dist_new = angles_dists_thread.ThreadOutput.dist
+                tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+                right_corner_angle = angle_new
+                right_corner_dist = dist_new + 10
+                print(right_corner_angle)#debug
+                print(right_corner_dist)#debug
+                break
+    print("found one")#debug
+    tankDrive.off()
+    time.sleep(1)
+    #betterTurnDegrees(5, 15)
+    if angles_dists_thread.get_angle(pos_o) < 350 and angles_dists_thread.get_angle(pos_o) > 150:                           ###turns a little bit to prevent the same edge from being seen twice
+        #moveDifferential.turn_left(10, 5)
+        left_turn(5, 10)
+        print("lil turn")
+        tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
+
+    while True:                                                 ###turns until it finds a jump in the measured distance
+        if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+            break
+        #the above is here so it doesnt get stuck indefinitly executing
+        angle_old = angles_dists_thread.get_angle(pos_o)
+        dist_old = angles_dists_thread.ThreadOutput.dist
+        print(dist_old)
+        time.sleep(0.07)
+        angle_new = angles_dists_thread.get_angle(pos_o)
+        dist_new = angles_dists_thread.ThreadOutput.dist
+        print(dist_new)
+        if abs(dist_old-dist_new) >= threshold:               ###here it checks for the jump and if it finds one it will save its location
+            left_corner_angle = angle_old
+            left_corner_dist = dist_old + 10
+            print(left_corner_angle)#debug
+            print(left_corner_dist)#debug
+            break
+    tankDrive.off()
+    print("right Corner Angle: " + str(right_corner_angle)  + ", right Corner distance: " + str(right_corner_dist)) #debug
+    print("left Corner Angle: " + str(left_corner_angle)+ ", left Corner distance: " + str(left_corner_dist)) #debug
+
+
+#this function serves to combine multiple of the detectHouseEdge functions int o one function to find all houses and determine the next house
+def get_multiple_houses():
+    #drive forward about 1x the length of the robot from the color sensor to the turning radius (~16cm)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    tankDrive.off()
+    print(angles_dists_thread.get_angle(pos_o))
+    tankDrive.off()
+    time.sleep(0.5)
+    global pos_o
+    pos_o = angles_dists_thread.ThreadOutput.dist
+    time.sleep(0.5)
+    print(angles_dists_thread.get_angle(pos_o))
+    time.sleep(0.5)
+    print("driven")
+    turn_left_to_x(150, 10) #turn so that the sensor points outwards
+    print("turned outwards")
+    time.sleep(0.5)
+    while angles_dists_thread.get_angle(pos_o) < 350 and angles_dists_thread.get_angle(pos_o) > 100: ###executes the detectHouesEdge function over and over again until it finds all houses in its given arc
+        if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+            print("broke in multo")
+            break
+        global angles_and_dists
+        #see if house
+        print("seing houses")
+        detect_house_edge(12)
+        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        tankDrive.off()
+        print("saw houses")
+
+        a = right_corner_dist
+        b = left_corner_dist
+        alpha = right_corner_angle
+        beta = left_corner_angle
+
+        angle_of_approach = get_angle_of_appoach(a, b, alpha, beta) ###uses the get_angle_of_appoach function to determine the angle of approach
+
+        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach) ###uses the get_dist_to_next_house function to determine the distance to the detected house
+
+        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach) ###saves both those values into a dict
+
+        if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+            print("broke in multo2")
+            break
+
+        time.sleep(1)
+        left_turn(5, 10)
+
+    print("checked for houses")
+
+    tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
+    time.sleep(5)
+    tankDrive.off()
+
+    turn_right_to_x(150, 10)
+    print("turned back")
+    time.sleep(1)
+
+    print("checked angles and dist")
+
+#uses trigonometry to find the angle of approach to the next house whereasin the angle of approach represents the orthogonal line from the house wall to the robots axis of rotation
+def get_angle_of_appoach(a, b, alpha, beta):
+    global angle_of_approach
+    try:
+        angle_of_approach = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
+    except ZeroDivisionError:
+        angle_of_approach = 90
+        print("Angle of Approach calculation: zero division error")
+    except:
+        print("Angle of Approach calculation: unknown error")
+    return angle_of_approach
+
+#uses simple trigonometry to find the distance to the next house (aka length of the orthogonal)
+def get_dist_to_next_house(a, alpha, angle_of_approach):
+    dist_to_next_house = abs(math.cos(angle_of_approach - alpha)) * a
+    return dist_to_next_house
+
+
+#this function is a more advance version of the combination of the above 4 functions
+#it accouts for what type of edge it detects and has the ability to determine if a house is actually a valid target for delivery
+def get_houses_advanced(threshold):
+    #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
+    tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
+    tankDrive.off()
+    print(angles_dists_thread.get_angle(pos_o))
+    tankDrive.off()
+    time.sleep(0.5)
+    global pos_o
+    pos_o = angles_dists_thread.ThreadOutput.circle_angle
+    time.sleep(0.5)
+    print(angles_dists_thread.get_angle(pos_o))
+    time.sleep(0.5)
+    print("driven")
+    turn_left_to_x(150, 10)
+    dist_at_one_o_five = angles_dists_thread.ThreadOutput.dist
+    edges = {900 : [1000, 1]}
+    while angles_dists_thread.get_angle(pos_o) < 350 and angles_dists_thread.get_angle(pos_o) > 100: ###begins turning to find the houses
+        if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+            print("broke in multo")
+            break
+        global angles_and_dists
+        #see if house
+        print("seing houses")
+        tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+        tankDrive.off()
+        tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
+
+        angle_old = angles_dists_thread.get_angle(pos_o)
+        dist_old = angles_dists_thread.ThreadOutput.dist
+        print(dist_old)
+        time.sleep(0.07)
+        angle_new = angles_dists_thread.get_angle(pos_o)
+        dist_new = angles_dists_thread.ThreadOutput.dist
+        print(dist_new)
+
+        if (dist_old - dist_new) < 0 and abs(dist_old - dist_new) >= threshold: ###this is a left edge as the newer distance(to the left of the wall) is longer than the distance to the wall
+            print("dist jump further, left edge")
+            #print(dist_old)#debug
+            #print(dist_new)#debug
+            left_corner_angle = angle_old
+            left_corner_dist = dist_old + 10
+            print(left_corner_angle)#debug
+            print(left_corner_dist)#debug
+            edges[left_corner_angle] = [left_corner_dist, 2]
+            left_turn(5, 10)
+            print("lil turn")
+
+        elif (dist_old - dist_new) > 0 and abs(dist_old - dist_new) >= threshold: ###this is a right adge as the distance gets shorter
+            print("dist jump closer, right edge")
+            time.sleep(0.1)
+            dist_new = angles_dists_thread.ThreadOutput.dist
+            tankDrive.on(SpeedPercent(0), SpeedPercent(0))
+            #print(dist_old)#debug
+            #print(dist_new)#debug
+            right_corner_angle = angle_new
+            right_corner_dist = dist_new + 10
+            print(right_corner_angle)#debug
+            print(right_corner_dist)#debug
+            edges[right_corner_angle] = [right_corner_dist, 1]
+            left_turn(5, 10)
+            print("lil turn")
+
+        else:
+            print("passes")
+            if angles_dists_thread.get_angle(pos_o) > 350 or angles_dists_thread.get_angle(pos_o) < 50:
+                print("broke in passing")
+                break
+            continue
+
+    ###sorts the edges according to angle
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+    leftest_edge = edges[edges_keys[0]]
+    if leftest_edge[1] == 2:
+        edges[150] = [dist_at_one_o_five, 1] ### if the leftest edge is a left one it sets the value at 150°(the start angle) as the new leftest edge
+    edges_keys = edges.keys()
+    edges_keys = [int(x) for x in edges_keys]
+    edges_keys = sorted(edges_keys)
+
+    for x in range(len(edges)):###determines the angles of approach and the distances to all the houses it finds
+        if x % 2 != 0:
+            continue
+        right = edges[edges_keys[x]]
+        left = edges[edges_keys[(x+1)]]
+        a = int(right[0])#right_corner_dist
+        b = int(left[0])#left_corner_dist
+        alpha = int(edges_keys[x])#right_corner_angle
+        beta = int(edges_keys[(x+1)])#left_corner_angle
+        angle_of_approach = get_angle_of_appoach(a, b, alpha, beta)
+        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach)
+        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach)
+        print(left)
+        print(right)
+        print(alpha)
+        print(beta)
+        print(angles_and_dists)
+        print(x)
+
+    edges.clear()
+    edges_keys.clear()
+
+    time.sleep(1)
+    left_turn(5, 10)
+
+    print("checked for houses")
+
+    tankDrive.on(SpeedPercent(10), SpeedPercent(-10))
+    time.sleep(5)
+    tankDrive.off()
+
+    turn_right_to_x(150, 10) ###turns back to the start angle
+    print("turned back")
+    time.sleep(1)
+    to_remove = []
+    for x in angles_and_dists.items(): ###goes through all the angles of approach and their corresponding distances and compares them to the actual distance. if the decrepancy is to big it assumes the house its currently looking at is not a valid house to deliver to
+        print("checking dists")
+        print(x, angles_and_dists[x])
+        turn_left_to_x((angles_and_dists[x] + 90), 10)
+        print("turning to angle")
+        time.sleep(1)
+        seen_dist = angles_dists_thread.ThreadOutput.dist
+        if seen_dist > (x-10) + 10 or seen_dist < (x-10) - 10:
+            print("doesnt think its right")
+            to_remove.append(x)
+    for x in to_remove:   ###removes invalid houses
+        angles_and_dists.pop(x)
+    to_remove.clear()
+
+    time.sleep(0.2)
+
+    print("checked angles and dist")
