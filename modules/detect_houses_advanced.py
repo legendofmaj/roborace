@@ -75,15 +75,13 @@ def detect_house_edge(threshold):
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
                 right_corner_angle = angle_new
                 right_corner_dist = dist_new + 10
-                print(right_corner_angle)#debug
-                print(right_corner_dist)#debug
+                print(right_corner_angle)
+                print(right_corner_dist)
                 break
-    print("found one")#debug
+    print("found one")
     tankDrive.off()
     time.sleep(1)
-    #betterTurnDegrees(5, 15)
     if angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 150:                           #turns a little bit to prevent the same edge from being seen twice
-        #moveDifferential.turn_left(10, 5)
         left_turn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
@@ -102,12 +100,12 @@ def detect_house_edge(threshold):
         if abs(dist_old-dist_new) >= threshold:               #here it checks for the jump and if it finds one it will save its location
             left_corner_angle = angle_old
             left_corner_dist = dist_old + 10
-            print(left_corner_angle)#debug
-            print(left_corner_dist)#debug
+            print(left_corner_angle)
+            print(left_corner_dist)
             break
     tankDrive.off()
-    print("right Corner Angle: " + str(right_corner_angle)  + ", right Corner distance: " + str(right_corner_dist)) #debug
-    print("left Corner Angle: " + str(left_corner_angle)+ ", left Corner distance: " + str(left_corner_dist)) #debug
+    print("right Corner Angle: " + str(right_corner_angle)  + ", right Corner distance: " + str(right_corner_dist)) 
+    print("left Corner Angle: " + str(left_corner_angle)+ ", left Corner distance: " + str(left_corner_dist)) 
 
 
 def get_multiple_houses():
@@ -220,12 +218,10 @@ def get_houses_advanced(threshold):
 
         if (dist_old - dist_new) < 0 and abs(dist_old - dist_new) >= threshold: #this is a left edge as the newer distance(to the left of the wall) is longer than the distance to the wall
             print("dist jump further, left edge")
-            #print(dist_old)#debug
-            #print(dist_new)#debug
             left_corner_angle_advanced = angle_old
             left_corner_dist_advanced = dist_old + 10
-            print(left_corner_angle_advanced)#debug
-            print(left_corner_dist_advanced)#debug
+            print(left_corner_angle_advanced)
+            print(left_corner_dist_advanced)
             edges[left_corner_angle_advanced] = [left_corner_dist_advanced, 2]
             left_turn(5, 10)
             print("lil turn")
@@ -235,12 +231,10 @@ def get_houses_advanced(threshold):
             time.sleep(0.1)
             dist_new = angles_dists_thread.ThreadOutput.dist
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
-            #print(dist_old)#debug
-            #print(dist_new)#debug
             right_corner_angle_advanced = angle_new
             right_corner_dist_advanced = dist_new + 10
-            print(right_corner_angle_advanced)#debug
-            print(right_corner_dist_advanced)#debug
+            print(right_corner_angle_advanced)
+            print(right_corner_dist_advanced)
             edges[right_corner_angle_advanced] = [right_corner_dist_advanced, 1]
             left_turn(5, 10)
             print("lil turn")
