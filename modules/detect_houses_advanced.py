@@ -229,11 +229,11 @@ def get_houses_advanced(threshold):
             print("dist jump further, left edge")
             #print(dist_old)#debug
             #print(dist_new)#debug
-            left_corner_angle = angle_old
-            left_corner_dist = dist_old + 10
-            print(left_corner_angle)#debug
-            print(left_corner_dist)#debug
-            edges[left_corner_angle] = [left_corner_dist, 2]
+            left_corner_angle_advanced = angle_old
+            left_corner_dist_advanced = dist_old + 10
+            print(left_corner_angle_advanced)#debug
+            print(left_corner_dist_advanced)#debug
+            edges[left_corner_angle_advanced] = [left_corner_dist_advanced, 2]
             left_turn(5, 10)
             print("lil turn")
 
@@ -244,11 +244,11 @@ def get_houses_advanced(threshold):
             tankDrive.on(SpeedPercent(0), SpeedPercent(0))
             #print(dist_old)#debug
             #print(dist_new)#debug
-            right_corner_angle = angle_new
-            right_corner_dist = dist_new + 10
-            print(right_corner_angle)#debug
-            print(right_corner_dist)#debug
-            edges[right_corner_angle] = [right_corner_dist, 1]
+            right_corner_angle_advanced = angle_new
+            right_corner_dist_advanced = dist_new + 10
+            print(right_corner_angle_advanced)#debug
+            print(right_corner_dist_advanced)#debug
+            edges[right_corner_angle_advanced] = [right_corner_dist_advanced, 1]
             left_turn(5, 10)
             print("lil turn")
 
@@ -275,13 +275,13 @@ def get_houses_advanced(threshold):
             continue
         right = edges[edges_keys[x]]
         left = edges[edges_keys[(x+1)]]
-        a = int(right[0])#right_corner_dist
-        b = int(left[0])#left_corner_dist
-        alpha = int(edges_keys[x])#right_corner_angle
-        beta = int(edges_keys[(x+1)])#left_corner_angle
-        angle_of_approach = get_angle_of_appoach(a, b, alpha, beta)
-        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach)
-        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach)
+        a = int(right[0])#right_corner_dist_advanced
+        b = int(left[0])#left_corner_dist_advanced
+        alpha = int(edges_keys[x])#right_corner_angle_advanced
+        beta = int(edges_keys[(x+1)])#left_corner_angle_advanced
+        angle_of_approach_advanced = get_angle_of_appoach(a, b, alpha, beta)
+        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach_advanced)
+        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach_advanced)
         print(left)
         print(right)
         print(alpha)
