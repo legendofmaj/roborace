@@ -115,8 +115,6 @@ def get_multiple_houses():
     #drive forward about 1x the length of the robot from the color sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
-    print(angles_dists_thread.get_angle(POS_O))
-    tankDrive.off()
     time.sleep(0.5)
     global POS_O
     POS_O = angles_dists_thread.ThreadOutput.dist
@@ -143,11 +141,11 @@ def get_multiple_houses():
         alpha = right_corner_angle
         beta = left_corner_angle
 
-        angle_of_approach = get_angle_of_appoach(a, b, alpha, beta) ###uses the get_angle_of_appoach function to determine the angle of approach
+        angle_of_approach_multiple = get_angle_of_appoach(a, b, alpha, beta) ###uses the get_angle_of_appoach function to determine the angle of approach
 
-        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach) ###uses the get_dist_to_next_house function to determine the distance to the detected house
+        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach_multiple) ###uses the get_dist_to_next_house function to determine the distance to the detected house
 
-        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach) ###saves both those values into a dict
+        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach_multiple) ###saves both those values into a dict
 
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             print("broke in multo2")
