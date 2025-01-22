@@ -183,8 +183,8 @@ def get_angle_of_appoach(a, b, alpha, beta):
     return angle_of_approach
 
 #uses simple trigonometry to find the distance to the next house (aka length of the orthogonal)
-def get_dist_to_next_house(a, alpha, angle_of_approach):
-    dist_to_next_house = abs(math.cos(angle_of_approach - alpha)) * a
+def get_dist_to_next_house(a, alpha, angle_of_approach_calc):
+    dist_to_next_house = abs(math.cos(angle_of_approach_calc - alpha)) * a
     return dist_to_next_house
 
 
