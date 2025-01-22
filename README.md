@@ -39,7 +39,7 @@ turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 steering_drive.on(turnratio, 20)
 ```
 
-[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/parallelWallDrive.py)
+[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/parallel_wall_drive.py)
 
 ### Find other houses
 
@@ -55,7 +55,7 @@ while True:
   break
   #repeat for left side
 ```
-[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/determine_angles_distances_next_house.py)
+[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_primitive.py)
 
 ### Drive to other houses using trigonometry
 
@@ -69,7 +69,7 @@ anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*
 
 <img src="https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa" width="450">
 
-[entire file](https://github.com/legendofmaj/ev3/blob/dev/AA_main_1st_round/modules/get_angle_of_approach.py)
+[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_advanced.py)
 
 ## Credit
 
