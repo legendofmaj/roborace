@@ -211,7 +211,6 @@ def get_houses_advanced(threshold):
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             print("broke in multo")
             break
-        global angles_and_dists
         #see if house
         print("seing houses")
         tankDrive.on(SpeedPercent(0), SpeedPercent(0))
