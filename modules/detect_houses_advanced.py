@@ -57,7 +57,7 @@ def detect_house_edge(threshold):
     global right_corner_dist
     global left_corner_dist
     tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
-    while True:                                                 ###turns until it finds a jump in the measured distance
+    while True:                                                 #turns until it finds a jump in the measured distance
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             tankDrive.off()
             break
@@ -69,7 +69,7 @@ def detect_house_edge(threshold):
         dist_new = angles_dists_thread.ThreadOutput.dist
         print(dist_new)
         if dist_new > 0:
-            if abs(dist_old-dist_new) >= threshold:                       ###here it checks for the jump and if it finds one it will save its location
+            if abs(dist_old-dist_new) >= threshold:                       #here it checks for the jump and if it finds one it will save its location
                 time.sleep(0.1)
                 dist_new = angles_dists_thread.ThreadOutput.dist
                 tankDrive.on(SpeedPercent(0), SpeedPercent(0))
@@ -82,13 +82,13 @@ def detect_house_edge(threshold):
     tankDrive.off()
     time.sleep(1)
     #betterTurnDegrees(5, 15)
-    if angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 150:                           ###turns a little bit to prevent the same edge from being seen twice
+    if angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 150:                           #turns a little bit to prevent the same edge from being seen twice
         #moveDifferential.turn_left(10, 5)
         left_turn(5, 10)
         print("lil turn")
         tankDrive.on(SpeedPercent(-3), SpeedPercent(3))
 
-    while True:                                                 ###turns until it finds a jump in the measured distance
+    while True:                                                 #turns until it finds a jump in the measured distance
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             break
         #the above is here so it doesnt get stuck indefinitly executing
@@ -99,7 +99,7 @@ def detect_house_edge(threshold):
         angle_new = angles_dists_thread.get_angle(POS_O)
         dist_new = angles_dists_thread.ThreadOutput.dist
         print(dist_new)
-        if abs(dist_old-dist_new) >= threshold:               ###here it checks for the jump and if it finds one it will save its location
+        if abs(dist_old-dist_new) >= threshold:               #here it checks for the jump and if it finds one it will save its location
             left_corner_angle = angle_old
             left_corner_dist = dist_old + 10
             print(left_corner_angle)#debug
@@ -125,7 +125,7 @@ def get_multiple_houses():
     turn_left_to_x(150, 10) #turn so that the sensor points outwards
     print("turned outwards")
     time.sleep(0.5)
-    while angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 100: ###executes the detectHouesEdge function over and over again until it finds all houses in its given arc
+    while angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 100: #executes the detectHouesEdge function over and over again until it finds all houses in its given arc
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             print("broke in multo")
             break
@@ -141,11 +141,11 @@ def get_multiple_houses():
         alpha = right_corner_angle
         beta = left_corner_angle
 
-        angle_of_approach_multiple = get_angle_of_appoach(a, b, alpha, beta) ###uses the get_angle_of_appoach function to determine the angle of approach
+        angle_of_approach_multiple = get_angle_of_appoach(a, b, alpha, beta) #uses the get_angle_of_appoach function to determine the angle of approach
 
-        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach_multiple) ###uses the get_dist_to_next_house function to determine the distance to the detected house
+        dist_to_next_house = get_dist_to_next_house(a, alpha, angle_of_approach_multiple) #uses the get_dist_to_next_house function to determine the distance to the detected house
 
-        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach_multiple) ###saves both those values into a dict
+        angles_and_dists[int(dist_to_next_house)] = int(angle_of_approach_multiple) #saves both those values into a dict
 
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             print("broke in multo2")
@@ -200,7 +200,7 @@ def get_houses_advanced(threshold):
     turn_left_to_x(150, 10)
     dist_at_one_o_five = angles_dists_thread.ThreadOutput.dist
     edges = {900 : [1000, 1]}
-    while angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 100: ###begins turning to find the houses
+    while angles_dists_thread.get_angle(POS_O) < 350 and angles_dists_thread.get_angle(POS_O) > 100: #begins turning to find the houses
         if angles_dists_thread.get_angle(POS_O) > 350 or angles_dists_thread.get_angle(POS_O) < 50:
             print("broke in multo")
             break
@@ -218,7 +218,7 @@ def get_houses_advanced(threshold):
         dist_new = angles_dists_thread.ThreadOutput.dist
         print(dist_new)
 
-        if (dist_old - dist_new) < 0 and abs(dist_old - dist_new) >= threshold: ###this is a left edge as the newer distance(to the left of the wall) is longer than the distance to the wall
+        if (dist_old - dist_new) < 0 and abs(dist_old - dist_new) >= threshold: #this is a left edge as the newer distance(to the left of the wall) is longer than the distance to the wall
             print("dist jump further, left edge")
             #print(dist_old)#debug
             #print(dist_new)#debug
@@ -230,7 +230,7 @@ def get_houses_advanced(threshold):
             left_turn(5, 10)
             print("lil turn")
 
-        elif (dist_old - dist_new) > 0 and abs(dist_old - dist_new) >= threshold: ###this is a right adge as the distance gets shorter
+        elif (dist_old - dist_new) > 0 and abs(dist_old - dist_new) >= threshold: #this is a right adge as the distance gets shorter
             print("dist jump closer, right edge")
             time.sleep(0.1)
             dist_new = angles_dists_thread.ThreadOutput.dist
@@ -252,18 +252,18 @@ def get_houses_advanced(threshold):
                 break
             continue
 
-    ###sorts the edges according to angle
+    #sorts the edges according to angle
     edges_keys = edges.keys()
     edges_keys = [int(x) for x in edges_keys]
     edges_keys = sorted(edges_keys)
     leftest_edge = edges[edges_keys[0]]
     if leftest_edge[1] == 2:
-        edges[150] = [dist_at_one_o_five, 1] ### if the leftest edge is a left one it sets the value at 150°(the start angle) as the new leftest edge
+        edges[150] = [dist_at_one_o_five, 1] #if the leftest edge is a left one it sets the value at 150°(the start angle) as the new leftest edge
     edges_keys = edges.keys()
     edges_keys = [int(x) for x in edges_keys]
     edges_keys = sorted(edges_keys)
 
-    for x in range(len(edges)):###determines the angles of approach and the distances to all the houses it finds
+    for x in range(len(edges)):#determines the angles of approach and the distances to all the houses it finds
         if x % 2 != 0:
             continue
         right = edges[edges_keys[x]]
@@ -294,11 +294,11 @@ def get_houses_advanced(threshold):
     time.sleep(5)
     tankDrive.off()
 
-    turn_right_to_x(150, 10) ###turns back to the start angle
+    turn_right_to_x(150, 10) #turns back to the start angle
     print("turned back")
     time.sleep(1)
     to_remove = []
-    for x in angles_and_dists.items(): ###goes through all the angles of approach and their corresponding distances and compares them to the actual distance. if the decrepancy is to big it assumes the house its currently looking at is not a valid house to deliver to
+    for x in angles_and_dists.items(): #goes through all the angles of approach and their corresponding distances and compares them to the actual distance. if the decrepancy is to big it assumes the house its currently looking at is not a valid house to deliver to
         print("checking dists")
         print(x, angles_and_dists[x])
         turn_left_to_x((angles_and_dists[x] + 90), 10)
@@ -308,7 +308,7 @@ def get_houses_advanced(threshold):
         if seen_dist > (x-10) + 10 or seen_dist < (x-10) - 10:
             print("doesnt think its right")
             to_remove.append(x)
-    for x in to_remove:   ###removes invalid houses
+    for x in to_remove:   #removes invalid houses
         angles_and_dists.pop(x)
     to_remove.clear()
 
