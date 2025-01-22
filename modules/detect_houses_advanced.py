@@ -49,10 +49,9 @@ angles_and_dists = {1000000 : 1000000}
 POS_O = angles_dists_thread.ThreadOutput.circle_angle
 ZERO = 90
 
-#determine how to get to next house this is the simpler of the two, but struggles if a house wall is going beyond the 150° arc in which it looks
-
-#this will only find one house and it will assume that the right edge of the house is to the left of the current angle of the robot
 def detect_house_edge(threshold):
+    """determine how to get to next house. This is the simpler of the two, but struggles if a house wall is going beyond the 150° arc in which it looks."""
+    #Note: this will only find one house and it will assume that the right edge of the house is to the left of the current angle of the robot
     print("seeking")
     global RIGHT_CORNER_ANGLE
     global LEFT_CORNER_ANGLE
