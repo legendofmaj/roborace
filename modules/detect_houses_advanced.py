@@ -195,8 +195,6 @@ def get_houses_advanced(threshold):
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
-    print(angles_dists_thread.get_angle(POS_O))
-    tankDrive.off()
     time.sleep(0.5)
     global POS_O
     POS_O = angles_dists_thread.ThreadOutput.circle_angle
