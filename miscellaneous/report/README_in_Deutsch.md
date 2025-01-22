@@ -44,14 +44,13 @@ steering_drive.on(turnratio, 20)
 Folgendes ist die Basis für das Erkennen von Hausecken. Es berechnet permanent die Differenz zwischen der aktuellen und der letzten Distanz und schaut nach großen Sprüngen. Wenn ein Wertesprung groß genug ist, wird eine Hausecke erkannt, und der aktuelle Winkel sowie die Distanz zum nächsten Haus wird gespeichert.
 
 ```python
-while True:
-  distOld = ultraSoundSensor.distance_centimeters
-  distNew = ultraSoundSensor.distance_centimeters
-  if abs(distOld-distNew) >= threshold and distNew < 100:           
-  importantValues.rightCornerAngle = gyroSensor.circle_angle() 
-  importantValue.rightCornerDist = distNew
-  break
-  #repeat for left side
+while ThreadOutput.circle_angle < 350 and ThreadOutput.circle_angle > 100:
+  if dist_old > dist_new:
+    if dist_short > dist_new:
+      dist_short = dist_new
+      angle_short = angle_new
+angles_and_dists = {int(dist_short) : int(angle_short)}
+return angles_and_dists
 ```
 [ganze Datei](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_primitive.py?#L40)
 
