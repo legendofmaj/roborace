@@ -309,3 +309,4 @@ def get_houses_advanced(threshold):
     time.sleep(0.2)
 
     print("checked angles and dist")
+# End-of-file (EOF)
