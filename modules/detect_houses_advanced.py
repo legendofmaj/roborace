@@ -111,8 +111,8 @@ def detect_house_edge(threshold):
     print("left Corner Angle: " + str(LEFT_CORNER_ANGLE)+ ", left Corner distance: " + str(LEFT_CORNER_DIST)) #debug
 
 
-#this function serves to combine multiple of the detectHouseEdge functions int o one function to find all houses and determine the next house
 def get_multiple_houses():
+    """this function serves to combine multiple of the detectHouseEdge functions int o one function to find all houses and determine the next house"""
     #drive forward about 1x the length of the robot from the color sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
@@ -170,8 +170,9 @@ def get_multiple_houses():
 
     print("checked angles and DIST")
 
-#uses trigonometry to find the angle of approach to the next house whereasin the angle of approach represents the orthogonal line from the house wall to the robots axis of rotation
+
 def get_angle_of_appoach(a, b, alpha, beta):
+    """uses trigonometry to find the angle of approach to the next house whereasin the angle of approach represents the orthogonal line from the house wall to the robots axis of rotation"""
     global ANGLE_OF_APPROACH
     try:
         ANGLE_OF_APPROACH = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
@@ -188,9 +189,10 @@ def get_dist_to_next_house(a, alpha, ANGLE_OF_APPROACH):
     return dist_to_next_house
 
 
-#this function is a more advance version of the combination of the above 4 functions
-#it accouts for what type of edge it detects and has the ability to determine if a house is actually a valid target for delivery
 def get_houses_advanced(threshold):
+    """this function is a more advance version of the combination of the above 4 functions"""
+    #Note: it accouts for what type of edge it detects and has the ability to determine if a house is actually a valid target for delivery
+
     #drive forward about 1x the length of the robot from the sensor to the turning radius (~16cm)
     tankDrive.on_for_rotations(SpeedPercent(-10), SpeedPercent(-10), 0.718)
     tankDrive.off()
