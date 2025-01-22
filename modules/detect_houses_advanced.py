@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-#two more approaches to find the next house
+"""This modules contains two more approaches to find the next house"""
 
 import time
 import threading
