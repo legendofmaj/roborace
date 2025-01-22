@@ -46,14 +46,13 @@ steering_drive.on(turnratio, 20)
 This is the basis for dectecting the edges of houses. It constantly calculates the difference between the current and the last distance and looks for large jumps. If a jump is large enough, a house edge is detected and the current angle and distance are stored.
 
 ```python
-while True:
-  distOld = ultraSoundSensor.distance_centimeters
-  distNew = ultraSoundSensor.distance_centimeters
-  if abs(distOld-distNew) >= threshold and distNew < 100:           
-  importantValues.rightCornerAngle = gyroSensor.circle_angle() 
-  importantValue.rightCornerDist = distNew
-  break
-  #repeat for left side
+while ThreadOutput.circle_angle < 350 and ThreadOutput.circle_angle > 100:
+  if dist_old > dist_new:
+    if dist_short > dist_new:
+      dist_short = dist_new
+      angle_short = angle_new
+angles_and_dists = {int(dist_short) : int(angle_short)}
+return angles_and_dists
 ```
 [entire file](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_primitive.py)
 
