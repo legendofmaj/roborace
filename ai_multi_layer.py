@@ -2,20 +2,11 @@ import numpy
 import scipy.special
 
 class NeuralNetwork_multiLayer:
-
-    # initialise the neural network
     def __init__(self, _nodes: list, learning_rate):
-        # set number of nodes in each input, hidden, output layer
         self.nodes = _nodes
         self.learning_rate = learning_rate
 
-        # activation function is the sigmoid function
         self.activation_function = lambda x: scipy.special.expit(x)
-
-        # link weight matrices, wih and who
-        # weights inside the arrays are w_i_j, where link is from node i to node j in the next layer
-        # w11 w21
-        # w12 w22 etc 
 
         self.weights = []
 
@@ -23,8 +14,7 @@ class NeuralNetwork_multiLayer:
 
         weigth_layer = 1
 
-        #self.whh = 
-        for nodes in self.nodes[1:-1]: #might need to be increased to 2
+        for nodes in self.nodes[1:-1]:
             self.weights.append(numpy.random.normal(0.0, pow(self.nodes[0], -0.5), (self.nodes[weigth_layer+1], self.nodes[weigth_layer])))
             weigth_layer += 1
 
