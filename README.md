@@ -5,8 +5,8 @@ A possible solution to the exercise given in the Roborace Stuttgart 2024 using t
 ![language](https://img.shields.io/badge/language-python-blue?logo=python)
 [![library](https://img.shields.io/badge/library-ev3dev2-orange)](https://www.ev3dev.org)
 
-[Readme in Deutsch](https://github.com/legendofmaj/ev3/blob/main/miscellaneous/report/README_in_Deutsch.md)
-[Bericht in Deutsch](https://github.com/legendofmaj/ev3/blob/main/miscellaneous/report/Bericht_in_Deutsch.md)
+[Readme in Deutsch](miscellaneous/report/README_in_Deutsch.md)
+[Bericht in Deutsch](miscellaneous/report/Bericht_in_Deutsch.md)
 ## Features
 
 In short, the robot is programmed as a delivery robot. Detailed explanations can be found on [the homepage of the University of Stuttgart](https://www.ist.uni-stuttgart.de/de/lehre/roborace/aufgabe/).
@@ -39,7 +39,7 @@ turnratio = (kp * error) + (ki * integral) + (kd * derivative)
 steering_drive.on(turnratio, 20)
 ```
 
-[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/parallel_wall_drive.py?#L31)
+[entire file](modules/parallel_wall_drive.py?#L31)
 
 ### Find other houses
 
@@ -54,7 +54,7 @@ while ThreadOutput.circle_angle < 350 and ThreadOutput.circle_angle > 100:
 angles_and_dists = {int(dist_short) : int(angle_short)}
 return angles_and_dists
 ```
-[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_primitive.py?#L40)
+[entire file](modules/detect_houses_primitive.py?#L40)
 
 ### Drive to other houses using trigonometry
 
@@ -66,9 +66,9 @@ anOfAprch = (((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*
 #a = right house distance, b = left house distance, alpha = right house angle, beta = left house angle
 ```
 
-<img src="https://github.com/user-attachments/assets/824af1e1-f8b9-4086-b86a-2cafe2ced7aa" width="450">
+<img src="miscellaneous/resources/Trigonometry_Sketch.png" width="450">
 
-[entire file](https://github.com/legendofmaj/ev3/blob/main/modules/detect_houses_advanced.py?#L190)
+[entire file](modules/detect_houses_advanced.py?#L190)
 
 ## Credit
 
