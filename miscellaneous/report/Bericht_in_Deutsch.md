@@ -72,7 +72,7 @@ Die Wand mit dem kürzesten Abstand soll im rechten Winkel angefahren werden. Di
 anOfAprch = ((((a - b * math.sin(math.radians(90-(beta-alpha)))) / math.sqrt(((a*a) + (b*b)) - (2*a*b * math.cos(math.radians((beta-alpha)))))) * 180 / math.pi) + alpha) - 90
 ```
 
-<span class="caption">[*modules/detect__houses_advanced.py, Line: 183*](modules/detect_houses_advanced.py)
+<span class="caption">[*modules/detect__houses_advanced.py, Line: 183*](../../modules/detect_houses_advanced.py)
 
 <img src="../resources/Trigonometry_Sketch.png" width="450">
 
@@ -85,7 +85,7 @@ Da der Sensor um 90° zur Fahrtrichtung gedreht ist, kann er während des Anfahr
 distToNextHouse = abs(math.cos(anOfAprch - alpha)) * a
 ```
 
-<span class="caption">[*modules/detect__houses_advanced.py, Line: 193*](modules/detect_houses_advanced.py)
+<span class="caption">[*modules/detect__houses_advanced.py, Line: 193*](../../modules/detect_houses_advanced.py)
 
 Von dieser berechneten Distanz wird noch der Sollabstand abgezogen, damit der Roboter nicht mit der Wand kollidiert (da eine Kollision mit einem Haus im Wettbewerb zu einer Zeitstrafe führt).
 
@@ -125,13 +125,13 @@ steering_drive.on(turnratio, 20)
 
 ```
 
-<span class="caption">[*modules/parallel_wall_drive.py, Line: 52-112*](modules/parallel_wall_drive.py)
+<span class="caption">[*modules/parallel_wall_drive.py, Line: 52-112*](../../modules/parallel_wall_drive.py)
 
 `steering_drive.on(turnratio, 20)` steuert den Motor mit dem Korrekturwert an.
 `steering_drive` basiert auf der Klasse `ev3dev2.motor.MoveSteering(...)`.
 Diese Klasse dient der synchronisierten Ansteuerung der zwei großen Antriebsmotoren des EV3 sets.
 Die Methode `on(steering, speed)` steuert die Motoren zu einer kontinuierlichen Kurvenfahrt an, bei der der Parameter `steering` einer Drehrate äquivalent ist. Er kann die Werte [-100..0..100] annehmen, wobei 0 der Geradeausfahrt und 100 der Drehung am Platz entspricht.
-Die Ermittlung der Differenz zwischen Solldistanz und aktueller Distanz geschieht in der "main" Funktion des Moduls [parallel_wall_drive.py](modules/parallel_wall_drive.py).
+Die Ermittlung der Differenz zwischen Solldistanz und aktueller Distanz geschieht in der "main" Funktion des Moduls [parallel_wall_drive.py](../../modules/parallel_wall_drive.py).
 
 Momentan gibt es bei scharfen Ecken das Problem, dass der Roboter entweder viel zu stark oder viel zu wenig dreht (je nach p, i und d).
 Um dies zu lösen, müsste man dem Algorithmus die Fähigkeit geben, Ecken zu erkennnen.
@@ -162,7 +162,7 @@ if distNew > 0:
       break
 ```
 
-[detect_houses_advanced.py](modules/detect_houses_advanced.py)
+[detect_houses_advanced.py](../../modules/detect_houses_advanced.py)
 
 ### Drehen
 
@@ -170,7 +170,7 @@ Bei der gyrosensor.angle Funktion gab es das Problem, dass die Kalibrierung und 
 Darum musste die circle_angle() Funktion verwendet werden. Dies führt zu weiteren Problem bei Überschreitung der 360° Grenze.
 Dies haben wir durch Fallanalysen in den Drehfunktionen gelöst.
 
-[turning.py](modules/turning.py)
+[turning.py](../../modules/turning.py)
 namentlich: `turn_right_to_x, turn_left_to_x, turn_to_x_left, turn_to_x_right, relative_turnv`
 
 ## Anhang
